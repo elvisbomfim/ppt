@@ -2,9 +2,9 @@
 
 // CONFIGRAÇÕES DO SITE ####################
 define('HOST', 'localhost');
-define('USER', 'livreteste_jean');
-define('PASS', 'jcm6715%');
-define('DBSA', 'livreteste_empire');
+define('USER', 'root');
+define('PASS', '');
+define('DBSA', 'principe_da_torta');
 
 // DEFINE SERVIDOR DE E-MAIL ################
 define('MAILUSER', 'email@dominio.com.br');
@@ -13,11 +13,11 @@ define('MAILPORT', 'postadeenvio');
 define('MAILHOST', 'servidordeenvio');
 
 // DEFINE IDENTIDADE DO SITE ################
-define('SITENAME', 'livretest.tk');
+define('SITENAME', 'http://localhost/ppt/projeto/');
 define('SITEDESC', '');
 
 // DEFINE A BASE DO SITE ####################
-define('BASE', 'https://livreteste.tk');
+define('BASE', 'http://localhost/ppt/projeto/');
 define('THEME', 'principe_da_torta');
 
 define('INCLUDE_PATH', BASE . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . THEME);

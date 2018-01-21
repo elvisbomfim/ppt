@@ -1,24 +1,21 @@
-/* 
- * Biblioteca de evendos jQuery do Painel Work Control Pro Content Manager
- * Created on : 06/01/2016, 11:15:16
- * Author     : UpInside Treinamentos
- */
+var BASE = 'http://localhost/ppt/projeto/themes/principe_da_torta/';
 
 $(function () {
  
    
 
     //############## GET CEP
-    $('.wc_getCep').change(function () {
+    $('.getCep').change(function () {
+              
         var cep = $(this).val().replace('-', '').replace('.', '');
         if (cep.length === 8) {
             $.get("https://viacep.com.br/ws/" + cep + "/json", function (data) {
                 if (!data.erro) {
-                    $('.wc_bairro').val(data.bairro);
-                    $('.wc_complemento').val(data.complemento);
-                    $('.wc_localidade').val(data.localidade);
-                    $('.wc_logradouro').val(data.logradouro);
-                    $('.wc_uf').val(data.uf);
+                    $('.bairro').val(data.bairro);
+                    $('.complemento').val(data.complemento);
+                    $('.cidade').val(data.localidade);
+                    $('.logradouro').val(data.logradouro);
+                    $('.uf').val(data.uf);
                 }
             }, 'json');
         }
@@ -38,7 +35,7 @@ $(function () {
         }
 
         form.ajaxSubmit({
-            url: '_ajax/' + callback + '.ajax.php',
+            url: BASE + '_ajax/' + callback + '.ajax.php',
             data: {callback_action: callback_action},
             dataType: 'json',
             uploadProgress: function (evento, posicao, total, completo) {
@@ -103,7 +100,7 @@ $(function () {
         }
 
         form.ajaxSubmit({
-            url: '_ajax/' + callback + '.ajax.php',
+            url: BASE + '_ajax/' + callback + '.ajax.php',
             data: {callback_action: callback_action},
             dataType: 'json',
             beforeSubmit: function () {
