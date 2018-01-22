@@ -4,30 +4,26 @@
             <div class="masonry-sizer col-md-6"></div>
             <div class="masonry-item col-md-6" style="position: absolute; left: 0%; top: 0px;">
                 <div class="bgc-white p-20 bd">
-                    <h6 class="c-grey-900">Bolos</h6>
+                    <h6 class="c-grey-900">Cadastro de Recheio</h6>
                     <div class="mT-30">
-
-                        <button class="btn-primary">Cadastro novo</button>
-
                         <form action="" method="post">
-                            <input type="hidden" name="callback" value="categorias_bolos">
+                            <input type="hidden" name="callback" value="recheios">
                             <input type="hidden" name="callback_action" value="manager">
                             <div class="form-group">
-                                <label>Nome do bolo:</label>
-                                <input type="text" name="categoria_bolo_nome" class="form-control" id="categoria_bolo_nome"  >
+                                <label>Nome do recheio:</label>
+                                <input type="text" name="recheio_nome" class="form-control" id="recheio_nome"  >
                             </div>
                             <div class="form-group">
                                 <label>Preço por kg:</label>
-                                <input type="text" name="categoria_bolo_preco_kg" class="form-control money fix_bug_mask" id="categoria_bolo_preco_kg"  >
+                                <input type="text" name="recheio_preco_kg" class="form-control money fix_bug_mask" id="recheio_preco_kg"  >
                             </div>
                             <div class="form-group">
-                                <label>Preço kit festa:</label>
-                                <input type="text" name="categoria_bolo_kit_festa" class="form-control money fix_bug_mask" id="categoria_bolo_kit_festa"  >
+                                <label>Tipo:</label>
+                                <input type="text" name="recheio_tipo" class="form-control" id="recheio_tipo"  >
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
-
                     </div>
                 </div>
             </div>

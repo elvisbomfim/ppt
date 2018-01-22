@@ -247,6 +247,93 @@ $(function () {
             $(this).addClass('active');
         }
     });
+    
+    
+    //CONFIRM ACTION
+    $('html, body').on('click', '.j_action', function (e) {
+        var Prevent = $(this);
+        var Id = $(this).data('id');
+        var Callback = $(this).data('callback');
+               
+        
+        var Callback_action = $(this).data('callback_action');
+        $.post(BASE + '_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, id: Id}, function (json) {
+
+
+             if (json.modal) {
+                $('#J_Modal').modal('show');
+                $('.j_title').html(json.modal_title);
+                $('#Alert_Modal .modal-header').addClass("bg-success");
+                $('.j_content').html(json.modal_content);
+                $('#J_Modal .modal-footer .btn-primary').html("<i class='fa fa-save'></i> Salvar mudanÃ§as");
+                $('#J_Modal .modal-footer .btn-primary').show();
+                if (json.btn_save === false) {
+
+                    $('#J_Modal .modal-footer .btn-primary').hide();
+                } else if (json.btn_save === true) {
+                    $('#J_Modal .modal-footer .btn-primary').show();
+                } else {
+                    $('#J_Modal .modal-footer .btn-primary').html(json.btn_save);
+                }
+
+                if (json.remove_tr_id) {
+                   
+                    $('#' + json.remove_tr_id).remove();
+                }
+
+                if (json.remove_li) {
+                    $("[delete=" + json.id + "]").remove();
+                }
+
+                $('#chat').animate({scrollTop: 700000000000000000}, 500);
+                if (json.textarea) {
+
+                    $('#textarea').trumbowyg();
+                }
+
+                $('.notificar_nome').change(function () {
+                    $('#notificar_nome').text('OlÃ¡ ' + $(this).val());
+                });
+
+
+            }
+            
+            
+
+
+            if (json.upload) {
+                $.getScript(BASE + "/js/upload_drag_drop.js");
+            }
+
+         
+
+           
+
+            //CONTENT UPDATE
+            if (json.content) {
+                $('.j_content').fadeTo('300', '0.5', function () {
+                    $(this).html(json.content).fadeTo('300', '1');
+                });
+            }
+
+            //INPUT CLEAR
+            if (json.inpuval) {
+                if (json.inpuval === 'null') {
+                    $('.wc_value').val("");
+                } else {
+                    $('.wc_value').val(json.inpuval);
+                }
+            }
+
+            //DINAMIC CONTENT
+            if (json.divcontent) {
+                $(json.divcontent[0]).html(json.divcontent[1]);
+            }
+        }, 'json');
+        e.preventDefault();
+        e.stopPropagation();
+    });
+    
 
  
 });

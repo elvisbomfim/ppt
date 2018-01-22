@@ -32,9 +32,6 @@ if (!empty($_SESSION['userLogin']) && !empty($_SESSION['userLogin']['user_id']))
         unset($_SESSION['userLogin']);
     endif;
 endif;
-
-
-
 ?><!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -97,7 +94,7 @@ endif;
                 }
             }
         </style>
-        
+
         <link href="style.css" rel="stylesheet">
 
     </head>
@@ -116,53 +113,73 @@ endif;
             });
         </script>
 
-        <?php 
-        
-        include_once 'includes/menu.php';
-        
-        ?>
+<?php
+include_once 'includes/menu.php';
+?>
         <div class="page-container">
         <?php
-                include_once 'includes/header.php';
-            //QUERY STRING
-            if (!empty($getexe)):
-                $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
-            else:
-                $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
-            endif;
+        include_once 'includes/header.php';
+        //QUERY STRING
+        if (!empty($getexe)):
+            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
+        else:
+            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
+        endif;
 
-            if (file_exists($includepatch)):
-                require_once($includepatch);
-            else:
-                echo "<div class=\"content notfound\">";
-               //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
-                echo "</div>";
-            endif;
-            ?>
-        
+        if (file_exists($includepatch)):
+            require_once($includepatch);
+        else:
+            echo "<div class=\"content notfound\">";
+            //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
+            echo "</div>";
+        endif;
+        ?>
+
         </div>
-            
-        <script src="<?= BASE ?>/js/jquery.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>/js/jquery.form.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>/admin/js/vendor.js"></script>
-        <script src="<?= BASE ?>/admin/js/bundle.js"></script>
-        <script src="<?= BASE ?>/admin/js/motor.js"></script>
-        <script src="<?= BASE ?>/admin/js/maskinput.js" type="text/javascript"></script>
+
+        <script src="<?= BASE ?>js/jquery.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>admin/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>js/jquery.form.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>admin/js/vendor.js"></script>
+        <script src="<?= BASE ?>admin/js/bundle.js"></script>
+        <script src="<?= BASE ?>admin/js/motor.js"></script>
+        <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script>
             $(document).ready(function () {
                 $('.getCep').mask('00000-000');
                 $('.cpf').mask('000.000.000-00', {reverse: true});
                 $('.phone').mask('(00) 00000-0000');
+                $('.money').mask('000.000.000.000.000,00', {reverse: true});
             });
-            
-            $('.fix_bug_mask').keydown(function() {
-            this.selectionStart = this.selectionEnd = this.value.length;
-            
-            
-        })
-        
+
+            $('.fix_bug_mask').keydown(function () {
+                this.selectionStart = this.selectionEnd = this.value.length;
+
+
+            })
+
         </script>
     </body>
+
+
+    <!-- Modal AJAX-->
+    <div class="modal fade" id="J_Modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title j_title">Título do modal</h4>
+                </div>
+                <div class="modal-body j_content">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary action" form="myform" id="action" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processando aguarde!">Salvar mudanças</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 </html>
 <?php

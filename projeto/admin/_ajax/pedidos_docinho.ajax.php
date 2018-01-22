@@ -1,8 +1,34 @@
 <?php
+require_once '../../_app/Config.inc.php';
+$getPost = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+$setPost = array_map('strip_tags', $getPost);
+$POST = array_map('trim', $setPost);
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+$Action = $POST['callback_action'];
+$Page = $POST['callback'];
+unset($POST['callback_action']);
+unset($POST['callback']);
 
+$Read = new Read;
+$Create = new Create;
+$Update = new Update;
+$Delete = new Delete;
+$jSON=null;
+
+sleep(1);
+
+switch ($Action):
+    
+    //CREATE
+    case 'manager':
+ 
+        $Create->ExeCreate('pedidos_docinho',$POST);
+        
+        $jSON["sucesso"] = "Pedidos docinho cadastrado com sucesso";
+        
+    break;
+
+
+endswitch;
+
+echo json_encode($jSON);
