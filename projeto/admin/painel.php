@@ -36,115 +36,159 @@ endif;
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title></title>
+        <title>Projeto da torta</title>
 
-        <link rel="base" href="<?= BASE; ?>"/>
+        <!-- Bootstrap Core CSS -->
+        <link href="<?= BASE; ?>admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="<?= BASE; ?>admin/assets/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
 
+        <!-- Custom CSS -->
 
-
-        <link rel="shortcut icon" href="<?= INCLUDE_PATH; ?>/images/favicon.png"/>
-
-        <style>
-            #loader {
-                transition: all 0.3s ease-in-out;
-                opacity: 1;
-                visibility: visible;
-                position: fixed;
-                height: 100vh;
-                width: 100%;
-                background: #fff;
-                z-index: 90000;
-            }
-
-            #loader.fadeOut {
-                opacity: 0;
-                visibility: hidden;
-            }
-
-            .spinner {
-                width: 40px;
-                height: 40px;
-                position: absolute;
-                top: calc(50% - 20px);
-                left: calc(50% - 20px);
-                background-color: #333;
-                border-radius: 100%;
-                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
-                animation: sk-scaleout 1.0s infinite ease-in-out;
-            }
-
-            @-webkit-keyframes sk-scaleout {
-                0% { -webkit-transform: scale(0) }
-                100% {
-                    -webkit-transform: scale(1.0);
-                    opacity: 0;
-                }
-            }
-
-            @keyframes sk-scaleout {
-                0% {
-                    -webkit-transform: scale(0);
-                    transform: scale(0);
-                } 100% {
-                    -webkit-transform: scale(1.0);
-                    transform: scale(1.0);
-                    opacity: 0;
-                }
-            }
-        </style>
-
-        <link href="style.css" rel="stylesheet">
+        <link href="<?= BASE; ?>admin/css/style.css" rel="stylesheet">
+        <!-- You can change the theme colors from here -->
+        <link href="<?= BASE; ?>admin/css/colors/blue.css" id="theme" rel="stylesheet">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
     </head>
-    <body class="app">  
+    <body class="fix-header fix-sidebar card-no-border"> 
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div class="preloader">
+            <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Main wrapper - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <div id="main-wrapper">
+            <?php
+            include_once 'includes/header.php';
+            include_once 'includes/menu.php';
+            ?>
 
-        <div id='loader'>
-            <div class="spinner"></div>
+            <div class="page-wrapper">
+                <!-- ============================================================== -->
+                <!-- Container fluid  -->
+                <!-- ============================================================== -->
+                <div class="container-fluid">
+                    <!-- ============================================================== -->
+                    <!-- Bread crumb and right sidebar toggle -->
+                    <!-- ============================================================== -->
+                    <div class="row page-titles">
+                        <div class="col-md-6 col-8 align-self-center">
+                            <h3 class="text-themecolor m-b-0 m-t-0">Dashboard</h3>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6 col-4 align-self-center">
+                            <a href="https://wrappixel.com/templates/monsteradmin/" class="btn pull-right hidden-sm-down btn-success"> Upgrade to Pro</a>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Bread crumb and right sidebar toggle -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Start Page Content -->
+                    <!-- ============================================================== -->
+                    <!-- Row -->
+                    <div class="row">
+
+                        <?php
+                        //QUERY STRING
+                        if (!empty($getexe)):
+                            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
+                        else:
+                            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
+                        endif;
+
+                        if (file_exists($includepatch)):
+                            require_once($includepatch);
+                        else:
+                            echo "<div class=\"content notfound\">";
+                            //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
+                            echo "</div>";
+                        endif;
+                        ?>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <script type="text/javascript">
-            window.addEventListener('load', () => {
-                const loader = document.getElementById('loader');
-                setTimeout(() => {
-                    loader.classList.add('fadeOut');
-                }, 300);
-            });
-        </script>
 
-<?php
-include_once 'includes/menu.php';
-?>
-        <div class="page-container">
-        <?php
-        include_once 'includes/header.php';
-        //QUERY STRING
-        if (!empty($getexe)):
-            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
-        else:
-            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
-        endif;
+        <!-- Modal AJAX-->
 
-        if (file_exists($includepatch)):
-            require_once($includepatch);
-        else:
-            echo "<div class=\"content notfound\">";
-            //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
-            echo "</div>";
-        endif;
-        ?>
+        <div class="modal fade" id="confirmar-apagar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Confimar Exclusão</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    </div>
+
+                    <div class="modal-body">
+                        <p>Você está deletando: <span class="name"></span>, esse procedimento é irreversível.</p>
+                        <p>Você gostaria realmente de prosseguir?</p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Não</button>
+                        <button class="btn btn-danger btn-excluir j_action"><i class="fa fa-trash-o"></i> Sim</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <script src="<?= BASE ?>js/jquery.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>admin/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/jquery.form.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>admin/js/vendor.js"></script>
-        <script src="<?= BASE ?>admin/js/bundle.js"></script>
+        <!-- All Jquery -->
+        <!-- ============================================================== -->
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="<?= BASE ?>admin/assets/plugins/bootstrap/js/tether.min.js"></script>
+        <script src="<?= BASE ?>admin/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+       <!-- <script src="<?= BASE ?>admin/assets/plugins/datatables/datatables.min.js" type="text/javascript"></script>-->
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="<?= BASE ?>admin/js/jquery.slimscroll.js"></script>
+        <!--Wave Effects -->
+        <script src="<?= BASE ?>admin/js/waves.js"></script>
+        <!--Menu sidebar -->
+        <script src="<?= BASE ?>admin/js/sidebarmenu.js"></script>
+        <!--stickey kit -->
+        <script src="<?= BASE ?>admin/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+        <!--Custom JavaScript -->
+        <script src="<?= BASE ?>admin/js/custom.min.js"></script>
+        <!-- ============================================================== -->
+        <!-- This page plugins -->
+        <!-- ============================================================== -->
+        <!-- Flot Charts JavaScript -->
+        <script src="<?= BASE ?>admin/assets/plugins/flot/jquery.flot.js"></script>
+        <script src="<?= BASE ?>admin/assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+        <script src="<?= BASE ?>admin/js/flot-data.js"></script>
+        <!-- ============================================================== -->
+        <!-- Style switcher -->
+        <!-- ============================================================== -->
+        <script src="<?= BASE ?>admin/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
         <script src="<?= BASE ?>admin/js/motor.js"></script>
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
+
         <script>
+
             $(document).ready(function () {
                 $('.getCep').mask('00000-000');
                 $('.cpf').mask('000.000.000-00', {reverse: true});
@@ -157,29 +201,15 @@ include_once 'includes/menu.php';
 
 
             })
-
+  //          $(document).ready(function () {
+ //               $('#dataTable').DataTable(
+//                        "language": {
+//                            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
+//                        }
+  //              );
+  //          });
         </script>
     </body>
-
-
-    <!-- Modal AJAX-->
-    <div class="modal fade" id="J_Modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title j_title">Título do modal</h4>
-                </div>
-                <div class="modal-body j_content">
-                    <p>One fine body&hellip;</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary action" form="myform" id="action" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processando aguarde!">Salvar mudanças</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
 </html>
 <?php

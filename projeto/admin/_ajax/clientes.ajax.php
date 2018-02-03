@@ -1,4 +1,5 @@
 <?php
+
 require_once '../../_app/Config.inc.php';
 $getPost = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 $setPost = array_map('strip_tags', $getPost);
@@ -13,38 +14,84 @@ $Read = new Read;
 $Create = new Create;
 $Update = new Update;
 $Delete = new Delete;
-$jSON=null;
+$jSON = null;
 
 sleep(1);
 
 switch ($Action):
-    
+
     //CREATE
     case 'manager':
- 
-        $c["cliente_nome"] = $POST["cliente_nome"];
-        $c["cliente_cpf"] = $POST["cliente_cpf"];
-        $c["cliente_telefone_1"] = $POST["cliente_telefone_1"];
-        $c["cliente_telefone_2"] = $POST["cliente_telefone_2"];
-        $c["cliente_data_nascimento"] = $POST["cliente_data_nascimento"];
-        $c["cliente_observacoes"] = $POST["cliente_observacoes"];
+
+        if (empty($POST['id'])):
+            $Create->ExeCreate('clientes', ['cliente_nome' => '']);
+            $jSON["manager"] = true;
+            $jSON["id"] = $Create->getResult();
+            $jSON["type"] = "criado";
+        else:
+            $Read->FullRead("SELECT * FROM enderecos e "
+                    . "INNER JOIN clientes c ON c.cliente_id = e.cliente_id");
+            //$Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
+            $jSON["manager"] = true;
+            $jSON["id"] = $POST['id'];
+            //var_dump($Read->getResult()[0]);
+            $jSON["dados"] = $Read->getResult()[0];
+            $jSON["type"] = "atualizado";
+
+        endif;
+
+        break;
+
+    case 'update':
+
+        $jSON["result"] = null;
+        $ID = $POST['id'];
+        $TYPE = $POST['type'];
+        unset($POST['id'],$POST['type']);
         
-        $Create->ExeCreate('clientes',$c);
+        $Update->ExeUpdate('clientes', $POST, 'WHERE cliente_id =:id', "id=$ID");
         
-        $e["cliente_id"] = $Create->getResult();
-        $e["endereco_cep"] = $POST["endereco_cep"];
-        $e["endereco_bairro"] = $POST["endereco_bairro"];
-        $e["endereco_rua"] = $POST["endereco_rua"];
-        $e["endereco_numero"] = $POST["endereco_numero"];
-        $e["endereco_complemento"] = $POST["endereco_complemento"];
-        $e["endereco_cidade"] = $POST["endereco_cidade"];
-        $e["endereco_estado"] = $POST["endereco_estado"];
+        $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Cliente $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
         
-        $Create->ExeCreate('enderecos',$e);
+                $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$ID}");
+        extract($Read->getResult()[0]);
+
+        if ($TYPE == "criado"):
+            $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$ID}");
+            extract($Read->getResult()[0]);
+            $jSON["result"] = " <tr id='{$salgado_id}'>
+                                    <td>{$salgado_nome}</td>
+                                    <td>{$salgado_preco}</td>
+                                    <td>{$salgado_kit_festa}</td>
+                                    <td> ". ($salgado_status == 1 ? 'Ativo' : 'Inativo' ) ."</td>
+                                    <td><button class='btn btn-warning j_action' data-callback='salgados' data-callback_action='manager' data-id='{$salgado_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='salgados' data-callback_action='delete' data-id='{$salgado_id}' data-name='{$salgado_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>
+                                </tr>";
+        else:
+            $jSON["id"] = $ID;
+            $jSON["result"] = " <td>{$salgado_nome}</td>
+                                    <td>{$salgado_preco}</td>
+                                    <td>{$salgado_kit_festa}</td>
+                                    <td>". ($salgado_status == 1 ? 'Ativo' : 'Inativo' ) ."</td>
+                                    <td><button class='btn btn-warning j_action' data-callback='salgados' data-callback_action='manager' data-id='{$salgado_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='salgados' data-callback_action='delete' data-id='{$salgado_id}' data-name='{$salgado_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>";
+
+        endif;
         
-        $jSON["sucesso"] = "Cliente cadastrado com sucesso";
-        
-    break;
+        break;
+    case 'delete':
+        $Delete->ExeDelete('enderecos', 'WHERE cliente_id =:id', "id={$POST["id"]}");
+$jSON["remove_tr_id"] = $POST["id"];
+$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+
+if ($Delete->getResult()):
+$jSON["remove_tr_id"] = $POST["id"];
+$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+
+else:
+$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Não foi possível apagar", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+endif;
+
+
+        break;
 
 
 endswitch;
