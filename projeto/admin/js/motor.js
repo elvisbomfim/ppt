@@ -9,7 +9,7 @@ $(function () {
 
         var cep = $(this).val().replace('-', '').replace('.', '');
         if (cep.length === 8) {
-            $.get("https://viacep.com.br/ws/" + cep + "/json", function (data) {
+            $.get("https://viacep.com.br/ws/" + cep + "/json", function (json) {
                 if (!json.erro) {
                     $('.bairro').val(json.bairro);
                     $('.complemento').val(json.complemento);
@@ -37,23 +37,14 @@ $(function () {
         form.ajaxSubmit({
             url: BASE + '_ajax/' + callback + '.ajax.php',
             data: {callback_action: callback_action},
-            dataType: 'json',
-            uploadProgress: function (evento, posicao, total, completo) {
-                var porcento = completo + '%';
-                $('.workcontrol_upload_progrees').text(porcento);
-
-                if (completo <= '80') {
-                    $('.workcontrol_upload').fadeIn().css('display', 'flex');
+            dataType: 'json',            
+            success: function (json) {
+                alert(json.tot_docinho);
+                $('#pedido_docinho_valor_unidade').val("666");
+                if(json.tot_docinho){
+                    
+                    
                 }
-                if (completo >= '99') {
-                    $('.workcontrol_upload').fadeOut('slow', function () {
-                        $('.workcontrol_upload_progrees').text('0%');
-                    });
-                }
-                //PREVENT TO RESUBMIT IMAGES GALLERY
-                form.find('input[name="image[]"]').replaceWith($('input[name="image[]"]').clone());
-            },
-            success: function (data) {
                 if (json.name) {
                     var input = form.find('.wc_name');
                     if (!input.val() || input.val() != json.name) {

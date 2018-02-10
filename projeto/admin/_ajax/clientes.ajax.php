@@ -29,8 +29,7 @@ switch ($Action):
             $jSON["id"] = $Create->getResult();
             $jSON["type"] = "criado";
         else:
-            $Read->FullRead("SELECT * FROM enderecos e "
-                    . "INNER JOIN clientes c ON c.cliente_id = e.cliente_id");
+            $Read->ExeRead('clientes');
             //$Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
             $jSON["manager"] = true;
             $jSON["id"] = $POST['id'];
@@ -47,48 +46,49 @@ switch ($Action):
         $jSON["result"] = null;
         $ID = $POST['id'];
         $TYPE = $POST['type'];
-        unset($POST['id'],$POST['type']);
-        
+        unset($POST['id'], $POST['type']);
+
         $Update->ExeUpdate('clientes', $POST, 'WHERE cliente_id =:id', "id=$ID");
-        
+
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Cliente $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-        
-                $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$ID}");
+
+        $Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 
         if ($TYPE == "criado"):
-            $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$ID}");
+            $Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$ID}");
             extract($Read->getResult()[0]);
-            $jSON["result"] = " <tr id='{$salgado_id}'>
-                                    <td>{$salgado_nome}</td>
-                                    <td>{$salgado_preco}</td>
-                                    <td>{$salgado_kit_festa}</td>
-                                    <td> ". ($salgado_status == 1 ? 'Ativo' : 'Inativo' ) ."</td>
-                                    <td><button class='btn btn-warning j_action' data-callback='salgados' data-callback_action='manager' data-id='{$salgado_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='salgados' data-callback_action='delete' data-id='{$salgado_id}' data-name='{$salgado_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>
+            $jSON["result"] = " <tr id='{$cliente_id}'>
+                                    <td>{$cliente_nome}</td>
+                                    <td>{$cliente_telefone_1}</td>
+                                    <td>{$cliente_telefone_2}</td>
+                                    <td> " . ($cliente_status == 1 ? 'Ativo' : 'Inativo' ) . "</td>
+                                    <td><button class='btn btn-warning j_action' data-callback='clientes' data-callback_action='manager' data-id='{$cliente_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='clientes' data-callback_action='delete' data-id='{$cliente_id}' data-name='{$cliente_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>
                                 </tr>";
         else:
             $jSON["id"] = $ID;
-            $jSON["result"] = " <td>{$salgado_nome}</td>
-                                    <td>{$salgado_preco}</td>
-                                    <td>{$salgado_kit_festa}</td>
-                                    <td>". ($salgado_status == 1 ? 'Ativo' : 'Inativo' ) ."</td>
-                                    <td><button class='btn btn-warning j_action' data-callback='salgados' data-callback_action='manager' data-id='{$salgado_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='salgados' data-callback_action='delete' data-id='{$salgado_id}' data-name='{$salgado_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>";
+            $jSON["result"] =      "<td>{$cliente_nome}</td>
+                                    <td>{$cliente_telefone_1}</td>
+                                    <td>{$cliente_telefone_1}</td>
+                                    <td>{$cliente_telefone_2}</td>
+                                    <td> " . ($cliente_status == 1 ? 'Ativo' : 'Inativo' ) . "</td>
+                                    <td><button class='btn btn-warning j_action' data-callback='clientes' data-callback_action='manager' data-id='{$cliente_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='clientes' data-callback_action='delete' data-id='{$cliente_id}' data-name='{$cliente_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>";
 
         endif;
-        
+
         break;
     case 'delete':
-        $Delete->ExeDelete('enderecos', 'WHERE cliente_id =:id', "id={$POST["id"]}");
-$jSON["remove_tr_id"] = $POST["id"];
-$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+        $Delete->ExeDelete('clientes', 'WHERE cliente_id =:id', "id={$POST["id"]}");
+        $jSON["remove_tr_id"] = $POST["id"];
+        $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
 
-if ($Delete->getResult()):
-$jSON["remove_tr_id"] = $POST["id"];
-$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+        if ($Delete->getResult()):
+            $jSON["remove_tr_id"] = $POST["id"];
+            $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado apagado com sucesso", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
 
-else:
-$jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Não foi possível apagar", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
-endif;
+        else:
+            $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Não foi possível apagar", "URL" => "", "Target" => "_blank", "type" => "info"]; //type = warning danger success        break;
+        endif;
 
 
         break;
