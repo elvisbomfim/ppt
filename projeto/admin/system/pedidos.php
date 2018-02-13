@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="bgc-white bd bdrs-3 p-20 mB-20">
-            <h4 class="c-grey-900 mB-20">Bolos <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
+            <h4 class="c-grey-900 mB-20">Pedidos <button class="btn btn-primary btn-add-novo-pedido" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
             <table id="dataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -67,9 +67,9 @@
             </div>
             <div class="modal-body">
 
-                <form class="auto_save" action="" method="post">
+                <form class="auto_save" id="pedidos-form" action="" method="post">
                     <input type="hidden" name="callback" value="pedidos">
-                    <input type="hidden" name="callback_action" value="manager">
+                    <input type="hidden" id="callback_action" name="callback_action" value="manager">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -92,17 +92,19 @@
                                     <a class="nav-link active" id="bolo-tab" data-toggle="tab" href="#bolo" role="tab" aria-controls="bolo" aria-selected="true">Bolo</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="doce-tab" data-toggle="tab" href="#doce" role="tab" aria-controls="doce" aria-selected="false">Doce</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="refrigerante-tab" data-toggle="tab" href="#refrigerante" role="tab" aria-controls="refrigerante" aria-selected="false">Refrigerante</a>
+                                    <a class="nav-link" id="torta-tab" data-toggle="tab" href="#torta" role="tab" aria-controls="torta" aria-selected="false">Torta</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="salgado-tab" data-toggle="tab" href="#salgado" role="tab" aria-controls="salgado" aria-selected="false">Salgado</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="torta-tab" data-toggle="tab" href="#torta" role="tab" aria-controls="torta" aria-selected="false">Torta</a>
+                                    <a class="nav-link" id="doce-tab" data-toggle="tab" href="#doce" role="tab" aria-controls="doce" aria-selected="false">Doce</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="refrigerante-tab" data-toggle="tab" href="#refrigerante" role="tab" aria-controls="refrigerante" aria-selected="false">Refrigerante</a>
+                                </li>
+
+
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" style="padding-top:20px; " id="bolo" role="tabpanel" aria-labelledby="bolo-tab">
@@ -220,6 +222,86 @@
                                     </div>
 
                                 </div>
+                                <div class="tab-pane fade" id="torta" style="padding-top:20px; " role="tabpanel" aria-labelledby="torta-tab">
+                                    <button class="btn btn-primary pull-right add_field" id="add_torta"><i class="fa fa-plus"></i> Acrescentar</button>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                    <div class="nova_lista"></div>
+                                    <div class="row listas" style="display: none">
+
+                                        <?php
+                                        $Read->ExeRead('categoria_tortas', " WHERE categoria_torta_status = 1");
+                                        ?>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Categoria:</label>
+                                                <select class="form-control" name="tortas[0][categoria_torta_id]">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <?php
+                                                    foreach ($Read->getResult() as $value):
+                                                        extract($value);
+                                                        echo("<option value='$categoria_torta_id'>{$categoria_torta_nome}</option>");
+                                                    endforeach;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Peso:</label>
+                                                <input type="text" name="tortas[0][pedido_torta_peso]" class="form-control" id="pedido_torta_peso"  >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Valor:</label>
+                                                <input type="text" name="tortas[0][pedido_torta_valor]" class="form-control" id="pedido_torta_valor"  >
+                                            </div>
+                                        </div>
+                                        <button class='btn btn-danger remover_campo excluir-torta'><i class='fa fa-close'></i></button>
+
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="salgado" style="padding-top:20px; " role="tabpanel" aria-labelledby="salgado-tab">
+                                    <button class="btn btn-primary pull-right add_field" id="add_salgado"><i class="fa fa-plus"></i> Acrescentar</button>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                    <div class="nova_lista"></div>
+                                    <div class="row listas" style="display: none">
+
+                                        <?php
+                                        $Read->ExeRead('salgados');
+                                        ?>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Salgado:</label>
+                                                <select name="salgados[salgado_id][]" class="form-control">
+                                                    <?php
+                                                    foreach ($Read->getResult() as $value):
+                                                        extract($value);
+                                                        echo("<option value='{$salgado_id}'>{$salgado_nome}</option>");
+                                                    endforeach;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Quantidade:</label>
+                                                <input type="number" name="salgados[pedido_salgado_qtd][]" class="form-control" id="pedido_salgado_qtd"  >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Valor unidade:</label>
+                                                <input type="text" name="salgados[salgado_valor_unidade][]" class="form-control" id="salgado_valor_unidade"  >
+                                            </div>
+                                        </div>
+                                        <button class='btn btn-danger remover_campo excluir-salgado'><i class='fa fa-close'></i></button>
+
+                                    </div>
+                                </div>
                                 <div class="tab-pane fade" id="doce" style="padding-top:20px; " role="tabpanel" aria-labelledby="doce-tab">
                                     <button class="btn btn-primary pull-right add_field" id="add_docinho"><i class="fa fa-plus"></i> Acrescentar</button>
                                     <div class="clearfix"></div>
@@ -288,13 +370,13 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Quantidade:</label>
-                                                <input type="number" name="refrigerates[pedido_refrigerante_qtd][]" class="form-control" id="pedido_refrigerante_qtd"  >
+                                                <input type="number" name="refrigerantes[pedido_refrigerante_qtd][]" class="form-control" id="pedido_refrigerante_qtd"  >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Valor unidade:</label>
-                                                <input type="text" name="pedido_refrigerante_valor_unidade" class="form-control" id="pedido_refrigerante_valor_unidade"  >
+                                                <input type="text" name="refrigerantes[pedido_refrigerante_valor_unidade][]" class="form-control" id="pedido_refrigerante_valor_unidade"  >
                                             </div>
                                         </div>
 
@@ -303,82 +385,8 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane fade" id="salgado" style="padding-top:20px; " role="tabpanel" aria-labelledby="salgado-tab">
-                                    <button class="btn btn-primary pull-right add_field" id="add_salgado"><i class="fa fa-plus"></i> Acrescentar</button>
-                                    <div class="clearfix"></div>
-                                    <hr>
-                                    <div class="nova_lista"></div>
-                                    <div class="row listas" style="display: none">
-
-                                        <?php
-                                        $Read->ExeRead('salgados')
-                                        ?>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Salgado:</label>
-                                                <select name="salgado[salgado_id][]" class="form-control">
-                                                    <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option value='{$salgado_id}'>{$salgado_nome}</option>");
-                                                    endforeach;
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Quantidade:</label>
-                                                <input type="number" name="salgados[pedido_salgado_qtd][]" class="form-control" id="pedido_salgado_qtd"  >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Valor unidade:</label>
-                                                <input type="text" name="salgado_valor_unidade" class="form-control" id="salgado_valor_unidade"  >
-                                            </div>
-                                        </div>
-                                        <button class='btn btn-danger remover_campo excluir-salgado'><i class='fa fa-close'></i></button>
-
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="torta" style="padding-top:20px; " role="tabpanel" aria-labelledby="torta-tab">
-
-                                    <div class="row">
-
-                                        <?php
-                                        $Read->ExeRead('categoria_tortas', " WHERE categoria_torta_status = 1");
-                                        ?>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Categoria:</label>
-                                                <select class="form-control">
-                                                    <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option>{$categoria_torta_nome}</option>");
-                                                    endforeach;
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Peso:</label>
-                                                <input type="number" name="pedido_torta_peso" class="form-control" id="pedido_torta_peso"  >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Valor:</label>
-                                                <input type="text" name="pedido_torta_valor" class="form-control" id="pedido_torta_valor"  >
-                                            </div>
-                                        </div>
-                                        <button class='btn btn-danger remover_campo excluir'><i class='fa fa-close'></i></button>
-
-                                    </div>
-
-                                </div>
+                                
+                                
                             </div>
                         </div>
 
@@ -418,8 +426,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
-                <button type="submit" class="btn btn-primary btn-action-name" form="formulario">Cadastrar</button>
+                <button type="button" class="btn btn-secondary btn-fechar-modal" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                <button type="submit" class="btn btn-primary btn-action-name cadastrar-pedido" form="pedidos-form">Cadastrar</button>
             </div>
         </div>
     </div>
