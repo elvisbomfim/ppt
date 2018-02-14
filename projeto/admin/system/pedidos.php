@@ -71,22 +71,29 @@
                     <input type="hidden" name="callback" value="pedidos">
                     <input type="hidden" id="callback_action" name="callback_action" value="manager">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Nome do Cliente:</label>
-                                <input type="text" name="cliente_nome" class="form-control" id="cliente_nome"  >
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nome do Cliente:</label>
+                                        <input type="text" name="cliente_nome" class="form-control" id="cliente_nome"  >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Data de criação:</label>
+                                        <input type="date" name="pedido_data_criacao" class="form-control" id="pedido_data_criacao"  >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Data de retirada:</label>
+                                        <input type="date" name="pedido_data_retirada" class="form-control" id="pedido_data_retirada"  >
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Data de criação:</label>
-                                <input type="date" name="pedido_data_criacao" class="form-control" id="pedido_data_criacao"  >
-                            </div>
-                            <div class="form-group">
-                                <label>Data de retirada:</label>
-                                <input type="date" name="pedido_data_retirada" class="form-control" id="pedido_data_retirada"  >
-                            </div>
-
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-10">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="bolo-tab" data-toggle="tab" href="#bolo" role="tab" aria-controls="bolo" aria-selected="true">Bolo</a>
@@ -232,7 +239,7 @@
                                         <?php
                                         $Read->ExeRead('categoria_tortas', " WHERE categoria_torta_status = 1");
                                         ?>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Categoria:</label>
                                                 <select class="form-control" name="tortas[0][categoria_torta_id]">
@@ -246,20 +253,20 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Peso:</label>
-                                                <input type="text" name="tortas[0][pedido_torta_peso]" class="form-control" id="pedido_torta_peso"  >
+                                                <input type="number" min="1" name="tortas[0][pedido_torta_peso]" value="1" class="form-control" >
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor:</label>
-                                                <input type="text" name="tortas[0][pedido_torta_valor]" class="form-control" id="pedido_torta_valor"  >
+                                                <input type="text" name="tortas[0][pedido_torta_valor]" class="form-control" readonly="readonly">
                                             </div>
                                         </div>
-                                        <button class='btn btn-danger remover_campo excluir-torta'><i class='fa fa-close'></i></button>
-
+                                        <button class='btn btn-sm btn-danger remover_campo excluir-torta'><i class='fa fa-close'></i> Remover</button>
+                                        
                                     </div>
 
                                 </div>
@@ -276,7 +283,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Salgado:</label>
-                                                <select name="salgados[salgado_id][]" class="form-control">
+                                                <select name="salgados[0][salgado_id]" class="form-control">
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -289,13 +296,13 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Quantidade:</label>
-                                                <input type="number" name="salgados[pedido_salgado_qtd][]" class="form-control" id="pedido_salgado_qtd"  >
+                                                <input type="number" name="salgados[0][pedido_salgado_qtd]" class="form-control" id="pedido_salgado_qtd"  >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Valor unidade:</label>
-                                                <input type="text" name="salgados[salgado_valor_unidade][]" class="form-control" id="salgado_valor_unidade"  >
+                                                <input type="text" name="salgados[0][salgado_valor_unidade]" class="form-control" id="salgado_valor_unidade"  >
                                             </div>
                                         </div>
                                         <button class='btn btn-danger remover_campo excluir-salgado'><i class='fa fa-close'></i></button>
@@ -316,7 +323,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Doces:</label>
-                                                <select name="doces[docinho_id][]" class="form-control">
+                                                <select name="doces[0][docinho_id]" class="form-control">
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -329,18 +336,18 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Qtd:</label>
-                                                <input type="number" name="doces[pedido_docinho_qtd][]" class="form-control" id="pedido_docinho_qtd"  >
+                                                <input type="number" name="doces[0][pedido_docinho_qtd]" class="form-control" id="pedido_docinho_qtd"  >
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor:</label>
-                                                <input type="text" class="form-control" id="pedido_docinho_valor_unidade"  readonly="readonly" >
+                                                <input type="text" name="doces[0][pedido_docinho_valor_unidade]" class="form-control" id="pedido_docinho_valor_unidade"  readonly="readonly" >
                                             </div>
                                         </div>
-                                      
+
                                         <button class='btn btn-danger remover_campo excluir-docinho'><i class='fa fa-close'></i></button>
-                    
+
                                     </div>
                                     <hr>
                                 </div>
@@ -357,7 +364,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Refrigerante:</label>
-                                                <select name="refrigerantes[refrigerante_id][]" class="form-control">
+                                                <select name="refrigerantes[0][refrigerante_id]" class="form-control">
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -370,13 +377,13 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Quantidade:</label>
-                                                <input type="number" name="refrigerantes[pedido_refrigerante_qtd][]" class="form-control" id="pedido_refrigerante_qtd"  >
+                                                <input type="number" name="refrigerantes[0][pedido_refrigerante_qtd]" class="form-control" id="pedido_refrigerante_qtd"  >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Valor unidade:</label>
-                                                <input type="text" name="refrigerantes[pedido_refrigerante_valor_unidade][]" class="form-control" id="pedido_refrigerante_valor_unidade"  >
+                                                <input type="text" name="refrigerantes[0][pedido_refrigerante_valor_unidade]" class="form-control" id="pedido_refrigerante_valor_unidade"  >
                                             </div>
                                         </div>
 
@@ -385,8 +392,8 @@
                                     </div>
 
                                 </div>
-                                
-                                
+
+
                             </div>
                         </div>
 

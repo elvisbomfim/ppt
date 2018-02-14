@@ -64,6 +64,7 @@ $(function () {
         var campos_max = 30;   //max de 10 campos
 
         var x = 0;
+        var vetor = 1;
 
         $('#' + add).click(function (e) {
             e.preventDefault();     //prevenir novos clicks
@@ -79,31 +80,55 @@ $(function () {
 
                     var clone = $("#" + tab).find('.listas:first').clone();
 
-                    $("#" + tab).find('.nova_lista').append(clone);
+                    $("#" + tab).find('.nova_lista').prepend(clone);
 
                     var inputs_novos = $("#" + tab).find('.nova_lista .listas:first :input');
-
-
 
                     $.each(inputs_novos, function (index, value) {
                         // $("#" + index).val(value);
                         // alert($(this).attr('name'));
 
+
+
                         if (typeof ($(this).attr('name')) !== 'undefined') {
 
                             var numsStr = $(this).attr('name').replace(/[^0-9]/g, '');
                             var numero = parseInt(numsStr);
+
+
+//                            console.log("o x é " + x + " O numero é " + numero);
+//                            if (x === numero) {
+//                                alert("sou igual");
+//                                x = numero + 1;
+//                                console.log("removi o numero " + numero);
+//                            }
                             
+                            
+
                             var name = $(this).attr('name').split('[' + numero + ']');
 
-                            console.log(name[0] + "[" + x + "]" + name[1]);
+                            //  console.log(name[0] + "[" + x + "]" + name[1]);
 
-                            $(this).attr("name", name[0] + "[" + x + "]" + name[1]);
+                            $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
+
+
+                            if (typeof ($(this).attr('type')) === 'undefined') {
+                                $(this).prop('selectedIndex', 0);
+                                // console.log("to no undefined");
+                            } else if ($(this).attr('type') === 'number') {
+                                // console.log("to no number");
+                                $(this).val(1);
+                            } else {
+                                // console.log("to no text");
+                                $(this).val("");
+                            }
+
                         }
                         //console.log(index + '=' + value);
                     });
 
                     x++;
+                    vetor++;
 
                 }
             }
@@ -116,127 +141,17 @@ $(function () {
             e.preventDefault();
             //alert("Deleta: "+x);
             if (x > 1) {
-                $(this).parent('.listas').remove();
+            $(this).parent('.listas').remove();
+                    } else {
+                    $(this).parent('.listas').hide();
+                    }
+                    x--;
 
-            } else {
-                $(this).parent('.listas').hide();
 
+
+                });
             }
-            x--;
+
+
 
         });
-    }
-
-
-
-});
-
-
-
-//$(function () {
-//    localStorage.clear();
-//    $('#doce-tab').on('show.bs.tab', function (e) {
-//
-//        var activeTab = localStorage.getItem('doceTab');
-//
-//        if (activeTab) {
-//            alert('já existo e  não vou chamar mais a ');
-//        } else {
-//            var Doce = new AddInputs();
-//            localStorage.setItem('doceTab', Doce.getDados());
-//        }
-//
-//
-//    });
-//
-//    $('#refrigerante-tab').on('show.bs.tab', function (e) {
-//        var activeTab = localStorage.getItem('refrigeranteTab');
-//
-//        if (activeTab) {
-//            alert(activeTab);
-//        } else {
-//            var Refrigerante = new AddInputs();
-//            localStorage.setItem('refrigeranteTab', Refrigerante.getDados());
-//        }
-//    });
-//
-//    $('#salgado-tab').on('show.bs.tab', function (e) {
-//        var activeTab = localStorage.getItem('salgadoTab');
-//
-//        if (activeTab) {
-//            alert(activeTab);
-//        } else {
-//            var Salgado = new AddInputs();
-//
-//            localStorage.setItem('salgadoTab', Salgado.getDados());
-//        }
-//    });
-//
-//
-//    function AddInputs() {
-//
-//
-//        var Contador;
-//        var Campos_max;
-//
-//
-//        this.SetContador = function () {
-//            this.Contador = 0;
-//        }
-//
-//        this.SetCampos_max = function () {
-//            this.Campos_max = 30;
-//        }
-//
-//        this.getDados = function () {
-//
-//            $('.add_field').click(function (e) {
-//                e.preventDefault();     //prevenir novos clicks
-//                // alert($(this).closest(".tab-pane").attr("id"));
-//
-//                var tab = $(this).closest(".tab-pane").attr("id");
-//
-//                if (this.Contador === 0) {
-//                    $("#" + tab).find('.listas:first').show();
-//                    this.Contador++;
-//
-//
-//                } else {
-//                    if (this.Contador < this.Campos_max) {
-//
-//                        var clone = $("#" + tab).find('.listas:first').clone();
-//
-//                        $("#" + tab).find('.nova_lista').append(clone);
-//
-//
-//                        this.Contador++;
-//
-//
-//                    }
-//                }
-//
-//
-//
-//            });
-//            // Remover o div anterior
-//            $('body').on("click", ".remover_campo", function (e) {
-//                e.preventDefault();
-//
-//                if (this.Contador > 1) {
-//                    $(this).parent('.listas').remove();
-//
-//                } else {
-//                    $(this).parent('.listas').hide();
-//
-//                }
-//                this.Contador--;
-//
-//            });
-//
-//
-//        };
-//
-//    }
-//    ;
-//
-//});

@@ -37,14 +37,24 @@ $(function () {
         form.ajaxSubmit({
             url: BASE + '_ajax/' + callback + '.ajax.php',
             data: {callback_action: callback_action},
-            dataType: 'json',            
+            dataType: 'json',
             success: function (json) {
-                alert(json.tot_docinho);
-                $('#pedido_docinho_valor_unidade').val("666");
-                if(json.tot_docinho){
-                    
-                    
-                }
+
+//                $.each(json.categoria, function (index, value) {
+//                    //$("#" + index).val(value);
+//                    console.log(index + '=' + value);
+//                });
+              
+
+                    $.each(json.categoria, function (index, value) {
+                      
+                      $( "input[name='"+value.name+"']" ).val(value.valor_item);
+                      $("#"+value.id_total_parcial).val(value.total_parcial);
+
+                    });
+
+               
+
                 if (json.name) {
                     var input = form.find('.wc_name');
                     if (!input.val() || input.val() != json.name) {
@@ -121,13 +131,13 @@ $(function () {
                     if ($(".get_id").hasClass("manager")) {
                         $('#exampleModal').modal('hide');
                         $('#dataTable tbody').prepend(json.result);
-                    }else{
-                      
+                    } else {
+
                         $('#exampleModal').modal('hide');
-                        
-                        $('#'+json.id).html(json.result);
+
+                        $('#' + json.id).html(json.result);
                     }
-                    
+
                     $.notify({
                         icon: json.alerta.icon,
                         title: '<strong>' + json.alerta.title + '</strong>',
@@ -262,9 +272,9 @@ $(function () {
     $('html, body').on('click', '.j_action', function (e) {
         var Prevent = $(this);
         var Id = $(this).attr('data-id');
-        
-        
-        
+
+
+
         var Callback = $(this).attr('data-callback');
 
 
@@ -401,9 +411,9 @@ $(function () {
         $(this).find('.btn-excluir').attr('data-id', $(e.relatedTarget).attr('data-id'));
         $(this).find('.btn-excluir').attr('data-callback', $(e.relatedTarget).attr('data-callback'));
         $(this).find('.btn-excluir').attr('data-callback_action', $(e.relatedTarget).attr('data-callback_action'));
-        
-        
-        
+
+
+
     });
 
 

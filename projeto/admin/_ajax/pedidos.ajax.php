@@ -16,8 +16,6 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
-
 switch ($Action):
 
     //CREATE
@@ -38,22 +36,42 @@ switch ($Action):
 
 
         if (!empty($POST['tortas'])):
-            
-            print_r($POST['tortas']);
-            
-//
-//            foreach ($POST['tortas'] as $torta):
-//
-//             if(!empty()):
-//                 
-//             endif;
-//
-//              //  $Read->ExeRead("categoria_tortas", "WHERE categoria_torta_id =:id", "id=$categoria_torta_id");
-////            
-//                print_r($torta);
-//
-//
-//            endforeach;
+
+            //print_r($POST['tortas']);
+            $total_torta = 0.00;
+
+            foreach ($POST['tortas'] as $key => $torta):
+                extract($torta);
+                //  if(!empty()):
+                //  endif;
+
+                $Read->ExeRead("categoria_tortas", "WHERE categoria_torta_id =:id", "id=$categoria_torta_id");
+
+                if ($Read->getResult()):
+
+                    $calculo = $Read->getResult()[0]['categoria_torta_preco_kg'] * $pedido_torta_peso;
+
+                    if (!empty($total_torta)) {
+                        $total_torta = str_replace(',', '.', str_replace('.', '', $total_torta));
+                    }
+
+                    $total_torta += $calculo;
+
+                    $calculo = number_format($calculo, 2, ',', '.');
+                    $total_torta = number_format($total_torta, 2, ',', '.');
+
+
+                    //    print_r($torta);
+                    $jSON["categoria"][] = ["name" => "tortas[{$key}][pedido_torta_valor]", "valor_item" => "{$calculo}", "total_parcial" => "{$total_torta}", "id_total_parcial" => "pedido_torta_valor_total"]; //type = warning danger success        break;
+
+
+
+                endif;
+
+
+
+
+            endforeach;
 
 
         endif;
@@ -61,20 +79,20 @@ switch ($Action):
 
         if (!empty($POST['salgados'])):
 
-            print_r($POST['salgados']);
+        //   print_r($POST['salgados']);
 
         endif;
 
 
         if (!empty($POST['doces'])):
 
-            print_r($POST['doces']);
+        //   print_r($POST['doces']);
 
         endif;
 
         if (!empty($POST['refrigerantes'])):
 
-            print_r($POST['refrigerantes']);
+        //   print_r($POST['refrigerantes']);
 
         endif;
 

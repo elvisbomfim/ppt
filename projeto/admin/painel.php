@@ -48,6 +48,8 @@ endif;
         <!-- Custom CSS -->
 
         <link href="<?= BASE; ?>admin/css/style.css" rel="stylesheet">
+        <link href="<?= BASE; ?>admin/css/custom.css" rel="stylesheet">
+        
         <!-- You can change the theme colors from here -->
         <link href="<?= BASE; ?>admin/css/colors/blue.css" id="theme" rel="stylesheet">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
