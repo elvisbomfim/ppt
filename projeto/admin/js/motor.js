@@ -22,7 +22,7 @@ $(function () {
     });
 
     //AUTOSAVE ACTION
-    $('html').on('change', 'form.auto_save', function (e) {
+    $('html').on('keyup change', 'form.auto_save', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -44,16 +44,17 @@ $(function () {
 //                    //$("#" + index).val(value);
 //                    console.log(index + '=' + value);
 //                });
-              
-
+                if (json.total_geral_pedido){
                     $.each(json.categoria, function (index, value) {
-                      
-                      $( "input[name='"+value.name+"']" ).val(value.valor_item);
-                      $("#"+value.id_total_parcial).val(value.total_parcial);
+
+                        $("input[name='" + value.name + "']").val(value.valor_item);
+                        $("#" + value.id_total_parcial).val(value.total_parcial);
 
                     });
+                    $("#pedido_total").val(json.total_geral_pedido);
+                }
 
-               
+
 
                 if (json.name) {
                     var input = form.find('.wc_name');

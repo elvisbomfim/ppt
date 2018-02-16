@@ -138,7 +138,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Peso:</label>
-                                                <input type="text" name="categoria_bolo_nome" class="form-control" id="categoria_bolo_nome"  >
+                                                <input type="text" min="1" name="categoria_bolo_nome" class="form-control" id="categoria_bolo_nome"  >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -173,6 +173,7 @@
                                             <div class="form-group">
 
                                                 <select class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -185,6 +186,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <select class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -197,6 +199,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <select class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -266,7 +269,7 @@
                                             </div>
                                         </div>
                                         <button class='btn btn-sm btn-danger remover_campo excluir-torta'><i class='fa fa-close'></i> Remover</button>
-                                        
+
                                     </div>
 
                                 </div>
@@ -280,10 +283,11 @@
                                         <?php
                                         $Read->ExeRead('salgados');
                                         ?>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Salgado:</label>
                                                 <select name="salgados[0][salgado_id]" class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -293,19 +297,19 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Quantidade:</label>
-                                                <input type="number" name="salgados[0][pedido_salgado_qtd]" class="form-control" id="pedido_salgado_qtd"  >
+                                                <input type="number" min="1" name="salgados[0][pedido_salgado_qtd]" value="1" class="form-control" >
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor unidade:</label>
-                                                <input type="text" name="salgados[0][salgado_valor_unidade]" class="form-control" id="salgado_valor_unidade"  >
+                                                <input type="text" name="salgados[0][pedido_salgado_valor]" class="form-control" readonly="readonly" >
                                             </div>
                                         </div>
-                                        <button class='btn btn-danger remover_campo excluir-salgado'><i class='fa fa-close'></i></button>
+                                        <button class='btn btn-sm btn-danger remover_campo excluir-salgado'><i class='fa fa-close'></i> Remover</button>
 
                                     </div>
                                 </div>
@@ -320,10 +324,11 @@
                                         $Read->ExeRead('docinhos', " WHERE docinho_status = 1");
                                         ?>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Doces:</label>
                                                 <select name="doces[0][docinho_id]" class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -335,21 +340,20 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Qtd:</label>
-                                                <input type="number" name="doces[0][pedido_docinho_qtd]" class="form-control" id="pedido_docinho_qtd"  >
+                                                <label>Quantidade:</label>
+                                                <input type="number" min="1" name="doces[0][pedido_docinho_qtd]" value="1" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor:</label>
-                                                <input type="text" name="doces[0][pedido_docinho_valor_unidade]" class="form-control" id="pedido_docinho_valor_unidade"  readonly="readonly" >
+                                                <input type="text" name="doces[0][pedido_docinho_valor_unidade]" class="form-control" readonly="readonly" />
                                             </div>
                                         </div>
 
-                                        <button class='btn btn-danger remover_campo excluir-docinho'><i class='fa fa-close'></i></button>
+                                        <button class='btn btn-sm btn-danger remover_campo excluir-docinho'><i class='fa fa-close'></i> Remover</button>
 
                                     </div>
-                                    <hr>
                                 </div>
                                 <div class="tab-pane fade" id="refrigerante" style="padding-top:20px; " role="tabpanel" aria-labelledby="refrigerante-tab">
                                     <button class="btn btn-primary pull-right add_field" id="add_refrigerante"><i class="fa fa-plus"></i> Acrescentar</button>
@@ -361,10 +365,11 @@
                                         <?php
                                         $Read->ExeRead('refrigerantes', " WHERE refrigerante_status = 1");
                                         ?>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Refrigerante:</label>
                                                 <select name="refrigerantes[0][refrigerante_id]" class="form-control">
+                                                    <option selected="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -374,20 +379,20 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Quantidade:</label>
-                                                <input type="number" name="refrigerantes[0][pedido_refrigerante_qtd]" class="form-control" id="pedido_refrigerante_qtd"  >
+                                                <input type="number" min="1" name="refrigerantes[0][pedido_refrigerante_qtd]" value="1" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor unidade:</label>
-                                                <input type="text" name="refrigerantes[0][pedido_refrigerante_valor_unidade]" class="form-control" id="pedido_refrigerante_valor_unidade"  >
+                                                <input type="text" name="refrigerantes[0][pedido_refrigerante_valor_unidade]" class="form-control" readonly="readonly">
                                             </div>
                                         </div>
 
-                                        <button class='btn btn-danger remover_campo excluir-refrigerante'><i class='fa fa-close'></i></button>
+                                        <button class='btn btn-sm btn-danger remover_campo excluir-refrigerante'><i class='fa fa-close'></i> Remover</button>
 
                                     </div>
 
@@ -404,21 +409,23 @@
                                 <input type="text" name="pedido_bolo_valor_total" class="form-control" id="pedido_bolo_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
-                                <label>Doce:</label>
-                                <input type="text" name="pedido_docinho_valor_total" class="form-control" id="pedido_valor_total"  readonly="readonly">
-                            </div>
-                            <div class="form-group">
-                                <label>Refrigerante:</label>
-                                <input type="text" name="pedido_refrigerante_valor_total" class="form-control" id="pedido_refrigerante_valor_total"  readonly="readonly">
+                                <label>Torta:</label>
+                                <input type="text" name="pedido_torta_valor_total" class="form-control" id="pedido_torta_valor_total"  readonly="readonly" >
                             </div>
                             <div class="form-group">
                                 <label>Salgado:</label>
                                 <input type="text" name="pedido_salgado_valor_total" class="form-control" id="pedido_salgado_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
-                                <label>Torta:</label>
-                                <input type="text" name="pedido_torta_valor_total" class="form-control" id="pedido_torta_valor_total"  readonly="readonly" >
+                                <label>Doce:</label>
+                                <input type="text" name="pedido_docinho_valor_total" class="form-control" id="pedido_doce_valor_total"  readonly="readonly">
                             </div>
+                            <div class="form-group">
+                                <label>Refrigerante:</label>
+                                <input type="text" name="pedido_refrigerante_valor_total" class="form-control" id="pedido_refrigerante_valor_total"  readonly="readonly">
+                            </div>
+
+
 
                             <div class="form-group">
                                 <label>Total:</label>
