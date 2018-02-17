@@ -34,10 +34,58 @@ switch ($Action):
 
 
         $total_geral = 0.00;
+        $total_geral_bolo = 0;
         $total_geral_torta = 0;
         $total_geral_salgado = 0;
         $total_geral_doce = 0;
         $total_geral_refrigerante = 0;
+
+
+        // Bolo
+        if (!empty($POST['categoria_bolo_id'])):
+            $Read->ExeRead("categoria_bolos", "WHERE categoria_bolo_id =:id", "id={$POST['categoria_bolo_id']}");
+            $total_bolo = 0;
+            if ($Read->getResult()):
+
+                $calculo = (empty($POST['kit_festa']) ? $Read->getResult()[0]['categoria_bolo_preco_kg'] * $POST['pedido_bolo_peso'] : $Read->getResult()[0]['categoria_bolo_kit_festa'] * $POST['pedido_bolo_peso'] );
+                //$calculo = $Read->getResult()[0]['categoria_bolo_preco_kg'] * $pedido_bolo_peso;
+
+                if (!empty($total_bolo)) :
+                    $total_bolo = str_replace(',', '.', str_replace('.', '', $total_bolo));
+                endif;
+
+                if (!empty($POST['recheio_especial'])):
+                    //print_r($POST['recheio_especial']);
+                    $total_recheio = 0;
+                    foreach ($POST['recheio_especial'] as $recheio):
+
+                        if ($recheio != 'Selecione a categoria'):
+                            //echo ($recheio);
+                            $Read->ExeRead("recheios", "WHERE recheio_id =:id", "id={$recheio}");
+
+                            $total_recheio += $Read->getResult()[0]['recheio_preco_kg'];
+                        endif;
+                        
+                    endforeach;
+
+                endif;
+                
+                $calculo += $total_recheio;
+                $total_bolo += $calculo;
+                $total_geral_bolo = $total_bolo;
+
+                $calculo = number_format($calculo, 2, ',', '.');
+                $total_bolo = number_format($total_bolo, 2, ',', '.');
+
+
+                //    print_r($bolo);
+                $jSON["categoria"][] = ["name" => "pedido_bolo_valor", "valor_item" => "{$calculo}", "total_parcial" => "{$total_bolo}", "id_total_parcial" => "pedido_bolo_valor_total"]; //type = warning danger success        break;
+
+
+
+            endif;
+
+        endif;
 
         if (!empty($POST['tortas'])):
 
@@ -56,7 +104,8 @@ switch ($Action):
 
                 if ($Read->getResult()):
 
-                    $calculo = $Read->getResult()[0]['categoria_torta_preco_kg'] * $pedido_torta_peso;
+                    $calculo = (empty($POST['kit_festa']) ? $Read->getResult()[0]['categoria_torta_preco_kg'] * $pedido_torta_peso : $Read->getResult()[0]['categoria_torta_kit_festa'] * $pedido_torta_peso );
+                    //$calculo = $Read->getResult()[0]['categoria_torta_preco_kg'] * $pedido_torta_peso;
 
                     if (!empty($total_torta)) {
                         $total_torta = str_replace(',', '.', str_replace('.', '', $total_torta));
@@ -100,7 +149,8 @@ switch ($Action):
 
                 if ($Read->getResult()):
 
-                    $calculo = $Read->getResult()[0]['salgado_preco'] * $pedido_salgado_qtd;
+                    $calculo = (empty($POST['kit_festa']) ? $Read->getResult()[0]['salgado_preco'] * $pedido_salgado_qtd : $Read->getResult()[0]['salgado_kit_festa'] * $pedido_salgado_qtd );
+                    //$calculo = $Read->getResult()[0]['salgado_preco'] * $pedido_salgado_qtd;
 
                     if (!empty($total_salgado)) {
                         $total_salgado = str_replace(',', '.', str_replace('.', '', $total_salgado));
@@ -140,7 +190,8 @@ switch ($Action):
 
                 if ($Read->getResult()):
 
-                    $calculo = $Read->getResult()[0]['docinho_preco'] * $pedido_docinho_qtd;
+                    $calculo = (empty($POST['kit_festa']) ? $Read->getResult()[0]['docinho_preco'] * $pedido_docinho_qtd : $Read->getResult()[0]['docinho_preco_kit_festa'] * $pedido_docinho_qtd );
+                    //$calculo = $Read->getResult()[0]['docinho_preco'] * $pedido_docinho_qtd;
 
                     if (!empty($total_doce)) {
                         $total_doce = str_replace(',', '.', str_replace('.', '', $total_doce));
@@ -182,7 +233,8 @@ switch ($Action):
 
                 if ($Read->getResult()):
 
-                    $calculo = $Read->getResult()[0]['refrigerante_preco'] * $pedido_refrigerante_qtd;
+                    $calculo = (empty($POST['kit_festa']) ? $Read->getResult()[0]['refrigerante_preco'] * $pedido_refrigerante_qtd : $Read->getResult()[0]['refrigerante_preco_kit_festa'] * $pedido_refrigerante_qtd );
+                    //$calculo = $Read->getResult()[0]['refrigerante_preco'] * $pedido_refrigerante_qtd;
 
                     if (!empty($total_refrigerante)) {
                         $total_refrigerante = str_replace(',', '.', str_replace('.', '', $total_refrigerante));
@@ -202,14 +254,11 @@ switch ($Action):
 
                 endif;
 
-
-
-
             endforeach;
 
         endif;
-        
-        $total_geral = $total_geral_torta + $total_geral_salgado + $total_geral_doce + $total_geral_refrigerante;
+
+        $total_geral = $total_geral_bolo + $total_geral_torta + $total_geral_salgado + $total_geral_doce + $total_geral_refrigerante;
 
         $total_geral = number_format($total_geral, 2, ',', '.');
         $jSON['total_geral_pedido'] = $total_geral;
