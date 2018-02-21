@@ -1,9 +1,9 @@
 <?php
 
 require_once '../../_app/Config.inc.php';
-$getPost = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-$setPost = array_map('strip_tags', $getPost);
-$POST = array_map('trim', $setPost);
+$POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+//$setPost = array_map('strip_tags', $getPost);
+//$POST = array_map('trim', $getPost);
 
 $Action = $POST['callback_action'];
 $Page = $POST['callback'];
@@ -16,11 +16,11 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+
 
 switch ($Action):
 
-    //CREATE
+//CREATE
     case 'manager':
 
         if (empty($POST['id'])):
@@ -30,10 +30,10 @@ switch ($Action):
             $jSON["type"] = "criado";
         else:
             $Read->ExeRead('clientes');
-            //$Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
+//$Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
             $jSON["manager"] = true;
             $jSON["id"] = $POST['id'];
-            //var_dump($Read->getResult()[0]);
+//var_dump($Read->getResult()[0]);
             $jSON["dados"] = $Read->getResult()[0];
             $jSON["type"] = "atualizado";
 
@@ -67,7 +67,7 @@ switch ($Action):
                                 </tr>";
         else:
             $jSON["id"] = $ID;
-            $jSON["result"] =      "<td>{$cliente_nome}</td>
+            $jSON["result"] = "<td>{$cliente_nome}</td>
                                     <td>{$cliente_telefone_1}</td>
                                     <td>{$cliente_telefone_1}</td>
                                     <td>{$cliente_telefone_2}</td>
@@ -95,5 +95,29 @@ switch ($Action):
 
 
 endswitch;
+
+
+if (!empty($_GET['search'])):
+
+    $Read->ExeRead("clientes", "WHERE cliente_nome LIKE :c '%' ", "c={$_GET['search']}");
+
+    if ($Read->getResult()):
+
+        foreach ($Read->getResult() as $cliente):
+            extract($cliente);
+
+            $jSON['results'][] = ["id" => $cliente_id, "text" => $cliente_nome];
+
+        endforeach;
+
+    else:
+        $jSON['results'] = '';
+
+    endif;
+
+    $jSON["pagination"] = ["more" => true];
+
+
+endif;
 
 echo json_encode($jSON);

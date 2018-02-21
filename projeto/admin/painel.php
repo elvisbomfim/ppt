@@ -43,15 +43,16 @@ endif;
 
         <!-- Bootstrap Core CSS -->
         <link href="<?= BASE; ?>admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="<?= BASE; ?>admin/assets/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+<!--        <link href="<?= BASE; ?>admin/assets/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>-->
 
         <!-- Custom CSS -->
-
+        <link href="<?= BASE; ?>admin/css/select2.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?= BASE; ?>admin/css/style.css" rel="stylesheet">
         <link href="<?= BASE; ?>admin/css/custom.css" rel="stylesheet">
-        
+
         <!-- You can change the theme colors from here -->
         <link href="<?= BASE; ?>admin/css/colors/blue.css" id="theme" rel="stylesheet">
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -178,9 +179,7 @@ endif;
         <!-- This page plugins -->
         <!-- ============================================================== -->
         <!-- Flot Charts JavaScript -->
-        <script src="<?= BASE ?>admin/assets/plugins/flot/jquery.flot.js"></script>
-        <script src="<?= BASE ?>admin/assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-        <script src="<?= BASE ?>admin/js/flot-data.js"></script>
+
         <!-- ============================================================== -->
         <!-- Style switcher -->
         <!-- ============================================================== -->
@@ -189,8 +188,11 @@ endif;
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
         <script src="<?= BASE ?>admin/js/adicionar-input.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>admin/js/select2.min.js" type="text/javascript"></script>
+        
         <script>
 
+            //mascara
             $(document).ready(function () {
                 $('.getCep').mask('00000-000');
                 $('.cpf').mask('000.000.000-00', {reverse: true});
@@ -198,18 +200,94 @@ endif;
                 $('.money').mask('000.000.000.000.000,00', {reverse: true});
             });
 
+
             $('.fix_bug_mask').keydown(function () {
                 this.selectionStart = this.selectionEnd = this.value.length;
 
 
-            })
-  //          $(document).ready(function () {
- //               $('#dataTable').DataTable(
+            });
+
+            //buscador de clintes no select do modal
+            $('.cliente_nome_id').select2({
+
+                language: {
+                    errorLoading: function () {
+                        return 'Os resultados não puderam ser carregados.';
+                    },
+                    inputTooLong: function (args) {
+                        var overChars = args.input.length - args.maximum;
+
+                        var message = 'Apague ' + overChars + ' caracter';
+
+                        if (overChars != 1) {
+                            message += 'es';
+                        }
+
+                        return message;
+                    },
+                    inputTooShort: function (args) {
+                        var remainingChars = args.minimum - args.input.length;
+
+                        var message = 'Digite ' + remainingChars + ' ou mais caracteres';
+
+                        return message;
+                    },
+                    loadingMore: function () {
+                        return 'Carregando mais resultados…';
+                    },
+                    maximumSelected: function (args) {
+                        var message = 'Você só pode selecionar ' + args.maximum + ' ite';
+
+                        if (args.maximum == 1) {
+                            message += 'm';
+                        } else {
+                            message += 'ns';
+                        }
+
+                        return message;
+                    },
+                    noResults: function () {
+                        return 'Nenhum resultado encontrado';
+                    },
+                    searching: function () {
+                        return 'Buscando…';
+                    }
+
+                },
+
+                placeholder: 'Digite o nome do cliente',
+                dropdownParent: $('#exampleModal'),
+                ajax: {
+                    url: BASE + '_ajax/clientes.ajax.php',
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (params) {
+                        var query = {
+                            search: params.term,
+                            page: params.page || 1
+                        }
+
+                        // Query parameters will be ?search=[term]&page=[page]
+                        return query;
+                    },
+                    results: function (data, page) {
+                        return {results: data.results}
+                        ;
+                    }
+                },
+
+            });
+
+
+
+
+            //          $(document).ready(function () {
+            //               $('#dataTable').DataTable(
 //                        "language": {
 //                            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
 //                        }
-  //              );
-  //          });
+            //              );
+            //          });
         </script>
     </body>
 

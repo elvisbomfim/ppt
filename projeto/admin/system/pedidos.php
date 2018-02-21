@@ -20,7 +20,7 @@
                     $read = new Read;
 
                     $read->FullRead("SELECT * FROM pedidos p "
-                            . "INNER JOIN pedidos_bolo b ON b.pedido_id = p.pedido_id");
+                            . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id");
 
                     foreach ($read->getResult() as $value):
                         extract($value);
@@ -41,7 +41,7 @@
                             <td><?= $pedido_data_criacao; ?></td>
                             <td><?= $pedido_data_retirada; ?></td>
                             <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $categoria_bolo_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?= $categoria_bolo_id; ?>" data-name="<?= $categoria_bolo_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
+                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?php // $categoria_bolo_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id; ?>" data-name="<?php // $categoria_bolo_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
                         </tr>
                         <?php
                         //   endif;
@@ -52,11 +52,12 @@
             </table>
         </div>
     </div>
+
 </div>
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-pedidos" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -75,20 +76,22 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Nome do Cliente:</label>
-                                        <input type="text" name="cliente_nome" class="form-control" id="cliente_nome"  >
+                                        <label>Nome do Cliente:  </label>
+                                        <br>
+                                        <select id="cliente_nome_id" required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
+
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Data de criação:</label>
-                                        <input type="date" name="pedido_data_criacao" class="form-control" id="pedido_data_criacao"  >
+                                        <input type="date" name="pedido_data_criacao" class="form-control" id="pedido_data_criacao" required="" >
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Data de retirada:</label>
-                                        <input type="date" name="pedido_data_retirada" class="form-control" id="pedido_data_retirada"  >
+                                        <input type="date" name="pedido_data_retirada" class="form-control" id="pedido_data_retirada" required="" >
                                     </div>
                                 </div>
                             </div>
@@ -169,25 +172,39 @@
 
                                     $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
 
+                                    $array = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
                                     ?>
-                                   
-                                        <?php
-                                        foreach ($Read->getResult() as $value):
-                                            extract($value);
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <?php
+                                            foreach ($array[0] as $value):
+                                                extract($value);
+                                                ?>
+                                                <div class="form-check">
 
-                                       ?>
+                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]" value="<?= $recheio_id ?>">
+                                                        <?= $recheio_nome ?></label>
+                                                </div>
 
-                                            <div class="form-check form-check-inline">
 
-                                                <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]">
-                                                    <?= $recheio_nome ?></label>
-                                            </div>
+                                                <?php
+                                            endforeach;
+                                            ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <?php
+                                            foreach ($array[1] as $value):
+                                                extract($value);
+                                                ?>
 
-                                       <?php    
+                                                <div class="form-check">
 
-                                        endforeach;
-                                        ?>
-                                    
+                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]" value="<?= $recheio_id ?>">
+                                                        <?= $recheio_nome; ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
                                     <label>Recheios Especiais:</label>
                                     <div class="row">
                                         <?php
@@ -199,11 +216,11 @@
                                             <div class="form-group">
 
                                                 <select class="form-control" name="recheio_especial[0]">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome}</option>");
+                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
                                                     endforeach;
                                                     ?>
                                                 </select>
@@ -212,11 +229,11 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <select class="form-control" name="recheio_especial[1]">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome}</option>");
+                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
                                                     endforeach;
                                                     ?>
                                                 </select>
@@ -225,11 +242,11 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <select class="form-control" name="recheio_especial[2]">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome}</option>");
+                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
                                                     endforeach;
                                                     ?>
                                                 </select>
@@ -275,7 +292,7 @@
                                             <div class="form-group">
                                                 <label>Categoria:</label>
                                                 <select class="form-control" name="tortas[0][categoria_torta_id]">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -316,7 +333,7 @@
                                             <div class="form-group">
                                                 <label>Salgado:</label>
                                                 <select name="salgados[0][salgado_id]" class="form-control">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -357,7 +374,7 @@
                                             <div class="form-group">
                                                 <label>Doces:</label>
                                                 <select name="doces[0][docinho_id]" class="form-control">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -398,7 +415,7 @@
                                             <div class="form-group">
                                                 <label>Refrigerante:</label>
                                                 <select name="refrigerantes[0][refrigerante_id]" class="form-control">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -461,7 +478,7 @@
                                 <input type="text" name="pedido_total" class="form-control" id="pedido_total"  readonly="readonly">
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa">
+                                <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" value="1">
                                     Kit festa</label>
                             </div>
                         </div>

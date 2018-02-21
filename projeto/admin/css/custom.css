@@ -6,3 +6,15 @@
 .listas .btn{
     margin: 0 auto;
 }
+
+
+.select2-close-mask{
+    z-index: 10000 !important;
+}
+.select2-dropdown{
+    z-index: 10001 !important;
+}
+
+.select2-container {
+    z-index: 99999 !important;
+}

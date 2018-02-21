@@ -59,18 +59,18 @@ switch ($Action):
                     $total_recheio = 0;
                     foreach ($POST['recheio_especial'] as $recheio):
 
-                        if ($recheio != 'Selecione a categoria'):
+                        if (!empty($recheio)):
                             //echo ($recheio);
                             $Read->ExeRead("recheios", "WHERE recheio_id =:id", "id={$recheio}");
 
                             $total_recheio += $Read->getResult()[0]['recheio_preco_kg'];
                         endif;
-                        
+
                     endforeach;
 
                 endif;
-                
-                $calculo += $total_recheio;
+
+                $total_bolo += $total_recheio;
                 $total_bolo += $calculo;
                 $total_geral_bolo = $total_bolo;
 
@@ -292,12 +292,181 @@ switch ($Action):
 
     case 'create':
 
+        if (empty($POST['cliente_id'])):
+            $jSON['erro'] = "Preencha o nome do cliente!";
+            break;
+        endif;
 
-        //            $Create->ExeCreate('pedidos', ['pedido_status' => 0]);
-//            $jSON["manager"] = true;
-//            $jSON["id"] = $Create->getResult();
-//            $jSON["type"] = "criado";
-        echo "Criado com sucesso";
+        $pedidos['cliente_id'] = $POST['cliente_id'];
+        $pedidos['pedido_data_criacao'] = $POST['pedido_data_criacao'];
+        $pedidos['pedido_data_retirada'] = $POST['pedido_data_retirada'];
+        $POST['pedido_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_total']));
+        $pedidos['pedido_total'] = $POST['pedido_total'];
+        $pedidos['pedido_status'] = 0;
+
+        if (!empty($POST['kit_festa'])):
+            $pedidos['pedido_is_kit_festa'] = 1;
+        else:
+            $pedidos['pedido_is_kit_festa'] = 0;
+        endif;
+
+        $Create->ExeCreate('pedidos', $pedidos);
+        $ultimo_pedido_id = $Create->getResult();
+
+
+        if (!empty($POST['categoria_bolo_id'])):
+
+
+            $pedido_bolo['pedido_id'] = $ultimo_pedido_id;
+            $pedido_bolo['categoria_id'] = $POST['categoria_bolo_id'];
+            $pedido_bolo['pedido_bolo_peso'] = $POST['pedido_bolo_peso'];
+
+            $POST['pedido_bolo_valor'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_bolo_valor']));
+
+            $pedido_bolo['pedido_bolo_valor'] = $POST['pedido_bolo_valor'];
+            $pedido_bolo['pedido_bolo_massa'] = $POST['pedido_bolo_massa'];
+            if (!empty($POST['recheio_especial'])):
+                $array_recheio_especial = '';
+                foreach ($POST['recheio_especial'] as $recheio):
+                    if (!empty($recheio)):
+                        $array_recheio_especial[] = ["recheio_id"=> $recheio] ;
+                    endif;
+                endforeach;
+
+            endif;
+//
+            if (!empty($POST['recheio_comum'])):
+                $array_recheio_comum = "";
+                foreach ($POST['recheio_comum'] as $recheio):
+                    if(!empty($recheio)):
+                        $array_recheio_comum[] = ["recheio_id" => $recheio];
+                    endif;
+                endforeach;
+            endif;
+            
+            if(!empty($array_recheio_especial)):
+                $pedido_bolo['pedido_array_recheio_especial'] = json_encode($array_recheio_especial);
+            endif;
+            if(!empty($array_recheio_comum)):
+                $pedido_bolo['pedido_array_recheio_comum'] = json_encode($array_recheio_comum);
+            endif;
+
+            $pedido_bolo['pedido_bolo_papel_arroz'] = $POST['pedido_bolo_papel_arroz'];
+            $pedido_bolo['pedido_bolo_cores'] = $POST['pedido_bolo_cores'];
+            $pedido_bolo['pedido_bolo_escrita'] = $POST['pedido_bolo_escrita'];
+            $pedido_bolo['pedido_bolo_observacoes'] = $POST['pedido_bolo_observacoes'];
+            $pedido_bolo['pedido_bolo_status'] = 0;
+
+            $Create = clone $Create;
+            $Create->ExeCreate('pedidos_bolo', $pedido_bolo);
+
+        endif;
+
+        if (!empty($POST['tortas'])):
+            $pedido_torta['pedido_id'] = $ultimo_pedido_id;
+            $array_torta = "";
+            foreach ($POST['tortas'] as $key => $torta):
+                extract($torta);
+                if (!empty($categoria_torta_id)):
+                    $array_torta[] = ["pedido_torta_peso" => $pedido_torta_peso, "pedido_torta_valor" => $pedido_torta_valor, "categoria_torta_id" => $categoria_torta_id];
+
+                endif;
+            endforeach;
+            if (!empty($array_torta)):
+                $pedido_torta['pedido_array_torta'] = json_encode($array_torta);
+                $_POST['pedido_torta_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_torta_valor_total']));
+                $pedido_torta['pedido_torta_valor_total'] = $_POST['pedido_torta_valor_total'];
+
+                $pedido_torta['pedido_torta_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_torta', $pedido_torta);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['salgados'])):
+            $pedido_salgado['pedido_id'] = $ultimo_pedido_id;
+            $array_salgado = "";
+            foreach ($POST['salgados'] as $key => $salgado):
+                extract($salgado);
+                if (!empty($salgado_id)):
+                    $array_salgado[] = ["pedido_salgado_qtd" => $pedido_salgado_qtd, "pedido_salgado_valor" => $pedido_salgado_valor, "salgado_id" => $salgado_id];
+
+                endif;
+            endforeach;
+
+            if (!empty($array_salgado)):
+                $pedido_salgado['pedido_array_salgado'] = json_encode($array_salgado);
+                $_POST['pedido_salgado_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_salgado_valor_total']));
+                $pedido_salgado['pedido_salgado_valor_total'] = $_POST['pedido_salgado_valor_total'];
+
+                $pedido_salgado['pedido_salgado_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_salgado', $pedido_salgado);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['doces'])):
+            $pedido_doce['pedido_id'] = $ultimo_pedido_id;
+            $array_doce = "";
+            foreach ($POST['doces'] as $key => $doce):
+                extract($doce);
+                if (!empty($docinho_id)):
+                    $array_doce[] = ["pedido_docinho_qtd" => $pedido_docinho_qtd, "pedido_docinho_valor" => $pedido_docinho_valor_unidade, "docinho_id" => $docinho_id];
+
+                endif;
+            endforeach;
+            if (!empty($array_doce)):
+                $pedido_doce['pedido_array_docinho'] = json_encode($array_doce);
+                $_POST['pedido_docinho_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_docinho_valor_total']));
+                $pedido_doce['pedido_docinho_valor_total'] = $_POST['pedido_docinho_valor_total'];
+
+                $pedido_doce['pedido_docinho_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_docinho', $pedido_doce);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['refrigerantes'])):
+
+            $pedido_refrigerante['pedido_id'] = $ultimo_pedido_id;
+            $array_refrigerante = "";
+            foreach ($POST['refrigerantes'] as $key => $refrigerante):
+                extract($refrigerante);
+                if (!empty($refrigerante_id)):
+                    $array_refrigerante[] = ["pedido_refrigerante_qtd" => $pedido_refrigerante_qtd, "pedido_refrigerante_valor" => $pedido_refrigerante_valor_unidade, "refrigerante_id" => $refrigerante_id];
+                endif;
+
+            endforeach;
+            if (!empty($array_refrigerante)):
+                $pedido_refrigerante['pedido_array_refrigerante'] = json_encode($array_refrigerante);
+                $_POST['pedido_refrigerante_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_refrigerante_valor_total']));
+                $pedido_refrigerante['pedido_refrigerante_valor_total'] = $_POST['pedido_refrigerante_valor_total'];
+
+                $pedido_refrigerante['pedido_refrigerante_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_refrigerante', $pedido_refrigerante);
+            endif;
+
+
+
+        endif;
+
+        $jSON["manager"] = true;
+        $jSON["id"] = $Create->getResult();
+        $jSON["type"] = "criado";
         break;
 
     case 'update':
