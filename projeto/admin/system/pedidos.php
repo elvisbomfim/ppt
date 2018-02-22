@@ -41,7 +41,7 @@
                             <td><?= $pedido_data_criacao; ?></td>
                             <td><?= $pedido_data_retirada; ?></td>
                             <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?php // $categoria_bolo_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id; ?>" data-name="<?php // $categoria_bolo_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
+                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id; ?>" data-name="<?php // $categoria_bolo_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
                         </tr>
                         <?php
                         //   endif;
@@ -70,7 +70,7 @@
 
                 <form class="auto_save" id="pedidos-form" action="" method="post">
                     <input type="hidden" name="callback" value="pedidos">
-                    <input type="hidden" id="callback_action" name="callback_action" value="manager">
+                    <input type="hidden" id="callback_action" name="callback_action" value="calcular">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -129,7 +129,7 @@
                                                 $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
                                                 ?>
                                                 <select class="form-control" name="categoria_bolo_id">
-                                                    <option selected="" disabled="">Selecione a categoria</option>
+                                                    <option selected="" disabled="" value="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
@@ -283,7 +283,7 @@
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="nova_lista"></div>
-                                    <div class="row listas" style="display: none">
+                                    <div class="row listas">
 
                                         <?php
                                         $Read->ExeRead('categoria_tortas', " WHERE categoria_torta_status = 1");
@@ -324,7 +324,7 @@
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="nova_lista"></div>
-                                    <div class="row listas" style="display: none">
+                                    <div class="row listas">
 
                                         <?php
                                         $Read->ExeRead('salgados');
@@ -351,7 +351,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Valor unidade:</label>
+                                                <label>Valor:</label>
                                                 <input type="text" name="salgados[0][pedido_salgado_valor]" class="form-control" readonly="readonly" >
                                             </div>
                                         </div>
@@ -364,7 +364,7 @@
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="nova_lista"></div>
-                                    <div class="row listas" style="display: none">
+                                    <div class="row listas">
 
                                         <?php
                                         $Read->ExeRead('docinhos', " WHERE docinho_status = 1");
@@ -406,7 +406,7 @@
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="nova_lista"></div>
-                                    <div class="row listas" style="display: none">
+                                    <div class="row listas">
 
                                         <?php
                                         $Read->ExeRead('refrigerantes', " WHERE refrigerante_status = 1");
@@ -433,7 +433,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Valor unidade:</label>
+                                                <label>Valor:</label>
                                                 <input type="text" name="refrigerantes[0][pedido_refrigerante_valor_unidade]" class="form-control" readonly="readonly">
                                             </div>
                                         </div>
@@ -486,7 +486,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-fechar-modal" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                <button type="reset" class="btn btn-secondary btn-fechar-modal" data-dismiss="modal" form="pedidos-form"><i class="fa fa-close"></i> Fechar</button>
                 <button type="submit" class="btn btn-primary btn-action-name cadastrar-pedido" form="pedidos-form">Cadastrar</button>
             </div>
         </div>

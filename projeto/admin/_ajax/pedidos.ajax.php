@@ -18,19 +18,33 @@ $jSON = null;
 
 switch ($Action):
 
-    //CREATE
-//    case 'manager':
-//
-//
-//
-//        $Read->ExeRead('pedidos', "WHERE pedido_id =:id", "id={$POST['doces']['pedido_id'][]}");
-//
-//        print_r($POST['doces']['pedido_id'][]);
-//
-//
-//        $jSON['tot_pedido'] = $Read->getResult()[0]['pedido_preco'];
-
     case 'manager':
+        $Read->FullRead("SELECT * FROM pedidos p "
+                . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_docinho pd ON pd.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
+                . "WHERE p.pedido_id =:id ", "id={$POST['id']}");
+
+
+        extract($Read->getResult()[0]);
+
+
+        $jSON["manager"] = true;
+        $jSON["id"] = $POST['id'];
+        $DADOS = [];
+
+        $DADOS['cliente_nome_id'] = "<option value=\"$cliente_id\" data-select2-id=\"\">{$cliente_nome}</option>";
+//        $DADOS['cobertura_nome'] = $cobertura_nome;
+//        $DADOS['cobertura_preco_kg'] = $cobertura_preco_kg;
+//        $DADOS['cobertura_status'] = $cobertura_status;
+        $jSON["dados"] = $DADOS;
+        $jSON["type"] = "atualizado";
+        break;
+
+    case 'calcular':
 
 
         $total_geral = 0.00;
@@ -39,6 +53,7 @@ switch ($Action):
         $total_geral_salgado = 0;
         $total_geral_doce = 0;
         $total_geral_refrigerante = 0;
+
 
 
         // Bolo
@@ -264,27 +279,6 @@ switch ($Action):
         $jSON['total_geral_pedido'] = $total_geral;
 
 
-//
-//            $Read->ExeRead('pedidos', "WHERE pedido_id =:id", "id={$POST['id']}");
-//            $jSON["manager"] = true;
-//            $jSON["id"] = $POST['id'];
-//            $DADOS = [];
-//
-//            extract($Read->getResult()[0]);
-//
-//            $pedido_total = number_format($pedido_total, 2, ',', '.');
-//
-//            $DADOS['pedido_id'] = $pedido_id;
-//            $DADOS['cliente_id'] = $cliente_id;
-//            $DADOS['pedido_data_criacao'] = $pedido_data_criacao;
-//            $DADOS['pedido_data_retirada'] = $pedido_data_retirada;
-//            $DADOS['pedido_total'] = $pedido_total;
-//            $DADOS['pedido_status'] = $pedido_status;
-//
-//
-//
-//            $jSON["dados"] = $DADOS;
-//            $jSON["type"] = "atualizado";
 
 
 
@@ -292,8 +286,19 @@ switch ($Action):
 
     case 'create':
 
+        if (empty($POST['id'])):
+
+        else:
+
+        endif;
         if (empty($POST['cliente_id'])):
             $jSON['erro'] = "Preencha o nome do cliente!";
+            break;
+        endif;
+
+        if (empty($POST['pedido_total'])):
+            $jSON['pedido_form_reset'] = true;
+            $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "O formulário do pedido está em branco, preencha pelo menos uma categoria!", "URL" => "", "Target" => "_blank", "type" => "warning"]; //type = warning danger success
             break;
         endif;
 
@@ -329,7 +334,7 @@ switch ($Action):
                 $array_recheio_especial = '';
                 foreach ($POST['recheio_especial'] as $recheio):
                     if (!empty($recheio)):
-                        $array_recheio_especial[] = ["recheio_id"=> $recheio] ;
+                        $array_recheio_especial[] = ["recheio_id" => $recheio];
                     endif;
                 endforeach;
 
@@ -338,16 +343,16 @@ switch ($Action):
             if (!empty($POST['recheio_comum'])):
                 $array_recheio_comum = "";
                 foreach ($POST['recheio_comum'] as $recheio):
-                    if(!empty($recheio)):
+                    if (!empty($recheio)):
                         $array_recheio_comum[] = ["recheio_id" => $recheio];
                     endif;
                 endforeach;
             endif;
-            
-            if(!empty($array_recheio_especial)):
+
+            if (!empty($array_recheio_especial)):
                 $pedido_bolo['pedido_array_recheio_especial'] = json_encode($array_recheio_especial);
             endif;
-            if(!empty($array_recheio_comum)):
+            if (!empty($array_recheio_comum)):
                 $pedido_bolo['pedido_array_recheio_comum'] = json_encode($array_recheio_comum);
             endif;
 
@@ -464,9 +469,11 @@ switch ($Action):
 
         endif;
 
-        $jSON["manager"] = true;
-        $jSON["id"] = $Create->getResult();
-        $jSON["type"] = "criado";
+//        $jSON["manager"] = true;
+//        $jSON["id"] = $Create->getResult();
+//        $jSON["type"] = "criado";
+        $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Pedido criado com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
+
         break;
 
     case 'update':

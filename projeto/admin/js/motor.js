@@ -44,7 +44,7 @@ $(function () {
 //                    //$("#" + index).val(value);
 //                    console.log(index + '=' + value);
 //                });
-                if (json.total_geral_pedido){
+                if (json.total_geral_pedido) {
                     $.each(json.categoria, function (index, value) {
 
                         $("input[name='" + value.name + "']").val(value.valor_item);
@@ -129,15 +129,20 @@ $(function () {
 
                 //EXIBE CALLBACKS
                 if (json.alerta) {
-                    if ($(".get_id").hasClass("manager")) {
-                        $('#exampleModal').modal('hide');
-                        $('#dataTable tbody').prepend(json.result);
-                    } else {
 
-                        $('#exampleModal').modal('hide');
+                    if (json.alerta.type === 'success') {
 
-                        $('#' + json.id).html(json.result);
+                        if ($(".get_id").hasClass("manager")) {
+                            $('#exampleModal').modal('hide');
+                            $('#dataTable tbody').prepend(json.result);
+                        } else {
+
+                            $('#exampleModal').modal('hide');
+
+                            $('#' + json.id).html(json.result);
+                        }
                     }
+
 
                     $.notify({
                         icon: json.alerta.icon,
@@ -149,6 +154,11 @@ $(function () {
 
 
                 }
+
+                if (json.pedido_form_reset) {
+                    $('#callback_action').val('calcular');
+                }
+
 
                 //REDIRECIONA
                 if (json.redirect) {
@@ -297,7 +307,7 @@ $(function () {
             if (json.manager) {
                 $('#exampleModal').modal('show');
 
-                $("#formulario")[0].reset();
+              //  $("#formulario")[0].reset();
                 if (json.type == 'atualizado') {
                     $(".get_id").removeClass("manager");
                     $(".btn-action-name").html("<i class='fa fa-edit'></i> Atualizar");
@@ -315,8 +325,16 @@ $(function () {
                 if (json.dados) {
 
                     $.each(json.dados, function (index, value) {
-                        $("#" + index).val(value);
-                        console.log(index + '=' + value);
+
+                        if ($("#" + index).prop("tagName") === 'INPUT') {
+                            $("#" + index).val(value);
+                        }else if ($("#" + index).prop("tagName") === 'SELECT'){
+                            $("#" + index).html("");
+                            $("#" + index).html(value);
+                        }
+
+console.log($("#" + index).prop("tagName"));
+                        //console.log(index + '=' + value);
                     });
 
                 }

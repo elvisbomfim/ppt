@@ -1,16 +1,38 @@
 $(function () {
 
+
+    $('.modal').on('show.bs.modal', function () {
+        $(this).find('form')[0].reset();
+
+        $('.cliente_nome_id').html("");
+
+
+    });
+
+
+    $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset();
+
+        // $(".tab-pane").each(function () {
+        $(this).find(".nova_lista").html("");
+        // $(this).find('.listas').hide();
+        // });
+        $('.cliente_nome_id').html("");
+
+        $('#callback_action').val('calcular');
+
+    });
+
+
     $('.cadastrar-pedido').on('click', function () {
         $('#callback_action').val('create');
     });
 
     $('.btn-add-novo-pedido').on('click', function () {
-        $('#callback_action').val('manager');
+        $('#callback_action').val('calcular');
     });
 
-    $('.btn-fechar-modal').on('click', function () {
-        window.location.reload();
-    });
+
 
     var refri = "add_refrigerante";
     var doce = "add_docinho";
@@ -72,28 +94,28 @@ $(function () {
             //alert("Add: "+x);
             var tab = $(this).closest(".tab-pane").attr("id");
 
-            if (x == 0) {
-                $("#" + tab).find('.listas:first').show();
-                x++;
-            } else {
-                if (x < campos_max) {
+            // if (x >= 0) {
+            // $("#" + tab).find('.listas:first').show();
+//                x++;
+//            } else {
+            if (x < campos_max) {
 
-                    var clone = $("#" + tab).find('.listas:first').clone();
+                var clone = $("#" + tab).find('.listas:first').clone();
 
-                    $("#" + tab).find('.nova_lista').prepend(clone);
+                $("#" + tab).find('.nova_lista').prepend(clone);
 
-                    var inputs_novos = $("#" + tab).find('.nova_lista .listas:first :input');
+                var inputs_novos = $("#" + tab).find('.nova_lista .listas:first :input');
 
-                    $.each(inputs_novos, function (index, value) {
-                        // $("#" + index).val(value);
-                        // alert($(this).attr('name'));
+                $.each(inputs_novos, function (index, value) {
+                    // $("#" + index).val(value);
+                    // alert($(this).attr('name'));
 
 
 
-                        if (typeof ($(this).attr('name')) !== 'undefined') {
+                    if (typeof ($(this).attr('name')) !== 'undefined') {
 
-                            var numsStr = $(this).attr('name').replace(/[^0-9]/g, '');
-                            var numero = parseInt(numsStr);
+                        var numsStr = $(this).attr('name').replace(/[^0-9]/g, '');
+                        var numero = parseInt(numsStr);
 
 
 //                            console.log("o x é " + x + " O numero é " + numero);
@@ -102,36 +124,36 @@ $(function () {
 //                                x = numero + 1;
 //                                console.log("removi o numero " + numero);
 //                            }
-                            
-                            
-
-                            var name = $(this).attr('name').split('[' + numero + ']');
-
-                            //  console.log(name[0] + "[" + x + "]" + name[1]);
-
-                            $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
 
 
-                            if (typeof ($(this).attr('type')) === 'undefined') {
-                                $(this).prop('selectedIndex', 0);
-                                // console.log("to no undefined");
-                            } else if ($(this).attr('type') === 'number') {
-                                // console.log("to no number");
-                                $(this).val(1);
-                            } else {
-                                // console.log("to no text");
-                                $(this).val("");
-                            }
 
+                        var name = $(this).attr('name').split('[' + numero + ']');
+
+                        //  console.log(name[0] + "[" + x + "]" + name[1]);
+
+                        $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
+
+
+                        if (typeof ($(this).attr('type')) === 'undefined') {
+                            $(this).prop('selectedIndex', 0);
+                            // console.log("to no undefined");
+                        } else if ($(this).attr('type') === 'number') {
+                            // console.log("to no number");
+                            $(this).val(1);
+                        } else {
+                            // console.log("to no text");
+                            $(this).val("");
                         }
-                        //console.log(index + '=' + value);
-                    });
 
-                    x++;
-                    vetor++;
+                    }
+                    //console.log(index + '=' + value);
+                });
 
-                }
+                x++;
+                vetor++;
+
             }
+            //}
 
 
 
@@ -141,17 +163,17 @@ $(function () {
             e.preventDefault();
             //alert("Deleta: "+x);
             if (x > 1) {
-            $(this).parent('.listas').remove();
-                    } else {
-                    $(this).parent('.listas').hide();
-                    }
-                    x--;
-
-
-
-                });
+                $(this).parent('.listas').remove();
+//            } else {
+//                $(this).parent('.listas').hide();
             }
+            x--;
 
 
 
         });
+    }
+
+
+
+});
