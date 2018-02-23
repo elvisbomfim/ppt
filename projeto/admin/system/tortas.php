@@ -87,7 +87,7 @@
                     <input type="hidden" name="callback_action" value="update">
                     <div class="get_id"></div>
                     <div class="form-group">
-                        <label>Nome da categoria_torta:</label>
+                        <label>Nome da torta:</label>
                         <input type="text" name="categoria_torta_nome" class="form-control" id="categoria_torta_nome"  >
                     </div>
                     <div class="form-group">

@@ -21,7 +21,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="bgc-white bd bdrs-3 p-20 mB-20">
-                    <h4 class="c-grey-900 mB-20">Clientes <button class="btn btn-primary j_action"  data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
                     <table id="dataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
