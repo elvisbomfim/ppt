@@ -307,7 +307,7 @@ $(function () {
             if (json.manager) {
                 $('#exampleModal').modal('show');
 
-              //  $("#formulario")[0].reset();
+                //  $("#formulario")[0].reset();
                 if (json.type == 'atualizado') {
                     $(".get_id").removeClass("manager");
                     $(".btn-action-name").html("<i class='fa fa-edit'></i> Atualizar");
@@ -328,12 +328,14 @@ $(function () {
 
                         if ($("#" + index).prop("tagName") === 'INPUT') {
                             $("#" + index).val(value);
-                        }else if ($("#" + index).prop("tagName") === 'SELECT'){
+                        } else if ($("#" + index).prop("tagName") === 'SELECT') {
                             $("#" + index).html("");
                             $("#" + index).html(value);
+                        } else if ($("#" + index).prop("tagName") === 'TEXTAREA') {
+                            $("#" + index).val(value);
                         }
 
-console.log($("#" + index).prop("tagName"));
+                        console.log($("#" + index).prop("tagName"));
                         //console.log(index + '=' + value);
                     });
 

@@ -1,3 +1,20 @@
+<div class="row page-titles">
+
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Pedidos</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Painel</a></li>
+            <li class="breadcrumb-item active">Gerenciamento de Pedidos</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+    <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="pedidos" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
+            
+        
+    </div>
+
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="bgc-white bd bdrs-3 p-20 mB-20">
@@ -128,12 +145,12 @@
 
                                                 $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
                                                 ?>
-                                                <select class="form-control" name="categoria_bolo_id">
+                                                <select class="form-control" name="categoria_bolo_id" id='categoria_bolo_id'>
                                                     <option selected="" disabled="" value="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
                                                         extract($value);
-                                                        echo("<option value='{$categoria_bolo_id}'>{$categoria_bolo_nome}</option>");
+                                                        echo("<option value='{$categoria_bolo_id}' id='categoria_bolo_id'>{$categoria_bolo_nome}</option>");
                                                     endforeach;
                                                     ?>                                         
                                                 </select>
@@ -142,13 +159,13 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Peso:</label>
-                                                <input type="number" min="1" value="1" name="pedido_bolo_peso" class="form-control" >
+                                                <input type="number" min="1" value="1" name="pedido_bolo_peso" id="pedido_bolo_peso" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor:</label>
-                                                <input type="text" name="pedido_bolo_valor" class="form-control" readonly="readonly" >
+                                                <input type="text" name="pedido_bolo_valor" id="pedido_bolo_valor" class="form-control" readonly="readonly" >
                                             </div>
                                         </div>
 
@@ -157,12 +174,12 @@
                                         <label>Massa:</label>
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
-                                                <input type="radio" name="pedido_bolo_massa"  id="categoria_bolo_status_1" value="0" checked> Branca
+                                                <input type="radio" name="pedido_bolo_massa"  id="pedido_bolo_massa" value="0" checked> Branca
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
-                                                <input type="radio" name="pedido_bolo_massa" id="categoria_bolo_status_0" value="1"> Chocolate
+                                                <input type="radio" name="pedido_bolo_massa" id="pedido_bolo_massa" value="1"> Chocolate
                                             </label>
                                         </div>                                       
                                     </div>
@@ -175,7 +192,7 @@
                                     $array = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
                                     ?>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" id="recheio_comum_1">
                                             <?php
                                             foreach ($array[0] as $value):
                                                 extract($value);
@@ -191,7 +208,7 @@
                                             endforeach;
                                             ?>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" id="recheio_comum_2">
                                             <?php
                                             foreach ($array[1] as $value):
                                                 extract($value);
@@ -215,7 +232,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
 
-                                                <select class="form-control" name="recheio_especial[0]">
+                                                <select class="form-control" name="recheio_especial[0]" id="recheio_especial_0">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -228,7 +245,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <select class="form-control" name="recheio_especial[1]">
+                                                <select class="form-control" name="recheio_especial[1]" id="recheio_especial_1">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -241,7 +258,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <select class="form-control" name="recheio_especial[2]">
+                                                <select class="form-control" name="recheio_especial[2]" id="recheio_especial_2">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -274,7 +291,7 @@
 
                                     <div class="form-group">
                                         <label>Observações:</label>
-                                        <textarea class="form-control" name="pedido_bolo_observacoes"></textarea>
+                                        <textarea class="form-control" name="pedido_bolo_observacoes" id="pedido_bolo_observacoes"></textarea>
                                     </div>
 
                                 </div>
@@ -311,7 +328,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Valor:</label>
-                                                <input type="text" name="tortas[0][pedido_torta_valor]" class="form-control" readonly="readonly">
+                                                <input type="text" name="tortas[0][pedido_torta_valor]"  class="form-control" readonly="readonly">
                                             </div>
                                         </div>
                                         <button class='btn btn-sm btn-danger remover_campo excluir-torta'><i class='fa fa-close'></i> Remover</button>

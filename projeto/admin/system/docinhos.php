@@ -1,3 +1,20 @@
+<div class="row page-titles">
+
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Doces</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Painel</a></li>
+            <li class="breadcrumb-item active">Gerenciamento de Doces</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+    <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="docinhos" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
+            
+        
+    </div>
+
+</div>
+
 <main class="main-content bgc-grey-100">
     <div id="mainContent">
 

@@ -37,9 +37,48 @@ switch ($Action):
         $DADOS = [];
 
         $DADOS['cliente_nome_id'] = "<option value=\"$cliente_id\" data-select2-id=\"\">{$cliente_nome}</option>";
-//        $DADOS['cobertura_nome'] = $cobertura_nome;
-//        $DADOS['cobertura_preco_kg'] = $cobertura_preco_kg;
-//        $DADOS['cobertura_status'] = $cobertura_status;
+        $DADOS['pedido_data_criacao'] = date_format(new DateTime($pedido_data_criacao), "d/M/Y");
+        $DADOS['pedido_data_retirada'] = date_format(new DateTime($pedido_data_retirada), "d/M/Y");
+
+        $Read->ExeRead('categoria_bolos');
+        $concatena_select_bolo = "";
+        $concatena_select_bolo .= "<option disabled='' value=''>Selecione a categoria</option>";
+
+        foreach ($Read->getResult() as $value):
+            extract($value);
+            $concatena_select_bolo .= "<option value='{$categoria_bolo_id}' " . ($categoria_bolo_id == $categoria_id ? 'selected=""' : '' ) . ">{$categoria_bolo_nome}</option>";
+        endforeach;
+        $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 1");
+
+
+        if (!empty($pedido_array_recheio_especial)):
+            $array = json_decode($pedido_array_recheio_especial, true);
+            
+            $i = 0;
+            foreach ($array as $value) {
+                
+                $concatena_recheio_especial = "<option value = '' disabled = ''>Selecione a categoria</option>";
+                foreach ($Read->getResult() as $tab_recheio) {
+                    extract($tab_recheio);
+                    $concatena_recheio_especial .= "<option value='{$recheio_id}' " . ($recheio_id == $value['recheio_id'] ? 'selected=""' : '' ) . ">{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>";
+                    
+                }
+                $DADOS['recheio_especial_' . $i] = $concatena_recheio_especial;
+                $i++;
+            }
+        endif;
+
+
+
+        $DADOS['categoria_bolo_id'] = $concatena_select_bolo;
+        $DADOS['pedido_bolo_peso'] = $pedido_bolo_peso;
+        $DADOS['pedido_bolo_valor'] = $pedido_bolo_valor;
+        //$DADOS['pedido_bolo_massa'] = $pedido_bolo_massa;
+        $DADOS['pedido_bolo_papel_arroz'] = $pedido_bolo_papel_arroz;
+        $DADOS['pedido_bolo_cores'] = $pedido_bolo_cores;
+        $DADOS['pedido_bolo_escrita'] = $pedido_bolo_escrita;
+        $DADOS['pedido_bolo_observacoes'] = $pedido_bolo_observacoes;
+        $DADOS['pedido_bolo_valor_total'] = $pedido_bolo_valor_total;
         $jSON["dados"] = $DADOS;
         $jSON["type"] = "atualizado";
         break;
@@ -361,6 +400,10 @@ switch ($Action):
             $pedido_bolo['pedido_bolo_escrita'] = $POST['pedido_bolo_escrita'];
             $pedido_bolo['pedido_bolo_observacoes'] = $POST['pedido_bolo_observacoes'];
             $pedido_bolo['pedido_bolo_status'] = 0;
+            
+            $POST['pedido_bolo_valor_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_bolo_valor_total']));
+            
+            $pedido_bolo['pedido_bolo_valor_total'] = $POST['pedido_bolo_valor_total'];
 
             $Create = clone $Create;
             $Create->ExeCreate('pedidos_bolo', $pedido_bolo);

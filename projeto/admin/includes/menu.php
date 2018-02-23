@@ -1,42 +1,43 @@
-       <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
-                        <li>
-                            <a href="index.html" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="pages-profile.html" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>Profile</a>
-                        </li>
-                        <li>
-                            <a href="table-basic.html" class="waves-effect"><i class="fa fa-table m-r-10" aria-hidden="true"></i>Basic Table</a>
-                        </li>
-                        <li>
-                            <a href="icon-fontawesome.html" class="waves-effect"><i class="fa fa-font m-r-10" aria-hidden="true"></i>Icons</a>
-                        </li>
-                        <li>
-                            <a href="map-google.html" class="waves-effect"><i class="fa fa-globe m-r-10" aria-hidden="true"></i>Google Map</a>
-                        </li>
-                        <li>
-                            <a href="pages-blank.html" class="waves-effect"><i class="fa fa-columns m-r-10" aria-hidden="true"></i>Blank Page</a>
-                        </li>
-                        <li>
-                            <a href="pages-error-404.html" class="waves-effect"><i class="fa fa-info-circle m-r-10" aria-hidden="true"></i>Error 404</a>
-                        </li>
-                    </ul>
-                    <div class="text-center m-t-30">
-                        <a href="https://wrappixel.com/templates/monsteradmin/" class="btn btn-danger"> Upgrade to Pro</a>
-                    </div>
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li>
+                    <a href="index.html" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Painel</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=pedidos" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Pedidos</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=clientes" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Clientes</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=bolos" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Bolos</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=tortas" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Tortas</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=salgados" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Salgados</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=docinhos" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Doces</a>
+                </li>
+                <li>
+                    <a href="<?= BASE ?>admin/painel.php?exe=refrigerantes" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Refrigerantes</a>
+                </li>
+            </ul>
+
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
