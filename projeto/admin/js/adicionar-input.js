@@ -29,7 +29,13 @@ $(function () {
     });
 
     $('.btn-add-novo-pedido').on('click', function () {
+
         $('#callback_action').val('calcular');
+
+        if (!localStorage.getItem('bolo')) {
+            AddInputs(bolo, e_bolo);
+            localStorage.setItem('bolo', "existe");
+        }
     });
 
 
@@ -38,10 +44,12 @@ $(function () {
     var doce = "add_docinho";
     var salgado = "add_salgado";
     var torta = "add_torta";
+    var bolo = "add_bolo";
     var e_refri = "excluir-refrigerante";
     var e_doce = "excluir-docinho";
     var e_salgado = "excluir-salgado";
     var e_torta = "excluir-torta";
+    var e_bolo = "excluir-bolo";
     localStorage.clear();
 
     //var add = $('.add').attr("id");
@@ -81,6 +89,15 @@ $(function () {
 
     });
 
+    $('#bolo-tab ').on('show.bs.tab', function (e) {
+
+        if (!localStorage.getItem('bolo')) {
+            AddInputs(bolo, e_bolo);
+            localStorage.setItem('bolo', "existe");
+        }
+
+    });
+
     function AddInputs(add, excluir) {
 
         var campos_max = 30;   //max de 10 campos
@@ -103,6 +120,15 @@ $(function () {
                 var clone = $("#" + tab).find('.listas:first').clone();
 
                 $("#" + tab).find('.nova_lista').prepend(clone);
+
+                if (add === 'add_bolo') {
+
+                    $("#" + tab).find('.nova_lista .listas:first .card-header').attr('id', 'heading-' + vetor);
+                    $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor);
+                    $("#" + tab).find('.nova_lista .listas:first .collapse').attr('aria-labelledby', 'heading-' + vetor).attr('id', 'collapse-' + vetor);
+                    $("#" + tab).find('.nova_lista .listas:first .collapse').attr('class', 'collapse');
+
+                }
 
                 var inputs_novos = $("#" + tab).find('.nova_lista .listas:first :input');
 
@@ -162,12 +188,13 @@ $(function () {
         $('body').on("click", "." + excluir, function (e) {
             e.preventDefault();
             //alert("Deleta: "+x);
-            if (x > 1) {
+            if (x > 0) {
                 $(this).parent('.listas').remove();
 //            } else {
 //                $(this).parent('.listas').hide();
+                x--;
             }
-            x--;
+
 
 
 

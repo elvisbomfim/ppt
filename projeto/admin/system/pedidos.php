@@ -8,9 +8,8 @@
         </ol>
     </div>
     <div class="col-md-6 col-4 align-self-center">
-    <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="pedidos" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
-            
-        
+        <button class="btn btn-success btn-add-novo-pedido pull-right" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i> Cadastrar novo</button>
+
     </div>
 
 </div>
@@ -57,7 +56,7 @@
                             <td><?= $pedido_data_criacao; ?></td>
                             <td><?= $pedido_data_retirada; ?></td>
                             <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id; ?>" data-name="<?php // $categoria_bolo_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
+                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
                         </tr>
                         <?php
                         //   endif;
@@ -134,165 +133,207 @@
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" style="padding-top:20px; " id="bolo" role="tabpanel" aria-labelledby="bolo-tab">
+                                    <button class="btn btn-primary pull-right add_field" id="add_bolo"><i class="fa fa-plus"></i> Acrescentar</button>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                    <div id="accordion">
+                                        <div class="nova_lista"></div>
+                                        <div class="card listas">
+                                            <div class="card-header" id="heading-0">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-0" aria-expanded="true" aria-controls="collapse-0">
+                                                        Collapsible Group Item #1
+                                                    </button>
+                                                </h5>
+                                            </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Categoria:</label>
-                                                <?php
-                                                $Read = new Read;
+                                            <div id="collapse-0" class="collapse show" aria-labelledby="heading-0" data-parent="#accordion">
+                                                <div class="card-body">
 
-                                                $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
-                                                ?>
-                                                <select class="form-control" name="categoria_bolo_id" id='categoria_bolo_id'>
-                                                    <option selected="" disabled="" value="">Selecione a categoria</option>
+                                                    <div class="row">
+
+
+
+
+
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Categoria:</label>
+                                                                <?php
+                                                                $Read = new Read;
+
+                                                                $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
+                                                                ?>
+                                                                <select class="form-control" name="bolos[0][categoria_bolo_id]" id='categoria_bolo_id'>
+                                                                    <option selected="" disabled="" value="">Selecione a categoria</option>
+                                                                    <?php
+                                                                    foreach ($Read->getResult() as $value):
+                                                                        extract($value);
+                                                                        echo("<option value='{$categoria_bolo_id}' id='categoria_bolo_id'>{$categoria_bolo_nome}</option>");
+                                                                    endforeach;
+                                                                    ?>                                         
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Peso:</label>
+                                                                <input type="number" min="1" value="1" name="bolos[0][pedido_bolo_peso]" id="pedido_bolo_peso" class="form-control" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Valor:</label>
+                                                                <input type="text" pedido_bolo_peso name="bolos[0][pedido_bolo_valor]" id="pedido_bolo_valor" class="form-control" readonly="readonly" >
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Massa:</label>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" name="bolos[0][pedido_bolo_massa]" id="pedido_bolo_massa" value="0" checked> Branca
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" name="bolos[0][pedido_bolo_massa]" id="pedido_bolo_massa" value="1"> Chocolate
+                                                            </label>
+                                                        </div>                                       
+                                                    </div>
+                                                    <label>Recheios Comuns:</label>
                                                     <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option value='{$categoria_bolo_id}' id='categoria_bolo_id'>{$categoria_bolo_nome}</option>");
-                                                    endforeach;
-                                                    ?>                                         
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Peso:</label>
-                                                <input type="number" min="1" value="1" name="pedido_bolo_peso" id="pedido_bolo_peso" class="form-control" >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Valor:</label>
-                                                <input type="text" name="pedido_bolo_valor" id="pedido_bolo_valor" class="form-control" readonly="readonly" >
-                                            </div>
-                                        </div>
+                                                    $Read = new Read;
 
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Massa:</label>
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="pedido_bolo_massa"  id="pedido_bolo_massa" value="0" checked> Branca
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="pedido_bolo_massa" id="pedido_bolo_massa" value="1"> Chocolate
-                                            </label>
-                                        </div>                                       
-                                    </div>
-                                    <label>Recheios Comuns:</label>
-                                    <?php
-                                    $Read = new Read;
+                                                    $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
 
-                                    $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
+                                                    $array = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
+                                                    ?>
+                                                    <div class="row">
+                                                        <div class="col-md-6" id="recheio_comum_1">
+                                                            <?php
+                                                            foreach ($array[0] as $value):
+                                                                extract($value);
+                                                                ?>
+                                                                <div class="form-check">
 
-                                    $array = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
-                                    ?>
-                                    <div class="row">
-                                        <div class="col-md-6" id="recheio_comum_1">
-                                            <?php
-                                            foreach ($array[0] as $value):
-                                                extract($value);
-                                                ?>
-                                                <div class="form-check">
+                                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="bolos[0][recheio_comum][]" value="<?= $recheio_id ?>">
+                                                                        <?= $recheio_nome ?></label>
+                                                                </div>
 
-                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]" value="<?= $recheio_id ?>">
-                                                        <?= $recheio_nome ?></label>
+
+                                                                <?php
+                                                            endforeach;
+                                                            ?>
+                                                        </div>
+                                                        <div class="col-md-6" id="recheio_comum_2">
+                                                            <?php
+                                                            foreach ($array[1] as $value):
+                                                                extract($value);
+                                                                ?>
+
+                                                                <div class="form-check">
+
+                                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]" value="<?= $recheio_id ?>">
+                                                                        <?= $recheio_nome; ?></label>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                    <label>Recheios Especiais:</label>
+                                                    <div class="row">
+                                                        <?php
+                                                        $Read = new Read;
+
+                                                        $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 1");
+                                                        ?>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+
+                                                                <select class="form-control" name="bolos[0][recheio_especial][0]" id="recheio_especial_0">
+                                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
+                                                                    <?php
+                                                                    foreach ($Read->getResult() as $value):
+                                                                        extract($value);
+                                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
+                                                                    endforeach;
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="bolos[0][recheio_especial][1]" id="recheio_especial_1">
+                                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
+                                                                    <?php
+                                                                    foreach ($Read->getResult() as $value):
+                                                                        extract($value);
+                                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
+                                                                    endforeach;
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="bolos[0][recheio_especial][2]" id="recheio_especial_2">
+                                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
+                                                                    <?php
+                                                                    foreach ($Read->getResult() as $value):
+                                                                        extract($value);
+                                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
+                                                                    endforeach;
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Papel arroz:</label>
+                                                                <input type="text" name="bolos[0][pedido_bolo_papel_arroz]" class="form-control" id="pedido_bolo_papel_arroz"  >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Cores:</label>
+                                                                <input type="text" name="bolos[0][pedido_bolo_cores]" class="form-control" id="pedido_bolo_cores"  >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Escrita:</label>
+                                                        <input type="text" name="bolos[0][pedido_bolo_escrita]" class="form-control" id="pedido_bolo_escrita"  >
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Observações:</label>
+                                                        <textarea class="form-control" name="bolos[0][pedido_bolo_observacoes]" id="pedido_bolo_observacoes"></textarea>
+                                                    </div>
+
                                                 </div>
-
-
-                                                <?php
-                                            endforeach;
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6" id="recheio_comum_2">
-                                            <?php
-                                            foreach ($array[1] as $value):
-                                                extract($value);
-                                                ?>
-
-                                                <div class="form-check">
-
-                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="recheio_comum[]" value="<?= $recheio_id ?>">
-                                                        <?= $recheio_nome; ?></label>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                    <label>Recheios Especiais:</label>
-                                    <div class="row">
-                                        <?php
-                                        $Read = new Read;
-
-                                        $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 1");
-                                        ?>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-
-                                                <select class="form-control" name="recheio_especial[0]" id="recheio_especial_0">
-                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
-                                                    <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
-                                                    endforeach;
-                                                    ?>
-                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control" name="recheio_especial[1]" id="recheio_especial_1">
-                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
-                                                    <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
-                                                    endforeach;
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control" name="recheio_especial[2]" id="recheio_especial_2">
-                                                    <option selected="" value="" disabled="">Selecione a categoria</option>
-                                                    <?php
-                                                    foreach ($Read->getResult() as $value):
-                                                        extract($value);
-                                                        echo("<option value='{$recheio_id}'>{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>");
-                                                    endforeach;
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Papel arroz:</label>
-                                                <input type="text" name="pedido_bolo_papel_arroz" class="form-control" id="pedido_bolo_papel_arroz"  >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Cores:</label>
-                                                <input type="text" name="pedido_bolo_cores" class="form-control" id="pedido_bolo_cores"  >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Escrita:</label>
-                                        <input type="text" name="pedido_bolo_escrita" class="form-control" id="pedido_bolo_escrita"  >
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label>Observações:</label>
-                                        <textarea class="form-control" name="pedido_bolo_observacoes" id="pedido_bolo_observacoes"></textarea>
+                                        <!--                                        <div class="card">
+                                                                                    <div class="card-header" id="headingOne2">
+                                                                                        <h5 class="mb-0">
+                                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne2" aria-expanded="false" aria-controls="collapseOne2">
+                                                                                                Collapsible Group Item #1
+                                                                                            </button>
+                                                                                        </h5>
+                                                                                    </div>
+                                        
+                                                                                    <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2" data-parent="#accordion">
+                                                                                        <div class="card-body">
+                                                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>-->
                                     </div>
-
                                 </div>
                                 <div class="tab-pane fade" id="torta" style="padding-top:20px; " role="tabpanel" aria-labelledby="torta-tab">
                                     <button class="btn btn-primary pull-right add_field" id="add_torta"><i class="fa fa-plus"></i> Acrescentar</button>
