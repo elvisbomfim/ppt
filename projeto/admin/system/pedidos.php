@@ -252,7 +252,7 @@
                                                         <div class="col-md-4">
                                                             <div class="form-group">
 
-                                                                <select class="form-control" name="bolos[0][recheio_especial][0]" id="recheio_especial_0">
+                                                                <select class="form-control" name="bolos[0][recheio_especial][zero]" id="recheio_especial_0">
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -265,7 +265,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" name="bolos[0][recheio_especial][1]" id="recheio_especial_1">
+                                                                <select class="form-control" name="bolos[0][recheio_especial][um]" id="recheio_especial_1">
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -278,7 +278,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" name="bolos[0][recheio_especial][2]" id="recheio_especial_2">
+                                                                <select class="form-control" name="bolos[0][recheio_especial][dois]" id="recheio_especial_2">
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):

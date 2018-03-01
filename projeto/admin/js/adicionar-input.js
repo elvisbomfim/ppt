@@ -155,7 +155,7 @@ $(function () {
 
                         var name = $(this).attr('name').split('[' + numero + ']');
 
-                        //  console.log(name[0] + "[" + x + "]" + name[1]);
+                        //  console.log("name", name[0] + "[" + vetor + "]" + name[1]);
 
                         $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
 

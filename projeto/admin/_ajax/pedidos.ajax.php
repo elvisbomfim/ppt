@@ -134,7 +134,7 @@ switch ($Action):
                         $total_bolo += $total_recheio;
                     endif;
 
-                    
+
                     $total_bolo += $calculo;
                     $total_geral_bolo = $total_bolo;
 
@@ -484,22 +484,15 @@ switch ($Action):
 //                    $pedido_bolo['pedido_bolo_cores'] = $pedido_bolo_cores;
 //                    $pedido_bolo['pedido_bolo_escrita'] = $pedido_bolo_escrita;
 //                    $pedido_bolo['pedido_bolo_observacoes'] = $pedido_bolo_observacoes;
-                    $array_bolo[] = [
-                        "pedido_bolo_peso" => $pedido_bolo_peso, 
-                        "pedido_bolo_valor" => $pedido_bolo_valor, 
-                        "categoria_bolo_id" => $categoria_bolo_id,
-                        "pedido_bolo_massa" => $pedido_bolo_massa,
-                        "pedido_bolo_papel_arroz" => $pedido_bolo_papel_arroz,
-                        "pedido_bolo_cores" => $pedido_bolo_cores,
-                        "pedido_bolo_escrita" => $pedido_bolo_escrita,
-                        "pedido_bolo_observacoes" => $pedido_bolo_observacoes
-                       ];
-                    if (!empty($array_bolo)):
-                        $pedido_bolo['pedido_array_bolo'] = json_encode($array_bolo);
+
+                   // if (!empty($array_bolo)):
+                        
+                        //$pedido_bolo['pedido_array_bolo'] = json_encode($array_bolo);
                         if (!empty($recheio_especial)):
                             $array_recheio_especial = '';
                             foreach ($recheio_especial as $recheio):
                                 if (!empty($recheio)):
+                                    
                                     $array_recheio_especial[] = ["recheio_id" => $recheio];
                                 endif;
                             endforeach;
@@ -515,22 +508,32 @@ switch ($Action):
                             endforeach;
                         endif;
 
-                        if (!empty($array_recheio_especial)):
-                            $pedido_bolo['pedido_array_recheio_especial'] = json_encode($array_recheio_especial);
-                        endif;
-                        if (!empty($array_recheio_comum)):
-                            $pedido_bolo['pedido_array_recheio_comum'] = json_encode($array_recheio_comum);
-                        endif;
+        //                if (!empty($array_recheio_especial)):
+        //                    $pedido_bolo['pedido_array_recheio_especial'] = json_encode($array_recheio_especial);
+        //                endif;
+        //                if (!empty($array_recheio_comum)):
+        //                    $pedido_bolo['pedido_array_recheio_comum'] = json_encode($array_recheio_comum);
+        //                endif;
 
+                   // endif;
+                        $array_bolo[] = [
+                            "pedido_bolo_peso" => $pedido_bolo_peso,
+                            "pedido_bolo_valor" => $pedido_bolo_valor,
+                            "categoria_bolo_id" => $categoria_bolo_id,
+                            "pedido_bolo_massa" => $pedido_bolo_massa,
+                            "pedido_bolo_papel_arroz" => $pedido_bolo_papel_arroz,
+                            "pedido_bolo_cores" => $pedido_bolo_cores,
+                            "pedido_bolo_escrita" => $pedido_bolo_escrita,
+                            "pedido_bolo_observacoes" => $pedido_bolo_observacoes,
+                            "pedido_bolo_status" => 1
+                        ];
+                        array_push($array_bolo, $array_recheio_especial, $array_recheio_comum);
+                        $pedido_bolo['pedido_array_bolo'] = json_encode($array_bolo);
                         $_POST['pedido_bolo_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_bolo_valor_total']));
                         $pedido_bolo['pedido_bolo_valor_total'] = $_POST['pedido_bolo_valor_total'];
 
-                        $pedido_bolo['pedido_bolo_status'] = 1;
-
                         $Create = clone $Create;
                         $Create->ExeCreate('pedidos_bolo', $pedido_bolo);
-                    endif;
-
                 endif;
             endforeach;
 
