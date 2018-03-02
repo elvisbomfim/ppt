@@ -19,7 +19,7 @@ $jSON = null;
 switch ($Action):
 
     case 'manager':
-        $Read->FullRead("SELECT * FROM pedidos p "
+       /* $Read->FullRead("SELECT * FROM pedidos p "
                 . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
                 . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
                 . "LEFT JOIN pedidos_docinho pd ON pd.pedido_id = p.pedido_id "
@@ -88,7 +88,8 @@ switch ($Action):
         $DADOS['pedido_bolo_escrita'] = $pedido_bolo_escrita;
         $DADOS['pedido_bolo_observacoes'] = $pedido_bolo_observacoes;
         $DADOS['pedido_bolo_valor_total'] = $pedido_bolo_valor_total;
-        $jSON["dados"] = $DADOS;
+        $jSON["dados"] = $DADOS;*/
+        $jSON["manager"] = true;
         $jSON["type"] = "atualizado";
         break;
 
