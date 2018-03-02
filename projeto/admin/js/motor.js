@@ -136,11 +136,17 @@ $(function () {
                             $('#exampleModal').modal('hide');
                             $('#dataTable tbody').prepend(json.result);
                         } else {
+                            if ($("#atualizar_tab_pedidos").hasClass("calcular")) {
+                                $('#exampleModal').modal('hide');
+                                $('#dataTable tbody').prepend(json.result);
+                            } else {
+                                $('#exampleModal').modal('hide');
 
-                            $('#exampleModal').modal('hide');
+                                $('#' + json.id).html(json.result);
+                            }
 
-                            $('#' + json.id).html(json.result);
                         }
+
                     }
 
 

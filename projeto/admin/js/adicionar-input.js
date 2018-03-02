@@ -124,7 +124,7 @@ $(function () {
                 if (add === 'add_bolo') {
 
                     $("#" + tab).find('.nova_lista .listas:first .card-header').attr('id', 'heading-' + vetor);
-                    $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor);
+                    $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor).html('Bolo #' + (vetor+1));
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('aria-labelledby', 'heading-' + vetor).attr('id', 'collapse-' + vetor);
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('class', 'collapse');
 
@@ -159,6 +159,10 @@ $(function () {
 
                         $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
 
+//Limpar inputs checkbox e select
+
+
+
 
                         if (typeof ($(this).attr('type')) === 'undefined') {
                             $(this).prop('selectedIndex', 0);
@@ -166,6 +170,11 @@ $(function () {
                         } else if ($(this).attr('type') === 'number') {
                             // console.log("to no number");
                             $(this).val(1);
+                        } else if ($(this).attr('type') === 'checkbox') {
+                            $(this).prop('checked', false);
+                        } else if ($(this).attr('type') === 'radio') {
+                            //console.log($(this));
+                            $(this).prop('checked', false);
                         } else {
                             // console.log("to no text");
                             $(this).val("");
