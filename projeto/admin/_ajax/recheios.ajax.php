@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "recheiosTable";
+
+
 
 switch ($Action):
 
@@ -54,7 +56,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "recheiosModal";
         break;
 
     case 'update':
@@ -75,7 +77,7 @@ switch ($Action):
 
         $Update->ExeUpdate('recheios', $POST, 'WHERE recheio_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Recheio $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "recheiosModal";
         $Read->ExeRead('recheios', "WHERE recheio_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

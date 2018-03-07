@@ -18,7 +18,8 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "salgadosTable";
+
 
 switch ($Action):
 
@@ -56,7 +57,7 @@ switch ($Action):
 
 
         endif;
-
+$jSON["idmodal"] = "salgadosModal";
         break;
     case 'update':
         $jSON["result"] = null;
@@ -69,7 +70,7 @@ switch ($Action):
 
         $Update->ExeUpdate('salgados', $POST, 'WHERE salgado_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Salgado $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success        break;
-
+        $jSON["idmodal"] = "salgadosModal";
         $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

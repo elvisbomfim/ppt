@@ -2,7 +2,7 @@ $(function () {
 
 
     $('.modal').on('show.bs.modal', function () {
-        $(this).find('form')[0].reset();
+        //$(this).find('form')[0].reset();
 
         $('.cliente_nome_id').html("");
 
@@ -11,7 +11,7 @@ $(function () {
 
 
     $('.modal').on('hidden.bs.modal', function () {
-        $(this).find('form')[0].reset();
+        //$(this).find('form')[0].reset();
 
         // $(".tab-pane").each(function () {
         $(this).find(".nova_lista").html("");

@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="bgc-white bd bdrs-3 p-20 mB-20">
                     <h4 class="c-grey-900 mB-20">Coberturas <button class="btn btn-primary j_action"  data-callback="coberturas" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
-                    <table id="dataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="coberturasTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Coberturas</th>
@@ -70,7 +70,7 @@
 </main>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="coberturasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

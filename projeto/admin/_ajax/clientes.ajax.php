@@ -16,6 +16,8 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
+$jSON["tabela"] = "clientesTable";
+
 
 
 switch ($Action):
@@ -38,7 +40,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "clientesModal";
         break;
 
     case 'update':
@@ -51,7 +53,7 @@ switch ($Action):
         $Update->ExeUpdate('clientes', $POST, 'WHERE cliente_id =:id', "id=$ID");
 
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Cliente $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "clientesModal";
         $Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

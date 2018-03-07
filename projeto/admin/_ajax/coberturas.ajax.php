@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "coberturasTable";
+
+
 
 switch ($Action):
 
@@ -52,7 +54,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "coberturasModal";
         break;
 
     case 'update':
@@ -71,7 +73,8 @@ switch ($Action):
 
         $Update->ExeUpdate('coberturas', $POST, 'WHERE cobertura_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Cobertura $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "coberturasModal";
+        
         $Read->ExeRead('coberturas', "WHERE cobertura_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

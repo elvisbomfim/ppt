@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "tortasTable";
+
+
 
 switch ($Action):
 
@@ -50,7 +52,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "tortasModal";
         break;
 
     case 'update':
@@ -64,7 +66,8 @@ switch ($Action):
 
         $Update->ExeUpdate('categoria_tortas', $POST, 'WHERE categoria_torta_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Torta $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success       
-
+        $jSON["idmodal"] = "tortasModal";
+        
         $Read->ExeRead('categoria_tortas', "WHERE categoria_torta_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

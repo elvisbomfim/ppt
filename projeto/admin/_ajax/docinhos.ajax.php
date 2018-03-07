@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "docinhosTable";
+
+
 
 switch ($Action):
 
@@ -51,7 +53,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "docinhosModal";
         break;
 
     case 'update':
@@ -66,7 +68,8 @@ switch ($Action):
 
         $Update->ExeUpdate('docinhos', $POST, 'WHERE docinho_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Doce $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "docinhosModal";
+        
         $Read->ExeRead('docinhos', "WHERE docinho_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

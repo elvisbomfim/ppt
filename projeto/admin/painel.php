@@ -234,7 +234,9 @@ endif;
                         return message;
                     },
                     noResults: function () {
-                        return 'Nenhum resultado encontrado';
+                              
+                    return 'Nenhum resultado encontrado';
+                        
                     },
                     searching: function () {
                         return 'Buscando…';
@@ -243,7 +245,7 @@ endif;
                 },
 
                 placeholder: 'Digite o nome do cliente',
-                dropdownParent: $('#exampleModal'),
+                dropdownParent: $('#pedidosModal'),
                 ajax: {
                     url: BASE + '_ajax/clientes.ajax.php',
                     dataType: 'json',

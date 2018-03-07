@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "refrigerantesTable";
+
+
 
 switch ($Action):
 
@@ -51,7 +53,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "refrigerantesModal";
         break;
     case 'update':
 
@@ -65,7 +67,7 @@ switch ($Action):
 
         $Update->ExeUpdate('refrigerantes', $POST, 'WHERE refrigerante_id =:id', "id=$ID");
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Refrigerante $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "refrigerantesModal";
         $Read->ExeRead('refrigerantes', "WHERE refrigerante_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
 

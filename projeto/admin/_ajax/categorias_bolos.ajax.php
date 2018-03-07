@@ -16,7 +16,9 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
-sleep(1);
+$jSON["tabela"] = "bolosTable";
+
+
 
 switch ($Action):
 
@@ -54,7 +56,7 @@ switch ($Action):
             $jSON["type"] = "atualizado";
 
         endif;
-
+$jSON["idmodal"] = "bolosModal";
         break;
 
     case 'update':
@@ -69,7 +71,7 @@ switch ($Action):
         $Update->ExeUpdate('categoria_bolos', $POST, 'WHERE categoria_bolo_id =:id', "id=$ID");
 
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Bolo $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
-
+        $jSON["idmodal"] = "bolosModal";
 
         $Read->ExeRead('categoria_bolos', "WHERE categoria_bolo_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);

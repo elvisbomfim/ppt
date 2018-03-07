@@ -16,6 +16,10 @@ $Update = new Update;
 $Delete = new Delete;
 $jSON = null;
 
+$jSON["tabela"] = "pedidosTable";
+
+$jSON["idmodal"] = "pedidosModal";
+
 switch ($Action):
 
     case 'manager':
