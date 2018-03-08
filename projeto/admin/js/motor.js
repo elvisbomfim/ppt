@@ -135,11 +135,12 @@ $(function () {
 
                         if ($(".get_id").hasClass("manager")) {
                             $('#' + json.idmodal).modal('hide');
-                            $('#' + json.tabela + 'tbody').prepend(json.result);
+                            $('#' + json.tabela + ' tbody').prepend(json.result);
                         } else {
                             if ($("#atualizar_tab_pedidos").hasClass("calcular")) {
+                                alert("enyro");
                                 $('#' + json.idmodal).modal('hide');
-                                $('#' + json.tabela + 'tbody').prepend(json.result);
+                                $('#' + json.tabela + ' tbody').prepend(json.result);
                             } else {
                                 $('#' + json.idmodal).modal('hide');
 
