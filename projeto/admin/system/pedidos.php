@@ -53,8 +53,8 @@
                         <tr id="<?= $pedido_id; ?>">
                             <td><?= $pedido_id; ?></td>
                             <td><?= $cliente_nome; ?></td>
-                            <td><?= $pedido_data_criacao; ?></td>
-                            <td><?= $pedido_data_retirada; ?></td>
+                            <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
+                            <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
                             <td><?= $pedido_total ?></td>
                             <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
                         </tr>
@@ -86,7 +86,7 @@
                 <form class="auto_save" id="pedidos-form" action="" method="post">
                     <input type="hidden" name="callback" value="pedidos">
                     <input type="hidden" id="callback_action" name="callback_action" value="calcular">
-                    <div id="atualizar_tab_pedidos" class="calcular"></div>
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -94,20 +94,20 @@
                                     <div class="form-group">
                                         <label>Nome do Cliente:  </label>
                                         <br>
-                                        <select id="cliente_nome_id" required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
+                                        <select required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
                                         <button type="button" class="btn btn-primary j_action" data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Data de criação:</label>
-                                        <input type="date" name="pedido_data_criacao" class="form-control" id="pedido_data_criacao" required="" >
+                                        <input type="date" name="pedido_data_criacao" class="form-control pedido_data_criacao" required="" >
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Data de retirada:</label>
-                                        <input type="date" name="pedido_data_retirada" class="form-control" id="pedido_data_retirada" required="" >
+                                        <input type="date" name="pedido_data_retirada" class="form-control pedido_data_retirada"  required="" >
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" style="padding-top:20px; " id="bolo" role="tabpanel" aria-labelledby="bolo-tab">
-                                    <button class="btn btn-primary pull-right add_field" id="add_bolo"><i class="fa fa-plus"></i> Acrescentar</button>
+                                    <button class="btn btn-primary pull-right add_field add_bolo" id="add_bolo"><i class="fa fa-plus"></i> Acrescentar</button>
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div id="accordion">
@@ -166,7 +166,7 @@
 
                                                                 $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
                                                                 ?>
-                                                                <select class="form-control" name="bolos[0][categoria_bolo_id]" >
+                                                                <select class="form-control categoria_bolo_id" name="bolos[0][categoria_bolo_id]" >
                                                                     <option selected="" disabled="" value="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -180,13 +180,13 @@
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>Peso:</label>
-                                                                <input type="number" min="1" value="1" name="bolos[0][pedido_bolo_peso]" class="form-control" >
+                                                                <input type="number" min="1" value="1" name="bolos[0][pedido_bolo_peso]" class="form-control pedido_bolo_peso" >
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>Valor:</label>
-                                                                <input type="text" pedido_bolo_peso name="bolos[0][pedido_bolo_valor]" class="form-control" readonly="readonly" >
+                                                                <input type="text" name="bolos[0][pedido_bolo_valor]" class="form-control pedido_bolo_valor" readonly="readonly" >
                                                             </div>
                                                         </div>
 
@@ -220,7 +220,7 @@
                                                                 ?>
                                                                 <div class="form-check">
 
-                                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="bolos[0][recheio_comum][]" value="<?= $recheio_id ?>">
+                                                                    <label class="form-check-label form-check-input" for="exampleCheck1"><input type="checkbox" name="bolos[0][recheio_comum][]" value="<?= $recheio_id ?>">
                                                                         <?= $recheio_nome ?></label>
                                                                 </div>
 
@@ -253,7 +253,7 @@
                                                         <div class="col-md-4">
                                                             <div class="form-group">
 
-                                                                <select class="form-control" name="bolos[0][recheio_especial][]" >
+                                                                <select class="form-control" class="pedido_bolo_recheio_especial1" name="bolos[0][recheio_especial][]" >
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -266,7 +266,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" name="bolos[0][recheio_especial][]" >
+                                                                <select class="form-control" class="pedido_bolo_recheio_especial2" name="bolos[0][recheio_especial][]" >
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -279,7 +279,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" name="bolos[0][recheio_especial][]">
+                                                                <select class="form-control" class="pedido_bolo_recheio_especial3" name="bolos[0][recheio_especial][]">
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -295,24 +295,24 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Papel arroz:</label>
-                                                                <input type="text" name="bolos[0][pedido_bolo_papel_arroz]" class="form-control"  >
+                                                                <input type="text"  name="bolos[0][pedido_bolo_papel_arroz]" class="form-control pedido_bolo_papel_arroz"  >
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Cores:</label>
-                                                                <input type="text" name="bolos[0][pedido_bolo_cores]" class="form-control"  >
+                                                                <input type="text" name="bolos[0][pedido_bolo_cores]" class="form-control pedido_bolo_cores"  >
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Escrita:</label>
-                                                        <input type="text" name="bolos[0][pedido_bolo_escrita]" class="form-control"  >
+                                                        <input type="text" name="bolos[0][pedido_bolo_escrita]" class="form-control pedido_bolo_escrita"  >
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label>Observações:</label>
-                                                        <textarea class="form-control" name="bolos[0][pedido_bolo_observacoes]" ></textarea>
+                                                        <textarea class="form-control pedido_bolo_observacoes" name="bolos[0][pedido_bolo_observacoes]" ></textarea>
                                                     </div>
 
                                                 </div>
@@ -510,19 +510,19 @@
                             <h2>Totais:</h2>
                             <div class="form-group">
                                 <label>Bolo:</label>
-                                <input type="text" name="pedido_bolo_valor_total" class="form-control" id="pedido_bolo_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_bolo_valor_total" class="form-control pedido_bolo_valor_total" id="pedido_bolo_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Torta:</label>
-                                <input type="text" name="pedido_torta_valor_total" class="form-control" id="pedido_torta_valor_total"  readonly="readonly" >
+                                <input type="text" name="pedido_torta_valor_total" class="form-control pedido_torta_valor_total" id="pedido_torta_valor_total"  readonly="readonly" >
                             </div>
                             <div class="form-group">
                                 <label>Salgado:</label>
-                                <input type="text" name="pedido_salgado_valor_total" class="form-control" id="pedido_salgado_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_salgado_valor_total" class="form-control pedido_salgado_valor_total" id="pedido_salgado_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Doce:</label>
-                                <input type="text" name="pedido_docinho_valor_total" class="form-control" id="pedido_doce_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_docinho_valor_total" class="form-control pedido_doce_valor_total" id="pedido_doce_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Refrigerante:</label>
@@ -533,7 +533,7 @@
 
                             <div class="form-group">
                                 <label>Total:</label>
-                                <input type="text" name="pedido_total" class="form-control" id="pedido_total"  readonly="readonly">
+                                <input type="text" name="pedido_total" class="form-control pedido_total" id="pedido_total"  readonly="readonly">
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" value="1">

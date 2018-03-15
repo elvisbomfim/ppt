@@ -171,10 +171,11 @@ endif;
         <!-- Style switcher -->
         <!-- ============================================================== -->
         <script src="<?= BASE ?>admin/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+        <script src="<?= BASE ?>admin/js/adicionar-input.js" type="text/javascript"></script>
         <script src="<?= BASE ?>admin/js/motor.js"></script>
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>admin/js/adicionar-input.js" type="text/javascript"></script>
+        
         <script src="<?= BASE ?>admin/js/select2.min.js" type="text/javascript"></script>
         
         <script>

@@ -31,11 +31,10 @@ switch ($Action):
             $jSON["id"] = $Create->getResult();
             $jSON["type"] = "criado";
         else:
-            $Read->ExeRead('clientes');
-//$Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
+            
+            $Read->ExeRead('clientes', "WHERE cliente_id =:id", "id={$POST['id']}");
             $jSON["manager"] = true;
             $jSON["id"] = $POST['id'];
-//var_dump($Read->getResult()[0]);
             $jSON["dados"] = $Read->getResult()[0];
             $jSON["type"] = "atualizado";
 

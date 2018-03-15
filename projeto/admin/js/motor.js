@@ -137,16 +137,9 @@ $(function () {
                             $('#' + json.idmodal).modal('hide');
                             $('#' + json.tabela + ' tbody').prepend(json.result);
                         } else {
-                            if ($("#atualizar_tab_pedidos").hasClass("calcular")) {
-                                alert("enyro");
-                                $('#' + json.idmodal).modal('hide');
-                                $('#' + json.tabela + ' tbody').prepend(json.result);
-                            } else {
-                                $('#' + json.idmodal).modal('hide');
+                            $('#' + json.idmodal).modal('hide');
 
-                                $('#' + json.id).html(json.result);
-                            }
-
+                            $('#' + json.id).html(json.result);
                         }
 
                     }
@@ -329,7 +322,7 @@ $(function () {
                 $(".get_id").html("<input type='hidden' name='id' value='" + json.id + "' ><input type='hidden' name='type' value='" + json.type + "' >");
 
 
-
+                //json para edição dos formulários menos do pedidos
                 if (json.dados) {
 
                     $.each(json.dados, function (index, value) {
@@ -346,6 +339,65 @@ $(function () {
                         console.log($("#" + index).prop("tagName"));
                         //console.log(index + '=' + value);
                     });
+
+                }
+
+                //json para edição dos pedidos
+                if (json.dadospedidos) {
+
+                    $('#' + json.idmodal).find('form')[0].reset();
+                    $(".cliente_nome_id").html(json.dadospedidos.cliente_nome_id);
+                    $(".pedido_data_criacao").val(json.dadospedidos.pedido_data_criacao);
+                    $(".pedido_data_retirada").val(json.dadospedidos.pedido_data_retirada);
+                    $("#pedido_bolo_valor_total").val(json.dadospedidos.pedido_bolo_valor_total);
+
+                    $('#callback_action').val('calcular');
+
+                    if (!localStorage.getItem('bolo')) {
+                        AddInputs("add_bolo", "excluir-bolo");
+                        localStorage.setItem('bolo', "existe");
+                    }
+
+                    //contador para a condição para o gatilho do bolo
+                    count_bolo = (json.dadospedidos.bolos.length - 1);
+
+                    $.each(json.dadospedidos.bolos, function (index, value) {
+
+                        //condição para o gatilho do bolo
+                        if (count_bolo > index) {
+                            $("#add_bolo").trigger('click');
+                        }
+
+
+                        //console.log(value[index]);
+
+                        $.each(json.dadospedidos.bolos[index], function (index_sub, value_sub) {
+
+                            //console.log(index_sub);
+                            
+                           // console.log($("input[name='" + index_sub + "']").prop("tagName"));
+
+//                            if ($("input[name='" + index_sub + "']").prop("tagName") === 'INPUT') {
+////                            $("." + index).val(value);
+//
+//                                $("input[name='" + index_sub + "']").val(value_sub[0]);
+//
+////                            } else if ("input[name='" + index_sub + "']").prop("tagName") === 'SELECT') {
+////                                $("input[name='" + index_sub + "']").html("");
+////                                $("input[name='" + index_sub + "']").html(value_sub[0]);
+////                            } else if ($("." + index_sub).prop("tagName") === 'TEXTAREA') {
+////                                $("." + index_sub).val(value_sub[0]);
+////                            } else if ($("." + index_sub).prop("tagName") === 'BUTTON') {
+////                                $("." + index_sub).val(value_sub[0]);
+//                            }
+
+                        });
+
+
+                        
+//                        console.log(index + '=' + value);
+                    });
+
 
                 }
 
@@ -448,7 +500,7 @@ $(function () {
 
 
 
-    
+
 
 
 
@@ -458,17 +510,17 @@ $(function () {
 
 //ABRIR MULTIPLOS MODAIS
 
-(function($, window) {
+(function ($, window) {
     'use strict';
 
-    var MultiModal = function(element) {
+    var MultiModal = function (element) {
         this.$element = $(element);
         this.modalCount = 0;
     };
 
     MultiModal.BASE_ZINDEX = 1040;
 
-    MultiModal.prototype.show = function(target) {
+    MultiModal.prototype.show = function (target) {
         var that = this;
         var $target = $(target);
         var modalIndex = that.modalCount++;
@@ -479,40 +531,40 @@ $(function () {
         // the modal backdrop element has been created. The timeout here allows the modal
         // show function to complete, after which the modal backdrop will have been created
         // and appended to the DOM.
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             // we only want one backdrop; hide any extras
-            if(modalIndex > 0)
+            if (modalIndex > 0)
                 $('.modal-backdrop').not(':first').addClass('hidden');
 
             that.adjustBackdrop();
         });
     };
 
-    MultiModal.prototype.hidden = function(target) {
+    MultiModal.prototype.hidden = function (target) {
         this.modalCount--;
 
-        if(this.modalCount) {
-           this.adjustBackdrop();
+        if (this.modalCount) {
+            this.adjustBackdrop();
 
             // bootstrap removes the modal-open class when a modal is closed; add it back
             $('body').addClass('modal-open');
         }
     };
 
-    MultiModal.prototype.adjustBackdrop = function() {
+    MultiModal.prototype.adjustBackdrop = function () {
         var modalIndex = this.modalCount - 1;
         $('.modal-backdrop:first').css('z-index', MultiModal.BASE_ZINDEX + (modalIndex * 20));
     };
 
     function Plugin(method, target) {
-        return this.each(function() {
+        return this.each(function () {
             var $this = $(this);
             var data = $this.data('multi-modal-plugin');
 
-            if(!data)
+            if (!data)
                 $this.data('multi-modal-plugin', (data = new MultiModal(this)));
 
-            if(method)
+            if (method)
                 data[method](target);
         });
     }
@@ -520,11 +572,11 @@ $(function () {
     $.fn.multiModal = Plugin;
     $.fn.multiModal.Constructor = MultiModal;
 
-    $(document).on('show.bs.modal', function(e) {
+    $(document).on('show.bs.modal', function (e) {
         $(document).multiModal('show', e.target);
     });
 
-    $(document).on('hidden.bs.modal', function(e) {
+    $(document).on('hidden.bs.modal', function (e) {
         $(document).multiModal('hidden', e.target);
     });
 }(jQuery, window));

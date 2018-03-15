@@ -6,7 +6,9 @@ $(function () {
 
         $('.cliente_nome_id').html("");
 
-
+        //localStorage.clear();
+        x = 0;
+        vetor = 1;
     });
 
 
@@ -21,11 +23,16 @@ $(function () {
 
         $('#callback_action').val('calcular');
 
+        // localStorage.clear();
+        x = 0;
+        vetor = 1;
     });
 
 
     $('.cadastrar-pedido').on('click', function () {
         $('#callback_action').val('create');
+        x = 0;
+        vetor = 1;
     });
 
     $('.btn-add-novo-pedido').on('click', function () {
@@ -36,6 +43,8 @@ $(function () {
             AddInputs(bolo, e_bolo);
             localStorage.setItem('bolo', "existe");
         }
+        x = 0;
+        vetor = 1;
     });
 
 
@@ -98,12 +107,14 @@ $(function () {
 
     });
 
-    function AddInputs(add, excluir) {
+    window.AddInputs = function (add, excluir) {
+
+
 
         var campos_max = 30;   //max de 10 campos
 
-        var x = 0;
-        var vetor = 1;
+        x = 0;
+        vetor = 1;
 
         $('#' + add).click(function (e) {
             e.preventDefault();     //prevenir novos clicks
@@ -124,7 +135,7 @@ $(function () {
                 if (add === 'add_bolo') {
 
                     $("#" + tab).find('.nova_lista .listas:first .card-header').attr('id', 'heading-' + vetor);
-                    $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor).html('Bolo #' + (vetor+1));
+                    $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor).html('Bolo #' + (vetor + 1));
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('aria-labelledby', 'heading-' + vetor).attr('id', 'collapse-' + vetor);
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('class', 'collapse');
 
@@ -177,6 +188,7 @@ $(function () {
                             $(this).prop('checked', false);
                         } else {
                             // console.log("to no text");
+                            //alert($(this));
                             $(this).val("");
                         }
 
@@ -189,8 +201,8 @@ $(function () {
 
             }
             //}
-
-
+            //localStorage.setItem('bolo', "existe");
+            console.log(add + " agora é " + x);
 
         });
         // Remover o div anterior
