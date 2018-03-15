@@ -5,10 +5,50 @@ $(function () {
         $(this).find('form')[0].reset();
 
         $('.cliente_nome_id').html("");
+  
+        localStorage.setItem('abriu_bolo', "");
+        localStorage.setItem('abriu_torta', "");
+        localStorage.setItem('abriu_salgado', "");
+        localStorage.setItem('abriu_doce', "");
+        localStorage.setItem('abriu_refrigerante', "");
 
-        //localStorage.clear();
-        x = 0;
-        vetor = 1;
+        if (!localStorage.getItem('bolo')) {
+  
+//            x = localStorage.getItem('contador_x_bolo_add_bolo');
+//            vetor = localStorage.getItem('contador_vetor_bolo_add_bolo');
+
+            AddInputs(bolo, e_bolo, abriu_bolo);
+            localStorage.setItem('bolo', "existe");
+        }
+
+
+
+        if (!localStorage.getItem('doce')) {
+            AddInputs(doce, e_doce, abriu_doce);
+            localStorage.setItem('doce', "existe");
+        }
+
+        if (!localStorage.getItem('refrigerante')) {
+
+            AddInputs(refri, e_refri, abriu_refrigerante);
+            localStorage.setItem('refrigerante', "existe");
+        }
+
+        if (!localStorage.getItem('salgado')) {
+            
+            AddInputs(salgado, e_salgado, abriu_salgado);
+            localStorage.setItem('salgado', "existe");
+        }
+
+        if (!localStorage.getItem('torta')) {
+            
+//            x = localStorage.getItem('contador_x_bolo_add_torta');
+//            vetor = localStorage.getItem('contador_vetor_bolo_add_torta');
+
+            AddInputs(torta, e_torta, abriu_torta);
+            localStorage.setItem('torta', "existe");
+        }
+
     });
 
 
@@ -23,7 +63,8 @@ $(function () {
 
         $('#callback_action').val('calcular');
 
-        // localStorage.clear();
+        //localStorage.clear();
+
         x = 0;
         vetor = 1;
     });
@@ -31,20 +72,18 @@ $(function () {
 
     $('.cadastrar-pedido').on('click', function () {
         $('#callback_action').val('create');
-        x = 0;
-        vetor = 1;
+
     });
 
     $('.btn-add-novo-pedido').on('click', function () {
 
         $('#callback_action').val('calcular');
 
-        if (!localStorage.getItem('bolo')) {
-            AddInputs(bolo, e_bolo);
-            localStorage.setItem('bolo', "existe");
-        }
-        x = 0;
-        vetor = 1;
+        //  if (!localStorage.getItem('bolo')) {
+        //      AddInputs(bolo, e_bolo);
+        //      localStorage.setItem('bolo', "existe");
+        //  }
+
     });
 
 
@@ -54,74 +93,68 @@ $(function () {
     var salgado = "add_salgado";
     var torta = "add_torta";
     var bolo = "add_bolo";
+    
     var e_refri = "excluir-refrigerante";
     var e_doce = "excluir-docinho";
     var e_salgado = "excluir-salgado";
     var e_torta = "excluir-torta";
     var e_bolo = "excluir-bolo";
+    
+    var abriu_bolo = "abriu_bolo";
+    var abriu_torta = "abriu_torta";
+    var abriu_salgado = "abriu_salgado";
+    var abriu_refrigerante = "abriu_refrigerante";
+    var abriu_doce = "abriu_doce";
+    
     localStorage.clear();
 
     //var add = $('.add').attr("id");
 
     $('#doce-tab').on('show.bs.tab', function (e) {
 
-        if (!localStorage.getItem('doce')) {
-            AddInputs(doce, e_doce);
-            localStorage.setItem('doce', "existe");
-        }
 
     });
 
     $('#refrigerante-tab').on('show.bs.tab', function (e) {
-        if (!localStorage.getItem('refrigerante')) {
-            AddInputs(refri, e_refri);
-            localStorage.setItem('refrigerante', "existe");
-        }
+
 
     });
 
     $('#salgado-tab').on('show.bs.tab', function (e) {
 
-        if (!localStorage.getItem('salgado')) {
-            AddInputs(salgado, e_salgado);
-            localStorage.setItem('salgado', "existe");
-        }
+
 
     });
 
     $('#torta-tab').on('show.bs.tab', function (e) {
 
-        if (!localStorage.getItem('torta')) {
-            AddInputs(torta, e_torta);
-            localStorage.setItem('torta', "existe");
-        }
+    });
+
+    $('#bolo-tab').on('show.bs.tab', function (e) {
+
 
     });
 
-    $('#bolo-tab ').on('show.bs.tab', function (e) {
-
-        if (!localStorage.getItem('bolo')) {
-            AddInputs(bolo, e_bolo);
-            localStorage.setItem('bolo', "existe");
-        }
-
-    });
-
-    window.AddInputs = function (add, excluir) {
-
-
+    window.AddInputs = function (add, excluir, abriu) {
 
         var campos_max = 30;   //max de 10 campos
 
-        x = 0;
-        vetor = 1;
+        var x = 0;
+        var vetor = 1;
 
         $('#' + add).click(function (e) {
             e.preventDefault();     //prevenir novos clicks
             // alert($(this).closest(".tab-pane").attr("id"));
             //alert("Add: "+x);
+            if (!localStorage.getItem(abriu)) {
+                //alert("entro");
+//            } else {
+                x = 0;
+                vetor = 1;
+                localStorage.setItem(abriu, "sim");
+            }
             var tab = $(this).closest(".tab-pane").attr("id");
-
+            //console.log("dentro da função: " + x);
             // if (x >= 0) {
             // $("#" + tab).find('.listas:first').show();
 //                x++;
@@ -201,8 +234,28 @@ $(function () {
 
             }
             //}
-            //localStorage.setItem('bolo', "existe");
-            console.log(add + " agora é " + x);
+
+
+
+            //     if (!localStorage.getItem('contador_x_' + add)) {
+            //         localStorage.setItem('contador_x_' + add, x);
+            //      } else if (localStorage.getItem('contador_x_' + add)) {
+            //          localStorage.setItem('contador_x_' + add, x);
+            //      }
+
+//            if (localStorage.getItem('contador_x_' + add) > x) {
+//                x = localStorage.getItem('contador_x_' + add);
+//                localStorage.setItem('contador_x_' + add, x++);
+//            }
+
+
+            //  if (!localStorage.getItem('contador_vetor_' + add)) {
+            //      localStorage.setItem('contador_vetor_' + add, vetor);
+            //  } else if (localStorage.getItem('contador_vetor_' + add)) {
+            //     localStorage.setItem('contador_vetor_' + add, vetor);
+            //   }
+            // localStorage.setItem('contador_vetor_' + add, vetor);
+            //console.log(add + " agora é " + x);
 
         });
         // Remover o div anterior
@@ -210,7 +263,8 @@ $(function () {
             e.preventDefault();
             //alert("Deleta: "+x);
             if (x > 0) {
-                $(this).parent('.listas').remove();
+               
+                $(this).parents('.listas').remove();
 //            } else {
 //                $(this).parent('.listas').hide();
                 x--;

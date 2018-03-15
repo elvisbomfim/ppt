@@ -376,26 +376,27 @@ $(function () {
                             //console.log(index_sub);
                             
                            // console.log($("input[name='" + index_sub + "']").prop("tagName"));
+                           
+                            console.log(typeof $("input[name='" + index_sub + "']").prop("tagName"));
 
-//                            if ($("input[name='" + index_sub + "']").prop("tagName") === 'INPUT') {
-////                            $("." + index).val(value);
-//
-//                                $("input[name='" + index_sub + "']").val(value_sub[0]);
-//
-////                            } else if ("input[name='" + index_sub + "']").prop("tagName") === 'SELECT') {
-////                                $("input[name='" + index_sub + "']").html("");
-////                                $("input[name='" + index_sub + "']").html(value_sub[0]);
-////                            } else if ($("." + index_sub).prop("tagName") === 'TEXTAREA') {
-////                                $("." + index_sub).val(value_sub[0]);
-////                            } else if ($("." + index_sub).prop("tagName") === 'BUTTON') {
-////                                $("." + index_sub).val(value_sub[0]);
-//                            }
+                            if ($("input[name='" + index_sub + "']").prop("tagName") === 'INPUT') {
+//                            $("." + index).val(value);
+
+                                $("input[name='" + index_sub + "']").val(value_sub[0]);
+
+//                            } else if ("input[name='" + index_sub + "']").prop("tagName") === 'SELECT') {
+//                                $("input[name='" + index_sub + "']").html("");
+//                                $("input[name='" + index_sub + "']").html(value_sub[0]);
+                            } else if ($("." + index_sub).prop("tagName") === 'undefined') {
+                                $("." + index_sub).val(value_sub[0]);
+                                $("input[name='" + index_sub + "']").val(value_sub[0]);
+                            }
 
                         });
 
 
                         
-//                        console.log(index + '=' + value);
+     //                  console.log(index + '=' + value);
                     });
 
 

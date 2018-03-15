@@ -145,7 +145,10 @@
                                                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-0" aria-expanded="true" aria-controls="collapse-0">
                                                         Bolo #1
                                                     </button>
+                                                    
+                                                    <button class='btn btn-sm btn-danger remover_campo pull-right excluir-bolo'><i class='fa fa-close'></i> </button>
                                                 </h5>
+                                                
                                             </div>
 
                                             <div id="collapse-0" class="collapse show" aria-labelledby="heading-0" data-parent="#accordion">

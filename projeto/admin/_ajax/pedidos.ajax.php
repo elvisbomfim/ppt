@@ -130,6 +130,7 @@ switch ($Action):
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_massa]"] = $value['pedido_bolo_massa'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_papel_arroz]"] = $value['pedido_bolo_papel_arroz'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_escrita]"] = $value['pedido_bolo_escrita'];
+            $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_cores]"] = $value['pedido_bolo_cores'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_observacoes]"] = $value['pedido_bolo_observacoes'];
             //$DADOS['bolos'][$key]['pedido_bolo_peso'][] = $value['pedido_bolo_peso'];
 //            $DADOS['bolos'][$key]['pedido_bolo_valor'][] = $value['pedido_bolo_valor'];
