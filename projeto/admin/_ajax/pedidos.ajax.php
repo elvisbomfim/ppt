@@ -65,8 +65,8 @@ switch ($Action):
             $DADOS['bolos'][$key]["bolos[{$key}][categoria_bolo_id]"] = $concatena_select_bolo;
 
 //$jSON["categoria"][] = ["name" => "bolos[{$key}][pedido_bolo_valor]", "valor_item" => "{$calculo}", "total_parcial" => "{$total_bolo}", "id_total_parcial" => "pedido_bolo_valor_total"]; //type = warning danger success        break;
-            
-            
+
+
             $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 1");
             if (!empty($value['recheio_especial'])):
 
@@ -78,53 +78,29 @@ switch ($Action):
                         extract($tab_recheio);
                         $concatena_recheio_especial .= "<option value='{$recheio_id}' " . ($recheio_id == $recheio ? 'selected=""' : '' ) . ">{$recheio_nome} R$ " . number_format($recheio_preco_kg, 2, ',', '.') . "</option>";
                     endforeach;
-                    $DADOS['bolos'][$key]['recheio_especial'] = $concatena_recheio_especial;
+                    $DADOS['bolos'][$key]["bolos[{$key}][recheio_especial]"][] = $concatena_recheio_especial;
+
                 endforeach;
 
             endif;
             //
-            $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
-            
-            $array_recheio_comum_dividido = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
-            if (!empty($value['recheio_comum'])):
-                $concatena_recheio_comum = "";
-                $array_recheio_comum = "";
-                foreach ($value['recheio_comum'] as $recheio):
-                    foreach ($array_recheio_comum_dividido[0] as $tab_recheio) :
-                        extract($tab_recheio);
+            // $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
 
-                        //$array_recheio_comum[] = $recheio;
-                        $concatena_recheio_comum .= "<div class='form-check'>
-
-                                                                    <label class='form-check-label' for='exampleCheck1'><input type='checkbox' class='form-check-input' name='bolos[0][recheio_comum][]' value='$recheio_id'>
-                                                                         $recheio_nome</label>
-                                                                </div>";
-                    endforeach;
-                    $DADOS['bolos'][$key]['recheio_comum'][0] = $concatena_recheio_comum;
-
-                endforeach;
-            endif;
 
             if (!empty($value['recheio_comum'])):
                 $concatena_recheio_comum = "";
                 $array_recheio_comum = "";
                 foreach ($value['recheio_comum'] as $recheio):
-                    foreach ($array_recheio_comum_dividido[1] as $tab_recheio) :
-                        extract($tab_recheio);
+                    // foreach ($array_recheio_comum_dividido[1] as $tab_recheio) :
+                    // extract($tab_recheio);
+                    //$array_recheio_comum[] = $recheio;
+                    $DADOS['bolos'][$key]["bolos[{$key}][recheio_comum]"][] = $recheio;
+                    //  endforeach;
 
-                        //$array_recheio_comum[] = $recheio;
-                        $concatena_recheio_comum .= "<div class='form-check'>
-
-                                                                    <label class='form-check-label' for='exampleCheck1'><input type='checkbox' class='form-check-input' name='bolos[0][recheio_comum][]' value='$recheio_id'>
-                                                                         $recheio_nome</label>
-                                                                </div>";
-                    endforeach;
-
-                    $DADOS['bolos'][$key]['recheio_comum'][1] = $concatena_recheio_comum;
                 endforeach;
             endif;
-                       
-            
+
+
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_peso]"] = $value['pedido_bolo_peso'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_valor]"] = $value['pedido_bolo_valor'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_massa]"] = $value['pedido_bolo_massa'];
@@ -132,13 +108,7 @@ switch ($Action):
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_escrita]"] = $value['pedido_bolo_escrita'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_cores]"] = $value['pedido_bolo_cores'];
             $DADOS['bolos'][$key]["bolos[{$key}][pedido_bolo_observacoes]"] = $value['pedido_bolo_observacoes'];
-            //$DADOS['bolos'][$key]['pedido_bolo_peso'][] = $value['pedido_bolo_peso'];
-//            $DADOS['bolos'][$key]['pedido_bolo_valor'][] = $value['pedido_bolo_valor'];
-//            $DADOS['bolos'][$key]['pedido_bolo_massa'][] = $value['pedido_bolo_massa'];
-//            $DADOS['bolos'][$key]['pedido_bolo_papel_arroz'][] = $value['pedido_bolo_papel_arroz'];
-//            $DADOS['bolos'][$key]['pedido_bolo_cores'][] = $value['pedido_bolo_cores'];
-//            $DADOS['bolos'][$key]['pedido_bolo_escrita'][] = $value['pedido_bolo_escrita'];
-//            $DADOS['bolos'][$key]['pedido_bolo_observacoes'][] = $value['pedido_bolo_observacoes'];
+
         endforeach;
 
 
@@ -510,9 +480,9 @@ switch ($Action):
                 extract($bolo);
 
                 if (!empty($categoria_bolo_id)):
-
+                    $array_recheio_especial = "";
                     if (!empty($recheio_especial)):
-                        $array_recheio_especial = '';
+
                         foreach ($recheio_especial as $recheio):
                             if (!empty($recheio)):
 
@@ -521,9 +491,9 @@ switch ($Action):
                         endforeach;
 
                     endif;
-                    //
+                    $array_recheio_comum = "";
                     if (!empty($recheio_comum)):
-                        $array_recheio_comum = "";
+
                         foreach ($recheio_comum as $recheio):
                             if (!empty($recheio)):
                                 $array_recheio_comum[] = $recheio;
@@ -666,7 +636,166 @@ switch ($Action):
 //        $jSON["manager"] = true;
 //        $jSON["id"] = $Create->getResult();
 //        $jSON["type"] = "criado";
+
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Pedido criado com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
+
+        $Read->FullRead("SELECT * FROM pedidos p "
+                . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_docinho pd ON pd.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
+                . "WHERE p.pedido_id =:id ", "id={$ultimo_pedido_id}");
+
+        extract($Read->getResult()[0]);
+
+        $jSON['resultcupom'] = "<table class='printer-ticket'>
+ 	<thead>
+		<tr>
+			<th class='title' colspan='3'>Victor Shop</th>
+		</tr>
+		<tr>
+			<th colspan='3'>17/11/2015 - 11:57:52</th>
+		</tr>
+		<tr>
+			<th colspan='3'>
+				Nome do cliente <br />
+				000.000.000-00
+			</th>
+		</tr>
+		<tr>
+			<th class='ttu' colspan='3'>
+				<b>Cupom não fiscal</b>
+			</th>
+		</tr>
+	</thead>
+	<tbody>";
+
+        $total_bolo = $pedido_bolo_valor_total;
+
+        //$jSON["manager"] = true;
+        //$jSON["id"] = $POST['id'];
+        // $DADOS = [];
+        //  echo($cliente_nome);
+        //   echo(date('d/m/Y', strtotime($pedido_data_criacao)));
+        //  echo(date('d/m/Y', strtotime($pedido_data_retirada)));
+
+        if (!empty($pedido_array_bolo)):
+
+
+
+            $array_bolo = json_decode($pedido_array_bolo, true);
+
+            $i = 0;
+
+
+            foreach ($array_bolo as $key => $value):
+
+                extract($value);
+                //  print_r($recheio_especial);
+                $Read->ExeRead('categoria_bolos', "WHERE categoria_bolo_id =:id", "id={$categoria_bolo_id}");
+                extract($Read->getResult()[0]);
+
+                $jSON['resultcupom'] .= "<tr class='top'>
+			<td colspan='3'>$categoria_bolo_nome</td>
+		</tr>";
+                
+                
+
+                //    echo("Bolo: " . $categoria_bolo_nome . "\nValor: " . $categoria_bolo_preco_kg . "\n");
+                //   echo("Recheios");
+                foreach ($recheio_especial as $especial):
+                    $Read->ExeRead('recheios', "WHERE recheio_id =:id", "id={$especial}");
+                    extract($Read->getResult()[0]);
+
+                    echo($recheio_nome . " Valor: " . $recheio_preco_kg);
+                endforeach;
+                echo("Bolo total: " . $pedido_bolo_valor_total);
+
+            endforeach;
+
+        //    echo("Pedido Total do bolo: " . $pedido_bolo_valor_total);
+        endif;
+
+        if (!empty($pedido_array_torta)):
+            $array_torta = json_decode($pedido_array_torta, true);
+
+            foreach ($array_torta as $key => $value):
+                //print_r($value);
+                extract($value);
+
+                $Read->ExeRead('categoria_tortas', "WHERE categoria_torta_id =:id", "id={$categoria_torta_id}");
+                extract($Read->getResult()[0]);
+
+                //  echo("Torta: " . $categoria_torta_nome . "\nValor: " . $categoria_torta_preco_kg . "\n");
+                //  echo("Torta total: " . $pedido_torta_valor_total);
+
+            endforeach;
+
+        // echo("Pedido Total da torta: " . $pedido_torta_valor_total);
+        endif;
+        if (!empty($pedido_array_docinho)):
+            $array_docinho = json_decode($pedido_array_docinho, true);
+
+            foreach ($array_docinho as $key => $value):
+                //print_r($value);
+                extract($value);
+
+                $Read->ExeRead('docinhos', "WHERE docinho_id =:id", "id={$docinho_id}");
+                extract($Read->getResult()[0]);
+
+                //    echo("docinho: " . $docinho_nome . "\nValor: " . $docinho_preco . "\n");
+                //    echo("docinho total: " . $pedido_docinho_valor_total);
+
+            endforeach;
+
+        //  echo("Pedido Total da torta: " . $pedido_torta_valor_total);
+        endif;
+        if (!empty($pedido_array_salgado)):
+            $array_salgado = json_decode($pedido_array_salgado, true);
+
+            foreach ($array_salgado as $key => $value):
+                //print_r($value);
+                extract($value);
+
+                $Read->ExeRead('salgados', "WHERE salgado_id =:id", "id={$salgado_id}");
+                extract($Read->getResult()[0]);
+
+                echo("salgado: " . $salgado_nome . "\nValor: " . $salgado_preco . "\n");
+
+                echo("salgado total: " . $pedido_salgado_valor_total);
+
+            endforeach;
+
+        // echo("Pedido Total da torta: " . $pedido_torta_valor_total);
+        endif;
+        if (!empty($pedido_array_refrigerante)):
+            $array_torta = json_decode($pedido_array_refrigerante, true);
+
+            foreach ($array_refrigerante as $key => $value):
+                //print_r($value);
+                extract($value);
+
+                $Read->ExeRead('refrigerantes', "WHERE refrigerante_id =:id", "id={$refrigerante_id}");
+                extract($Read->getResult()[0]);
+
+                echo("Refrigerante: " . $refrigerante_nome . "\nValor: " . $refrigerante_preco . "\n");
+
+                echo("Refrigerante total: " . $pedido_refrigerante_valor_total);
+
+            endforeach;
+
+        // echo("Pedido Total dos Refriigarentes: " . $pedido_refrigerante_valor_total);
+        endif;
+
+        //$jSON["dadospedidos"] = $DADOS;
+        //$jSON["manager"] = true;
+        //$jSON["type"] = "atualizado";
+
+        $jSON['idmodalcupom'] = "cupomfiscalModal";
+
+        //$jSON['redirect'] = BASE."admin/painel.php?exe=pedidos";
 
         break;
 
@@ -702,6 +831,81 @@ switch ($Action):
         endif;
 
         break;
+
+    case 'duplicar':
+
+        $jSON["result"] = null;
+        $ID = $POST['id'];
+        //$TYPE = $POST['type'];
+        unset($POST['id']);
+
+        $Read->ExeRead('pedidos', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_id']);
+            //print_r($array);
+            $Create->ExeCreate('pedidos', $array);
+            $ultimo_pedido_id = $Create->getResult();
+        endif;
+
+        $Read->ExeRead('pedidos_bolo', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_bolo_id']);
+            unset($array['pedido_id']);
+            $array['pedido_id'] = $ultimo_pedido_id;
+            $Create->ExeCreate('pedidos_bolo', $array);
+        endif;
+
+        $Read->ExeRead('pedidos_docinho', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_docinho_id']);
+            unset($array['pedido_id']);
+            $array['pedido_id'] = $ultimo_pedido_id;
+            $Create->ExeCreate('pedidos_docinho', $array);
+        endif;
+
+        $Read->ExeRead('pedidos_refrigerante', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_refrigerante_id']);
+            unset($array['pedido_id']);
+            $array['pedido_id'] = $ultimo_pedido_id;
+            $Create->ExeCreate('pedidos_refrigerante', $array);
+        endif;
+
+        $Read->ExeRead('pedidos_torta', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_torta_id']);
+            unset($array['pedido_id']);
+            $array['pedido_id'] = $ultimo_pedido_id;
+            $Create->ExeCreate('pedidos_torta', $array);
+        endif;
+
+        $Read->ExeRead('pedidos_salgado', "WHERE pedido_id =:id", "id={$ID}");
+
+        if ($Read->getResult()):
+            $array = $Read->getResult()[0];
+            unset($array['pedido_salgado_id']);
+            unset($array['pedido_id']);
+            $array['pedido_id'] = $ultimo_pedido_id;
+            $Create->ExeCreate('pedidos_salgado', $array);
+        endif;
+
+        $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Pedido duplicado com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
+
+        $jSON['redirect'] = BASE . "admin/painel.php?exe=pedidos";
+
+        break;
+
+
     case 'delete':
 
         $Delete->ExeDelete('pedidos', 'WHERE pedido_id =:id', "id={$POST["id"]}");
@@ -721,5 +925,6 @@ switch ($Action):
 
 
 endswitch;
+
 
 echo json_encode($jSON);

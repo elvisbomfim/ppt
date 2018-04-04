@@ -5,7 +5,7 @@ $(function () {
         $(this).find('form')[0].reset();
 
         $('.cliente_nome_id').html("");
-  
+
         localStorage.setItem('abriu_bolo', "");
         localStorage.setItem('abriu_torta', "");
         localStorage.setItem('abriu_salgado', "");
@@ -13,7 +13,7 @@ $(function () {
         localStorage.setItem('abriu_refrigerante', "");
 
         if (!localStorage.getItem('bolo')) {
-  
+
 //            x = localStorage.getItem('contador_x_bolo_add_bolo');
 //            vetor = localStorage.getItem('contador_vetor_bolo_add_bolo');
 
@@ -35,13 +35,13 @@ $(function () {
         }
 
         if (!localStorage.getItem('salgado')) {
-            
+
             AddInputs(salgado, e_salgado, abriu_salgado);
             localStorage.setItem('salgado', "existe");
         }
 
         if (!localStorage.getItem('torta')) {
-            
+
 //            x = localStorage.getItem('contador_x_bolo_add_torta');
 //            vetor = localStorage.getItem('contador_vetor_bolo_add_torta');
 
@@ -93,19 +93,19 @@ $(function () {
     var salgado = "add_salgado";
     var torta = "add_torta";
     var bolo = "add_bolo";
-    
+
     var e_refri = "excluir-refrigerante";
     var e_doce = "excluir-docinho";
     var e_salgado = "excluir-salgado";
     var e_torta = "excluir-torta";
     var e_bolo = "excluir-bolo";
-    
+
     var abriu_bolo = "abriu_bolo";
     var abriu_torta = "abriu_torta";
     var abriu_salgado = "abriu_salgado";
     var abriu_refrigerante = "abriu_refrigerante";
     var abriu_doce = "abriu_doce";
-    
+
     localStorage.clear();
 
     //var add = $('.add').attr("id");
@@ -171,6 +171,8 @@ $(function () {
                     $("#" + tab).find('.nova_lista .listas:first .btn-link').attr('data-target', '#collapse-' + vetor).attr('aria-controls', 'collapse-' + vetor).html('Bolo #' + (vetor + 1));
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('aria-labelledby', 'heading-' + vetor).attr('id', 'collapse-' + vetor);
                     $("#" + tab).find('.nova_lista .listas:first .collapse').attr('class', 'collapse');
+                    $("#" + tab).find('.nova_lista .listas:first .excluir-bolo').attr('data-id-button', vetor);
+
 
                 }
 
@@ -199,7 +201,7 @@ $(function () {
 
                         var name = $(this).attr('name').split('[' + numero + ']');
 
-                        //  console.log("name", name[0] + "[" + vetor + "]" + name[1]);
+                        console.log("name", name[0] + "[" + vetor + "]" + name[1]);
 
                         $(this).attr("name", name[0] + "[" + vetor + "]" + name[1]);
 
@@ -208,7 +210,7 @@ $(function () {
 
 
 
-                        if (typeof ($(this).attr('type')) === 'undefined') {
+                       if (typeof ($(this).attr('type')) === 'undefined') {
                             $(this).prop('selectedIndex', 0);
                             // console.log("to no undefined");
                         } else if ($(this).attr('type') === 'number') {
@@ -218,7 +220,7 @@ $(function () {
                             $(this).prop('checked', false);
                         } else if ($(this).attr('type') === 'radio') {
                             //console.log($(this));
-                            $(this).prop('checked', false);
+                            //$(this).prop('checked', false);
                         } else {
                             // console.log("to no text");
                             //alert($(this));
@@ -261,13 +263,19 @@ $(function () {
         // Remover o div anterior
         $('body').on("click", "." + excluir, function (e) {
             e.preventDefault();
-            //alert("Deleta: "+x);
+            //alert("Deleta: "+x);$(this).parents('.listas').find('input[name=bolos[0][categoria_bolo_id]').val()
             if (x > 0) {
-               
-                $(this).parents('.listas').remove();
+
+                if ($(this).data("id-button") !== 0) {
+
+                    $(this).parents('.listas').remove();
+                    x--;
+                    vetor--;
+                }
+
 //            } else {
 //                $(this).parent('.listas').hide();
-                x--;
+
             }
 
 

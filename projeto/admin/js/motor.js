@@ -132,7 +132,7 @@ $(function () {
 
                     if (json.alerta.type === 'success') {
 
-
+                    
                         if ($(".get_id").hasClass("manager")) {
                             $('#' + json.idmodal).modal('hide');
                             $('#' + json.tabela + ' tbody').prepend(json.result);
@@ -140,6 +140,12 @@ $(function () {
                             $('#' + json.idmodal).modal('hide');
 
                             $('#' + json.id).html(json.result);
+                        }
+
+                        if (json.idmodalcupom) {
+                            
+                            $('#' + json.idmodalcupom).modal('show');
+                            $('.class-cupom').html(json.resultcupom);
                         }
 
                     }
@@ -155,6 +161,8 @@ $(function () {
 
 
                 }
+
+
 
                 if (json.pedido_form_reset) {
                     $('#callback_action').val('calcular');
@@ -374,29 +382,61 @@ $(function () {
                         $.each(json.dadospedidos.bolos[index], function (index_sub, value_sub) {
 
                             //console.log(index_sub);
-                            
-                           // console.log($("input[name='" + index_sub + "']").prop("tagName"));
-                           
-                            console.log(typeof $("input[name='" + index_sub + "']").prop("tagName"));
+                            var tipo = $("input[name='" + index_sub + "']").attr("type");
 
-                            if ($("input[name='" + index_sub + "']").prop("tagName") === 'INPUT') {
+                            console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                            if (tipo === "radio") {
+                                if (value_sub === '0') {
+                                    // "input:radio[name='" + index_sub + "']:not(:disabled):first"
+                                    $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+                                    // alert("0");
+                                } else {
+                                    //alert("1");
+                                    $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                }
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                            }
+                            //  console.log(typeof $("input[name='" + index_sub + "']").prop("tagName"));
+
+                            if (tipo === "number" || tipo === "text") {
 //                            $("." + index).val(value);
 
-                                $("input[name='" + index_sub + "']").val(value_sub[0]);
+                                $("input[name='" + index_sub + "']").val(value_sub);
 
 //                            } else if ("input[name='" + index_sub + "']").prop("tagName") === 'SELECT') {
 //                                $("input[name='" + index_sub + "']").html("");
 //                                $("input[name='" + index_sub + "']").html(value_sub[0]);
-                            } else if ($("." + index_sub).prop("tagName") === 'undefined') {
-                                $("." + index_sub).val(value_sub[0]);
-                                $("input[name='" + index_sub + "']").val(value_sub[0]);
+
+                            }
+
+                            if (typeof tipo === "undefined") {
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                                //$("[name='" + index_sub + "']").html(value_sub);
+
+
+
+                                if ($.isArray(value_sub)) {
+                                    $.each(value_sub, function (index_recheio, value_recheio) {
+                                        $("[name='" + index_sub + "[]']").eq(index_recheio).html(value_recheio);
+                                    });
+
+                                    $.each(value_sub, function (index_recheio_comum, value_recheio_comum) {
+                                        $("[name='" + index_sub + "[]'][value='" + value_recheio_comum + "']").prop('checked', true);
+                                    });
+
+
+                                }
+
+
                             }
 
                         });
 
 
-                        
-     //                  console.log(index + '=' + value);
+
+                        //                  console.log(index + '=' + value);
                     });
 
 
@@ -475,7 +515,17 @@ $(function () {
                     $('.wc_value').val(json.inpuval);
                 }
             }
-
+            //REDIRECIONA
+            if (json.redirect) {
+//                        $('.workcontrol_upload p').html("Atualizando dados, aguarde!");
+//                        $('.workcontrol_upload').fadeIn().css('display', 'flex');
+                window.setTimeout(function () {
+                    window.location.href = json.redirect;
+                    if (window.location.hash) {
+                        window.location.reload();
+                    }
+                }, 1500);
+            }
             //DINAMIC CONTENT
             if (json.divcontent) {
                 $(json.divcontent[0]).html(json.divcontent[1]);

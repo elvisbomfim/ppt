@@ -56,7 +56,7 @@
                             <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
                             <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
                             <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button></td>
+                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button> <button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Duplicar</button></td>
                         </tr>
                         <?php
                         //   endif;
@@ -146,7 +146,7 @@
                                                         Bolo #1
                                                     </button>
                                                     
-                                                    <button class='btn btn-sm btn-danger remover_campo pull-right excluir-bolo'><i class='fa fa-close'></i> </button>
+                                                    <button class='btn btn-sm btn-danger remover_campo pull-right excluir-bolo' data-id-button="0" ><i class='fa fa-close'></i> </button>
                                                 </h5>
                                                 
                                             </div>
@@ -169,7 +169,7 @@
 
                                                                 $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
                                                                 ?>
-                                                                <select class="form-control categoria_bolo_id" name="bolos[0][categoria_bolo_id]" >
+                                                                <select class="form-control categoria_bolo_id" name="bolos[0][categoria_bolo_id]">
                                                                     <option selected="" disabled="" value="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -255,7 +255,6 @@
                                                         ?>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-
                                                                 <select class="form-control" class="pedido_bolo_recheio_especial1" name="bolos[0][recheio_especial][]" >
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
@@ -662,6 +661,33 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                 <button type="submit" class="btn btn-primary" form="formulario">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="cupomfiscalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+
+                <form>
+                    <div class="class-cupom"></div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary" form="">Imprimir</button>
             </div>
         </div>
     </div>
