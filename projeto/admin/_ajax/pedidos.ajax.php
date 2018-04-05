@@ -805,11 +805,218 @@ switch ($Action):
         $ID = $POST['id'];
         $TYPE = $POST['type'];
         unset($POST['id'], $POST['type']);
+        
+/*        if (empty($POST['cliente_id'])):
+            $jSON['erro'] = "Preencha o nome do cliente!";
+            break;
+        endif;
+
+        if (empty($POST['pedido_total'])):
+            $jSON['pedido_form_reset'] = true;
+            $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "O formulário do pedido está em branco, preencha pelo menos uma categoria!", "URL" => "", "Target" => "_blank", "type" => "warning"]; //type = warning danger success
+            break;
+        endif;
+
+        $pedidos['cliente_id'] = $POST['cliente_id'];
+        $pedidos['pedido_data_criacao'] = $POST['pedido_data_criacao'];
+        $pedidos['pedido_data_retirada'] = $POST['pedido_data_retirada'];
+        $POST['pedido_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_total']));
+        $pedidos['pedido_total'] = $POST['pedido_total'];
+        $pedidos['pedido_status'] = 0;
+
+        if (!empty($POST['kit_festa'])):
+            $pedidos['pedido_is_kit_festa'] = 1;
+        else:
+            $pedidos['pedido_is_kit_festa'] = 0;
+        endif;
+
+        $Create->ExeCreate('pedidos', $pedidos);
+        $ultimo_pedido_id = $Create->getResult();
+
+        $read = new Read;
+
+        $read->FullRead("SELECT * FROM pedidos p "
+                . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                . "WHERE p.pedido_id = {$ultimo_pedido_id}");
+
+        extract($read->getResult()[0]);
+
+        $jSON["result"] = " <tr id='{$ultimo_pedido_id}'>
+                            <td>{$ultimo_pedido_id}</td>
+                            <td>{$cliente_nome}</td>
+                            <td>{$pedido_data_criacao}</td>
+                            <td>{$pedido_data_retirada}</td>
+                            <td>{$pedido_total}</td>
+                            <td><button class='btn btn-warning j_action' data-callback='pedidos' data-callback_action='manager' data-id='{$pedido_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='pedidos' data-callback_action='delete' data-id='' data-name='' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-ban'></i> Cancelar</button></td>
+                        </tr>";
+
+
+        if (!empty($POST['bolos'])):
+            $pedido_bolo['pedido_id'] = $ultimo_pedido_id;
+            $array_bolo = "";
+            foreach ($POST['bolos'] as $key => $bolo):
+
+                extract($bolo);
+
+                if (!empty($categoria_bolo_id)):
+                    $array_recheio_especial = "";
+                    if (!empty($recheio_especial)):
+
+                        foreach ($recheio_especial as $recheio):
+                            if (!empty($recheio)):
+
+                                $array_recheio_especial[] = $recheio;
+                            endif;
+                        endforeach;
+
+                    endif;
+                    $array_recheio_comum = "";
+                    if (!empty($recheio_comum)):
+
+                        foreach ($recheio_comum as $recheio):
+                            if (!empty($recheio)):
+                                $array_recheio_comum[] = $recheio;
+                            endif;
+                        endforeach;
+                    endif;
+
+                    $array_bolo[] = [
+                        "pedido_bolo_peso" => $pedido_bolo_peso,
+                        "pedido_bolo_valor" => $pedido_bolo_valor,
+                        "categoria_bolo_id" => $categoria_bolo_id,
+                        "pedido_bolo_massa" => $pedido_bolo_massa,
+                        "recheio_comum" => $array_recheio_comum,
+                        "recheio_especial" => $array_recheio_especial,
+                        "pedido_bolo_papel_arroz" => $pedido_bolo_papel_arroz,
+                        "pedido_bolo_cores" => $pedido_bolo_cores,
+                        "pedido_bolo_escrita" => $pedido_bolo_escrita,
+                        "pedido_bolo_observacoes" => $pedido_bolo_observacoes,
+                        "pedido_bolo_status" => 1
+                    ];
+
+
+                    $pedido_bolo['pedido_array_bolo'] = json_encode($array_bolo);
+                    $_POST['pedido_bolo_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_bolo_valor_total']));
+                    $pedido_bolo['pedido_bolo_valor_total'] = $_POST['pedido_bolo_valor_total'];
+
+
+                endif;
+            endforeach;
+            //  print_r($array_bolo);
+
+            $Create = clone $Create;
+            $Create->ExeCreate('pedidos_bolo', $pedido_bolo);
+
+
+        endif;
+
+        if (!empty($POST['tortas'])):
+            $pedido_torta['pedido_id'] = $ultimo_pedido_id;
+            $array_torta = "";
+            foreach ($POST['tortas'] as $key => $torta):
+                extract($torta);
+                if (!empty($categoria_torta_id)):
+                    $array_torta[] = ["pedido_torta_peso" => $pedido_torta_peso, "pedido_torta_valor" => $pedido_torta_valor, "categoria_torta_id" => $categoria_torta_id];
+
+                endif;
+            endforeach;
+            if (!empty($array_torta)):
+                $pedido_torta['pedido_array_torta'] = json_encode($array_torta);
+                $_POST['pedido_torta_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_torta_valor_total']));
+                $pedido_torta['pedido_torta_valor_total'] = $_POST['pedido_torta_valor_total'];
+
+                $pedido_torta['pedido_torta_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_torta', $pedido_torta);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['salgados'])):
+            $pedido_salgado['pedido_id'] = $ultimo_pedido_id;
+            $array_salgado = "";
+            foreach ($POST['salgados'] as $key => $salgado):
+                extract($salgado);
+                if (!empty($salgado_id)):
+                    $array_salgado[] = ["pedido_salgado_qtd" => $pedido_salgado_qtd, "pedido_salgado_valor" => $pedido_salgado_valor, "salgado_id" => $salgado_id];
+
+                endif;
+            endforeach;
+
+            if (!empty($array_salgado)):
+                $pedido_salgado['pedido_array_salgado'] = json_encode($array_salgado);
+                $_POST['pedido_salgado_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_salgado_valor_total']));
+                $pedido_salgado['pedido_salgado_valor_total'] = $_POST['pedido_salgado_valor_total'];
+
+                $pedido_salgado['pedido_salgado_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_salgado', $pedido_salgado);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['doces'])):
+            $pedido_doce['pedido_id'] = $ultimo_pedido_id;
+            $array_doce = "";
+            foreach ($POST['doces'] as $key => $doce):
+                extract($doce);
+                if (!empty($docinho_id)):
+                    $array_doce[] = ["pedido_docinho_qtd" => $pedido_docinho_qtd, "pedido_docinho_valor" => $pedido_docinho_valor_unidade, "docinho_id" => $docinho_id];
+
+                endif;
+            endforeach;
+            if (!empty($array_doce)):
+                $pedido_doce['pedido_array_docinho'] = json_encode($array_doce);
+                $_POST['pedido_docinho_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_docinho_valor_total']));
+                $pedido_doce['pedido_docinho_valor_total'] = $_POST['pedido_docinho_valor_total'];
+
+                $pedido_doce['pedido_docinho_status'] = 1;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_docinho', $pedido_doce);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['refrigerantes'])):
+
+            $pedido_refrigerante['pedido_id'] = $ultimo_pedido_id;
+            $array_refrigerante = "";
+            foreach ($POST['refrigerantes'] as $key => $refrigerante):
+                extract($refrigerante);
+                if (!empty($refrigerante_id)):
+                    $array_refrigerante[] = ["pedido_refrigerante_qtd" => $pedido_refrigerante_qtd, "pedido_refrigerante_valor" => $pedido_refrigerante_valor_unidade, "refrigerante_id" => $refrigerante_id];
+                endif;
+
+            endforeach;
+            if (!empty($array_refrigerante)):
+                $pedido_refrigerante['pedido_array_refrigerante'] = json_encode($array_refrigerante);
+                $_POST['pedido_refrigerante_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_refrigerante_valor_total']));
+                $pedido_refrigerante['pedido_refrigerante_valor_total'] = $_POST['pedido_refrigerante_valor_total'];
+
+                $pedido_refrigerante['pedido_refrigerante_status'] = 1;
+
+                $Update = clone $Update;
+                $Update->ExeUpdate('pedidos_refrigerante', $pedido_refrigerante);
+            endif;
+
+
+
+        endif;
 
         $POST['pedido_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_total']));
-
-        $Update->ExeUpdate('pedidos', $POST, 'WHERE pedido_id =:id', "id=$ID");
-        $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Doce $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
+ 
+ */
+      
+ /*       $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Doce $TYPE com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
 
         $Read->ExeRead('pedidos', "WHERE pedido_id =:id", "id={$ID}");
         extract($Read->getResult()[0]);
@@ -829,7 +1036,45 @@ switch ($Action):
                                     <td><button class='btn btn-warning j_action' data-callback='pedidos' data-callback_action='manager' data-id='{$pedido_id}'><i class='fa fa-edit'></i> Editar</button> <button class='btn btn-danger'  data-callback='pedidos' data-callback_action='delete' data-id='{$pedido_id}' data-name='{$pedido_nome}' data-toggle='modal' data-target='#confirmar-apagar'><i class='fa fa-trash-o'></i> Apagar</button></td>";
 
         endif;
+*/
+          
+                $Read->FullRead("SELECT * FROM pedidos p "
+                . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_docinho pd ON pd.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
+                . "WHERE p.pedido_id =:id ", "id={$ID}");
 
+        extract($Read->getResult()[0]);
+
+        $jSON['resultcupom'] = "<table class='printer-ticket'>
+ 	<thead>
+		<tr>
+			<th class='title' colspan='3'>Victor Shop</th>
+		</tr>
+		<tr>
+			<th colspan='3'>17/11/2015 - 11:57:52</th>
+		</tr>
+		<tr>
+			<th colspan='3'>
+				Nome do cliente <br />
+				000.000.000-00
+			</th>
+		</tr>
+		<tr>
+			<th class='ttu' colspan='3'>
+				<b>Cupom não fiscal</b>
+			</th>
+		</tr>
+	</thead>
+	</table>";
+
+        
+        $jSON['idmodalcupom'] = "cupomfiscalModal";
+        
+        
         break;
 
     case 'duplicar':

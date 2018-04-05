@@ -8,7 +8,7 @@
         </ol>
     </div>
     <div class="col-md-6 col-4 align-self-center">
-        <button class="btn btn-success btn-add-novo-pedido pull-right" data-toggle="modal" data-target="#pedidosModal"><i class="fa fa-plus"></i> Cadastrar novo</button>
+        <button class="btn btn-success btn-add-novo-pedido pull-right get_action_name" data-action-name="create" data-toggle="modal" data-target="#pedidosModal"><i class="fa fa-plus"></i> Cadastrar novo</button>
 
     </div>
 
@@ -56,7 +56,8 @@
                             <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
                             <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
                             <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button> <button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Duplicar</button></td>
+                            <td><button class="btn btn-warning j_action get_action_name" data-action-name="update" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> 
+                                <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;    ?>" data-name="<?php // $categoria_bolo_nome;    ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button> <button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Duplicar</button></td>
                         </tr>
                         <?php
                         //   endif;
@@ -82,10 +83,11 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <form class="auto_save" id="pedidos-form" action="" method="post">
                     <input type="hidden" name="callback" value="pedidos">
                     <input type="hidden" id="callback_action" name="callback_action" value="calcular">
+                    <div class="get_id"></div>
+                    <div style="display:none;" class="action_name"></div>
                     
                     <div class="row">
                         <div class="col-md-12">
@@ -569,7 +571,7 @@
                 <form id="formulario" action="" method="post">
                     <input type="hidden" name="callback" value="clientes">
                     <input type="hidden" name="callback_action" value="update">
-                    <div class="get_id"></div>
+                    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

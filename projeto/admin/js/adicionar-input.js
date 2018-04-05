@@ -68,10 +68,17 @@ $(function () {
         x = 0;
         vetor = 1;
     });
+    
+    $('.get_action_name').on('click', function (){
+       $('.action_name').html($(this).data('action-name')); 
+    });
+    
+    
 
 
     $('.cadastrar-pedido').on('click', function () {
-        $('#callback_action').val('create');
+        
+        $('#callback_action').val($('.action_name').html());
 
     });
 
@@ -110,30 +117,7 @@ $(function () {
 
     //var add = $('.add').attr("id");
 
-    $('#doce-tab').on('show.bs.tab', function (e) {
 
-
-    });
-
-    $('#refrigerante-tab').on('show.bs.tab', function (e) {
-
-
-    });
-
-    $('#salgado-tab').on('show.bs.tab', function (e) {
-
-
-
-    });
-
-    $('#torta-tab').on('show.bs.tab', function (e) {
-
-    });
-
-    $('#bolo-tab').on('show.bs.tab', function (e) {
-
-
-    });
 
     window.AddInputs = function (add, excluir, abriu) {
 

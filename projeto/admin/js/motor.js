@@ -127,12 +127,18 @@ $(function () {
             success: function (json) {
                 //REMOVE LOAD
 
+                if (json.idmodalcupom) {
+
+                    $('#' + json.idmodalcupom).modal('show');
+                    $('.class-cupom').html(json.resultcupom);
+                }
+
                 //EXIBE CALLBACKS
                 if (json.alerta) {
 
                     if (json.alerta.type === 'success') {
 
-                    
+
                         if ($(".get_id").hasClass("manager")) {
                             $('#' + json.idmodal).modal('hide');
                             $('#' + json.tabela + ' tbody').prepend(json.result);
@@ -142,13 +148,10 @@ $(function () {
                             $('#' + json.id).html(json.result);
                         }
 
-                        if (json.idmodalcupom) {
-                            
-                            $('#' + json.idmodalcupom).modal('show');
-                            $('.class-cupom').html(json.resultcupom);
-                        }
+
 
                     }
+
 
 
                     $.notify({
