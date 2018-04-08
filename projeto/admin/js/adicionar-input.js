@@ -3,9 +3,7 @@ $(function () {
 
     $('#pedidosModal').on('show.bs.modal', function () {
         $(this).find('form')[0].reset();
-
         $('.cliente_nome_id').html("");
-
         localStorage.setItem('abriu_bolo', "");
         localStorage.setItem('abriu_torta', "");
         localStorage.setItem('abriu_salgado', "");
@@ -54,7 +52,6 @@ $(function () {
 
     $('#pedidosModal').on('hidden.bs.modal', function () {
         $(this).find('form')[0].reset();
-
         // $(".tab-pane").each(function () {
         $(this).find(".nova_lista").html("");
         // $(this).find('.listas').hide();
@@ -69,17 +66,16 @@ $(function () {
         vetor = 1;
     });
     
-    $('.get_action_name').on('click', function (){
-       $('.action_name').html($(this).data('action-name')); 
+    
+       
+    $('body').on('click', '.get_action_name', function (){
+        $('.action_name').html($(this).attr('data-action-name')); 
     });
     
     
-
-
     $('.cadastrar-pedido').on('click', function () {
-        
         $('#callback_action').val($('.action_name').html());
-
+        
     });
 
     $('.btn-add-novo-pedido').on('click', function () {

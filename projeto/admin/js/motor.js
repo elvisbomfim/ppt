@@ -44,6 +44,12 @@ $(function () {
 //                    //$("#" + index).val(value);
 //                    console.log(index + '=' + value);
 //                });
+               
+               if(json.resetInputCalcular){
+                   $('#callback_action').val('calcular');
+               }
+               
+                
                 if (json.total_geral_pedido) {
                     $.each(json.categoria, function (index, value) {
 
@@ -53,6 +59,9 @@ $(function () {
                     });
                     $("#pedido_total").val(json.total_geral_pedido);
                 }
+                
+                
+               
 
 
 
@@ -150,6 +159,13 @@ $(function () {
 
 
 
+                    }
+                    
+                    if(json.resultPedidoCreate){
+                         $('#' + json.tabela + ' tbody').prepend(json.resultPedidoCreate);
+                         
+                    }else if(json.resultPedidoUpdate){
+                         $('#' + json.id).html(json.resultPedidoUpdate);
                     }
 
 
@@ -355,12 +371,21 @@ $(function () {
 
                 //json para edição dos pedidos
                 if (json.dadospedidos) {
-
                     $('#' + json.idmodal).find('form')[0].reset();
-                    $(".cliente_nome_id").html(json.dadospedidos.cliente_nome_id);
+                    $("#select2-cliente_nome_select-container").attr("title", json.dadospedidos.cliente_nome_id).html(json.dadospedidos.cliente_nome_id);
+                    $("#cliente_nome_select").html(json.dadospedidos.cliente_nome_id);
                     $(".pedido_data_criacao").val(json.dadospedidos.pedido_data_criacao);
                     $(".pedido_data_retirada").val(json.dadospedidos.pedido_data_retirada);
                     $("#pedido_bolo_valor_total").val(json.dadospedidos.pedido_bolo_valor_total);
+                    $("#pedido_torta_valor_total").val(json.dadospedidos.pedido_torta_valor_total);
+                    $("#pedido_salgado_valor_total").val(json.dadospedidos.pedido_salgado_valor_total);
+                    $("#pedido_doce_valor_total").val(json.dadospedidos.pedido_docinho_valor_total);
+                    $("#pedido_refrigerante_valor_total").val(json.dadospedidos.pedido_refrigerante_valor_total);
+                    $("#pedido_total").val(json.dadospedidos.pedido_total);
+                    if(json.dadospedidos.pedido_is_kit_festa === '1'){
+                        $("#kit_festa").prop('checked', true);
+                    }
+                    
 
                     $('#callback_action').val('calcular');
 
@@ -369,7 +394,31 @@ $(function () {
                         localStorage.setItem('bolo', "existe");
                     }
 
+                    if (!localStorage.getItem('doce')) {
+                        AddInputs("add_docinho", "excluir-docinho");
+                        localStorage.setItem('doce', "existe");
+                    }
+
+                    if (!localStorage.getItem('refrigerante')) {
+
+                        AddInputs("add_refrigerante", "excluir-refrigerante");
+                        localStorage.setItem('refrigerante', "existe");
+                    }
+
+                    if (!localStorage.getItem('salgado')) {
+
+                        AddInputs("add_salgado", "excluir-salgado");
+                        localStorage.setItem('salgado', "existe");
+                    }
+
+                    if (!localStorage.getItem('torta')) {
+
+                        AddInputs("add_torta", "excluir-torta");
+                        localStorage.setItem('torta', "existe");
+                    }
+
                     //contador para a condição para o gatilho do bolo
+                    if(json.dadospedidos.bolos){
                     count_bolo = (json.dadospedidos.bolos.length - 1);
 
                     $.each(json.dadospedidos.bolos, function (index, value) {
@@ -437,10 +486,201 @@ $(function () {
 
                         });
 
-
-
-                        //                  console.log(index + '=' + value);
                     });
+                }    
+
+                if(json.dadospedidos.tortas){
+                    count_torta = (json.dadospedidos.tortas.length - 1);
+
+                    $.each(json.dadospedidos.tortas, function (index, value) {
+
+                        if (count_torta > index) {
+                            $("#add_torta").trigger('click');
+                        }
+
+                        $.each(json.dadospedidos.tortas[index], function (index_sub, value_sub) {
+
+
+
+
+                            var tipo = $("input[name='" + index_sub + "']").attr("type");
+
+                            console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                            if (tipo === "radio") {
+                                if (value_sub === '0') {
+                                    $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+
+                                } else {
+
+                                    $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                }
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                            }
+
+                            if (tipo === "number" || tipo === "text") {
+
+                                $("input[name='" + index_sub + "']").val(value_sub);
+
+//                  
+
+                            }
+
+                            if (typeof tipo === "undefined") {
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+
+                            }
+
+                        });
+
+                    });
+                }
+                if(json.dadospedidos.doces){
+                    count_doce = (json.dadospedidos.doces.length - 1);
+
+                    $.each(json.dadospedidos.doces, function (index, value) {
+
+                        if (count_doce > index) {
+                            $("#add_docinho").trigger('click');
+                        }
+
+                        $.each(json.dadospedidos.doces[index], function (index_sub, value_sub) {
+
+
+
+
+                            var tipo = $("input[name='" + index_sub + "']").attr("type");
+
+                            console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                            if (tipo === "radio") {
+                                if (value_sub === '0') {
+                                    $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+
+                                } else {
+
+                                    $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                }
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                            }
+
+                            if (tipo === "number" || tipo === "text") {
+
+                                $("input[name='" + index_sub + "']").val(value_sub);
+
+//                  
+
+                            }
+
+                            if (typeof tipo === "undefined") {
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+
+                            }
+
+                        });
+
+                    });
+                }
+                
+                if(json.dadospedidos.salgados){
+                    count_salgado = (json.dadospedidos.salgados.length - 1);
+
+                    $.each(json.dadospedidos.salgados, function (index, value) {
+
+                        if (count_salgado > index) {
+                            $("#add_salgado").trigger('click');
+                        }
+
+                        $.each(json.dadospedidos.salgados[index], function (index_sub, value_sub) {
+
+
+
+
+                            var tipo = $("input[name='" + index_sub + "']").attr("type");
+
+                            console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                            if (tipo === "radio") {
+                                if (value_sub === '0') {
+                                    $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+
+                                } else {
+
+                                    $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                }
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                            }
+
+                            if (tipo === "number" || tipo === "text") {
+
+                                $("input[name='" + index_sub + "']").val(value_sub);
+
+//                  
+
+                            }
+
+                            if (typeof tipo === "undefined") {
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+
+                            }
+
+                        });
+
+                    });
+                }
+                
+                if(json.dadospedidos.refrigerantes){
+                    count_refrigerante = (json.dadospedidos.refrigerantes.length - 1);
+
+                    $.each(json.dadospedidos.refrigerantes, function (index, value) {
+
+                        if (count_refrigerante > index) {
+                            $("#add_refrigerante").trigger('click');
+                        }
+
+                        $.each(json.dadospedidos.refrigerantes[index], function (index_sub, value_sub) {
+
+
+
+
+                            var tipo = $("input[name='" + index_sub + "']").attr("type");
+
+                            console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                            if (tipo === "radio") {
+                                if (value_sub === '0') {
+                                    $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+
+                                } else {
+
+                                    $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                }
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+                            }
+
+                            if (tipo === "number" || tipo === "text") {
+
+                                $("input[name='" + index_sub + "']").val(value_sub);
+
+//                  
+
+                            }
+
+                            if (typeof tipo === "undefined") {
+                                $("." + index_sub).html("");
+                                $("[name='" + index_sub + "']").html(value_sub);
+
+                            }
+
+                        });
+
+                    });
+                }    
+                    //                  console.log(index + '=' + value);
+
 
 
                 }

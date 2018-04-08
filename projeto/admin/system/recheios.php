@@ -8,9 +8,9 @@
         </ol>
     </div>
     <div class="col-md-6 col-4 align-self-center">
-    <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="recheios" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
-            
-        
+        <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="recheios" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
+
+
     </div>
 
 </div>
@@ -20,49 +20,53 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="bgc-white bd bdrs-3 p-20 mB-20">
-                    <table id="recheiosTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Recheios</th>
-                                <th>Preço</th>
-                                <th>Tipo</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                            <table id="recheiosTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Recheios</th>
+                                        <th>Preço</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
 
-                        <tbody>
+                                <tbody>
 
-                            <?php
-                            $read = new Read;
+                                    <?php
+                                    $read = new Read;
 
-                            $read->ExeRead('recheios', "ORDER BY recheio_id DESC");
+                                    $read->ExeRead('recheios', "ORDER BY recheio_id DESC");
 
-                            foreach ($read->getResult() as $value):
-                                extract($value);
-                                if (empty($recheio_nome)):
-                                    $Delete = new Delete;
-                                    $Delete->ExeDelete('recheios', "WHERE recheio_id =:id", "id={$recheio_id}");
-                                else:
-                                    $recheio_preco_kg = number_format($recheio_preco_kg, 2, ',', '.');
+                                    foreach ($read->getResult() as $value):
+                                        extract($value);
+                                        if (empty($recheio_nome)):
+                                            $Delete = new Delete;
+                                            $Delete->ExeDelete('recheios', "WHERE recheio_id =:id", "id={$recheio_id}");
+                                        else:
+                                            $recheio_preco_kg = number_format($recheio_preco_kg, 2, ',', '.');
+                                            ?>
+
+
+                                            <tr id="<?= $recheio_id; ?>">
+                                                <td><?= $recheio_nome; ?></td>
+                                                <td><?= $recheio_preco_kg; ?></td>
+                                                <td><?= $recheio_tipo == 0 ? 'Normal' : 'Especial'; ?></td>
+                                                <td><?= $recheio_status == 0 ? 'Inativo' : 'Ativo'; ?></td>
+                                                <td><button class="btn btn-warning j_action" data-callback="recheios" data-callback_action="manager" data-id="<?= $recheio_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="recheios" data-callback_action="delete" data-id="<?= $recheio_id; ?>" data-name="<?= $recheio_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-trash-o"></i> Apagar</button></td>
+                                            </tr>
+                                        <?php
+                                        endif;
+                                    endforeach;
                                     ?>
 
-
-                                    <tr id="<?= $recheio_id; ?>">
-                                        <td><?= $recheio_nome; ?></td>
-                                        <td><?= $recheio_preco_kg; ?></td>
-                                        <td><?= $recheio_tipo == 0 ? 'Normal' : 'Especial'; ?></td>
-                                        <td><?= $recheio_status == 0 ? 'Inativo' : 'Ativo'; ?></td>
-                                        <td><button class="btn btn-warning j_action" data-callback="recheios" data-callback_action="manager" data-id="<?= $recheio_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger"  data-callback="recheios" data-callback_action="delete" data-id="<?= $recheio_id; ?>" data-name="<?= $recheio_nome; ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-trash-o"></i> Apagar</button></td>
-                                    </tr>
-                                <?php
-                                endif;
-                            endforeach;
-                            ?>
-
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

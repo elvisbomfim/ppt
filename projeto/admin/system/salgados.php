@@ -20,6 +20,8 @@
 
         <div class="row">
             <div class="col-md-12">
+                <div class="card">
+            <div class="card-block">
                 <div class="bgc-white bd bdrs-3 p-20 mB-20">
                     <table id="salgadosTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
@@ -63,6 +65,8 @@
                         </tbody>
                     </table>
                 </div>
+                    </div>
+                        </div>
             </div>
         </div>
 

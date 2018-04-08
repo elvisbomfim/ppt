@@ -8,9 +8,9 @@
         </ol>
     </div>
     <div class="col-md-6 col-4 align-self-center">
-    <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
-            
-        
+        <h4 class="c-grey-900 mB-20"> <button class="btn btn-success j_action pull-right" data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button></h4>
+
+
     </div>
 
 </div>
@@ -20,61 +20,55 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="bgc-white bd bdrs-3 p-20 mB-20">
-                    <table id="clientesTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Telefone</th>
-                                <th>Celular</th>
-                                <th>Data de nascimento</th>
-                                <th>Cep</th>
-                                <th>Rua</th>
-                                <th>Bairro</th>
-                                <th>Número</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                            <table id="clientesTable" class="table tablePPT table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Telefone</th>
+                                        <th>Celular</th>
+                                        <th>Data de nascimento</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
 
-                        <tbody>
+                                <tbody>
 
-                            <?php
-                            $read = new Read;
+                                    <?php
+                                    $read = new Read;
 
-$read->ExeRead('clientes', "ORDER BY cliente_id DESC");
+                                    $read->ExeRead('clientes', "ORDER BY cliente_id DESC");
 
-                            foreach ($read->getResult() as $value):
-                                extract($value);
-                            if(empty($cliente_nome)):
-                                
-                                $Delete = new Delete;
-                            
-                            $Delete->ExeDelete('clientes', "WHERE cliente_id =:id", "id={$cliente_id}");
-                                
-                                else:
-                            
-                                ?>
+                                    foreach ($read->getResult() as $value):
+                                        extract($value);
+                                        if (empty($cliente_nome)):
+
+                                            $Delete = new Delete;
+
+                                            $Delete->ExeDelete('clientes', "WHERE cliente_id =:id", "id={$cliente_id}");
+
+                                        else:
+                                            ?>
 
 
-                                <tr id="<?= $cliente_id; ?>">
-                                    <td><?= $cliente_nome; ?></td>
-                                    <td><?= $cliente_telefone_1; ?></td>
-                                    <td><?= $cliente_telefone_2; ?></td>
-                                    <td><?= $cliente_data_nascimento; ?></td>
-                                    <td><?= $cliente_cep; ?></td>
-                                    <td><?= $cliente_rua; ?></td>
-                                    <td><?= $cliente_bairro; ?></td>
-                                    <td><?= $cliente_numero; ?></td>
-                                    <td><button class="btn btn-warning j_action" data-callback="clientes" data-callback_action="manager" data-id="<?= $cliente_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger j_action"  data-callback="clientes" data-callback_action="delete" data-id="<?= $cliente_id; ?>"><i class="fa fa-trash-o"></i> Apagar</button></td>
-                                </tr>
-                                <?php
-                                
-                                endif;
-                            endforeach;
-                            ?>
+                                            <tr id="<?= $cliente_id; ?>">
+                                                <td><?= $cliente_nome; ?></td>
+                                                <td><?= $cliente_telefone_1; ?></td>
+                                                <td><?= $cliente_telefone_2; ?></td>
+                                                <td><?= date("d/m/Y", strtotime($cliente_data_nascimento)); ?></td>
+                                                <td><button class="btn btn-warning j_action" data-callback="clientes" data-callback_action="manager" data-id="<?= $cliente_id; ?>"><i class="fa fa-edit"></i> Editar</button> <button class="btn btn-danger j_action"  data-callback="clientes" data-callback_action="delete" data-id="<?= $cliente_id; ?>"><i class="fa fa-trash-o"></i> Apagar</button></td>
+                                            </tr>
+                                        <?php
+                                        endif;
+                                    endforeach;
+                                    ?>
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

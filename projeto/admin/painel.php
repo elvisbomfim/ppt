@@ -43,7 +43,7 @@ endif;
 
         <!-- Bootstrap Core CSS -->
         <link href="<?= BASE; ?>admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<!--        <link href="<?= BASE; ?>admin/assets/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>-->
+
 
         <!-- Custom CSS -->
         <link href="<?= BASE; ?>admin/css/select2.min.css" rel="stylesheet" type="text/css"/>
@@ -53,7 +53,8 @@ endif;
         <!-- You can change the theme colors from here -->
         <link href="<?= BASE; ?>admin/css/colors/blue.css" id="theme" rel="stylesheet">
         <link href="<?= BASE; ?>admin/css/estilo-cupom.css" rel="stylesheet">
-
+        <link href="<?= BASE; ?>admin/assets/plugins/DataTables/datatables.min.css" rel="stylesheet" type="text/css"/>
+                
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -152,7 +153,7 @@ endif;
         <!-- Bootstrap tether Core JavaScript -->
         <script src="<?= BASE ?>admin/assets/plugins/bootstrap/js/tether.min.js"></script>
         <script src="<?= BASE ?>admin/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-       <!-- <script src="<?= BASE ?>admin/assets/plugins/datatables/datatables.min.js" type="text/javascript"></script>-->
+        <script src="<?= BASE ?>admin/assets/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
         <!-- slimscrollbar scrollbar JavaScript -->
         <script src="<?= BASE ?>admin/js/jquery.slimscroll.js"></script>
         <!--Wave Effects -->
@@ -173,13 +174,45 @@ endif;
         <!-- ============================================================== -->
         <script src="<?= BASE ?>admin/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
         <script src="<?= BASE ?>admin/js/adicionar-input.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>admin/js/motor.js"></script>
+        <script src="<?= BASE ?>admin/js/motor.js?=v<?= time()?>"></script>
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
         
         <script src="<?= BASE ?>admin/js/select2.min.js" type="text/javascript"></script>
         
+        
+        
         <script>
+            //datatables
+            $(document).ready( function () {
+    $('.tablePPT').DataTable({
+        responsive: true,
+       "language": {
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+        "sNext": "Próximo",
+        "sPrevious": "Anterior",
+        "sFirst": "Primeiro",
+        "sLast": "Último"
+    },
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
+    }
+}
+    });
+} );
+
 
             //mascara
             $(document).ready(function () {

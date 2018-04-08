@@ -16,56 +16,63 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="bgc-white bd bdrs-3 p-20 mB-20">
-            <table id="pedidosTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Nº Pedido</th>
-                        <th>Cliente</th>
-                        <th>Data Criação</th>
-                        <th>Data Retirada</th>
-                        <th>Total do Pedido</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+        <div class="card">
+            <div class="card-block">
+                <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                    <table id="pedidosTable" class="tablePPT table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Nº Pedido</th>
+                                <th>Cliente</th>
+                                <th>Data Criação</th>
+                                <th>Data Retirada</th>
+                                <th>Total do Pedido</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
 
-                <tbody>
+                        <tbody>
 
-                    <?php
-                    $read = new Read;
+                            <?php
+                            $read = new Read;
 
-                    $read->FullRead("SELECT * FROM pedidos p "
-                            . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id");
+                            $read->FullRead("SELECT * FROM pedidos p "
+                                    . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id");
 
-                    foreach ($read->getResult() as $value):
-                        extract($value);
-                        ?>
+                            foreach ($read->getResult() as $value):
+                                extract($value);
+                                ?>
 
-                        <?php
+                                <?php
 //                        if (empty($categoria_bolo_nome)):
 //                            $Delete = new Delete;
 //                            $Delete->ExeDelete('categoria_bolos', 'WHERE categoria_bolo_id =:id', "id={$categoria_bolo_id}");
 //                        else:
-                        $pedido_total = number_format($pedido_total, 2, ',', '.');
+                                $pedido_total = number_format($pedido_total, 2, ',', '.');
 //                            $categoria_bolo_kit_festa = number_format($categoria_bolo_kit_festa, 2, ',', '.');
-                        ?>
+                                ?>
 
-                        <tr id="<?= $pedido_id; ?>">
-                            <td><?= $pedido_id; ?></td>
-                            <td><?= $cliente_nome; ?></td>
-                            <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
-                            <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
-                            <td><?= $pedido_total ?></td>
-                            <td><button class="btn btn-warning j_action get_action_name" data-action-name="update" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Editar</button> 
-                                <button class="btn btn-danger"  data-callback="pedidos" data-callback_action="delete" data-id="<?php // $categoria_bolo_id;                 ?>" data-name="<?php // $categoria_bolo_nome;                 ?>" data-toggle="modal" data-target="#confirmar-apagar"><i class="fa fa-ban"></i> Cancelar</button> <button class="btn btn-warning j_action" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i> Duplicar</button></td>
-                        </tr>
-                        <?php
-                        //   endif;
-                    endforeach;
-                    ?>
+                                <tr id="<?= $pedido_id; ?>">
+                                    <td>P<?= $pedido_id; ?></td>
+                                    <td><?= $cliente_nome; ?></td>
+                                    <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
+                                    <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
+                                    <td><?= $pedido_total ?></td>
+                                    <td>
+                                        <button class="btn btn-warning j_action get_action_name" title="Editar Pedido" data-action-name="update" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i></button> 
+                                        <button class="btn btn-primary j_action" title="Duplicar Pedido" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-copy"></i> </button>
+                                        <button class="btn btn-danger" title="Cancelar Pedido"  data-callback="pedidos" data-callback_action="cancelar" data-id="<?php // $categoria_bolo_id;                  ?>" data-name="<?php // $categoria_bolo_nome;                  ?>" data-toggle="modal" data-target="#confirmar-cancelar"><i class="fa fa-ban"></i></button> 
+                                    </td>
+                                </tr>
+                                <?php
+                                //   endif;
+                            endforeach;
+                            ?>
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -96,7 +103,7 @@
                                     <div class="form-group">
                                         <label>Nome do Cliente:  </label>
                                         <br>
-                                        <select required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
+                                        <select id="cliente_nome_select" required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
                                         <button type="button" class="btn btn-primary j_action" data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button>
                                     </div>
                                 </div>
@@ -104,10 +111,10 @@
                                     <div class="form-group">
                                         <label>Data de criação:</label>
                                         <?php
-                                        $date_now = date('Y-m-d H:i:s');
+                                        $date_now = date('Y-m-d H:i');
                                         $datetime = new DateTime($date_now);
                                         ?>
-                                        <input type="datetime-local" value="<?= $datetime->format('Y-m-d\TH:i:s') ?>" name="pedido_data_criacao" class="form-control pedido_data_criacao" required="" >
+                                        <input type="datetime-local" value="<?= $datetime->format('Y-m-d\TH:i') ?>" name="pedido_data_criacao" class="form-control pedido_data_criacao" required="" >
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -544,7 +551,7 @@
                                 <input type="text" name="pedido_total" class="form-control pedido_total" id="pedido_total"  readonly="readonly">
                             </div>
                             <div class="form-check">
-                                <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" value="1">
+                                <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" id="kit_festa" value="1">
                                     Kit festa</label>
                             </div>
                         </div>
@@ -674,7 +681,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="cupomfiscalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
@@ -699,349 +706,3 @@
     </div>
 </div>
 
-<?php
-$Read->FullRead("SELECT * FROM pedidos p "
-        . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
-        . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
-        . "LEFT JOIN pedidos_docinho pd ON pd.pedido_id = p.pedido_id "
-        . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
-        . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
-        . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
-        . "WHERE p.pedido_id =:id ", "id=7");
-
-extract($Read->getResult()[0]);
-
-
-
-echo '<pre>';
-var_dump($pedido_array_bolo);
-echo '</pre>';
-
-echo("<table class='printer-ticket'>
- 	<thead>
-		<tr>
-			<th class='title' colspan='3'>Principe da Torta</th>
-		</tr>
-		<tr>
-			<th colspan='3'>" . $datetime->format('Y-m-d H:i:s') . "</th>
-		</tr>
-		<tr>
-			<th colspan='3'>
-				" . $cliente_nome . " <br />
-				000.000.000-00
-			</th>
-		</tr>
-		<tr>
-			<th class='ttu' colspan='3'>
-				<b>Cupom não fiscal</b>
-			</th>
-		</tr>
-
-</thead>
-        
-	<tbody>");
-
-if (!empty($pedido_array_bolo)):
-    
-    echo "<tr class = 'sup ttu p--0'>
-<td colspan = '3' class='titulos'>
-<b>Bolos</b>
-</td>
-</tr>";
-
-    $array_bolo = json_decode($pedido_array_bolo, true);
-
-    foreach ($array_bolo as $key => $bolo):
-        extract($bolo);
-        if (!empty($categoria_bolo_id)):
-            $Read->ExeRead('categoria_bolos', "WHERE categoria_bolo_id =:categoria_id", "categoria_id={$categoria_bolo_id}");
-            extract($Read->getResult()[0]);
-            
-          echo "  <tr class='top'>
-			<td colspan='3'><b>$categoria_bolo_nome</b></td>
-		</tr>";
-           
-        endif;
-
-        if (!empty($categoria_bolo_preco_kg)):
-            echo "<tr>
-			<td>R$ ".($pedido_is_kit_festa == 1 ? $categoria_bolo_kit_festa : $categoria_bolo_preco_kg)."</td>
-			<td>$pedido_bolo_peso kg</td>
-			<td>R$$pedido_bolo_valor</td>
-		</tr>";          
-        endif;      
-
-       
-
-        if (!empty($recheio_comum)):
-            
-            $recheio = '';
-            foreach ($recheio_comum as $recheio_id):
-                //extract($comum);
-                $Read->ExeRead('recheios', "WHERE recheio_id =:recheio_id AND recheio_tipo=0", "recheio_id={$recheio_id}");
-                extract($Read->getResult()[0]);
-                 $recheio .= $recheio_nome .", ";
-            endforeach;
-            
-            $recheio = rtrim($recheio, ', ');
-            
-          echo "  <tr>
-			<td colspan='3'><b>Recheio Comum:</b> $recheio</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>";
-
-
-        endif;
-
-        if (!empty($recheio_especial)):
-            $recheio = '';
-        $preco = '';
-            foreach ($recheio_especial as $recheio_id):
-                //extract($comum);
-                $Read->ExeRead('recheios', "WHERE recheio_id =:recheio_id AND recheio_tipo=1", "recheio_id={$recheio_id}");
-                extract($Read->getResult()[0]);
-                $recheio .= $recheio_nome .", ";
-                $preco +=  $recheio_preco_kg ;
-                
-            endforeach;
-            
-              $recheio = rtrim($recheio, ', ');
-            
-          echo "  <tr>
-			<td colspan='3'><b>Recheio Especial:</b> $recheio</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td>R$".number_format($preco, 2, ',', '.')."</td>
-		</tr>";
-
-        endif;
-
-        if (!empty($pedido_bolo_papel_arroz)):
-            
-         echo "  <tr>
-			<td colspan='3'><b>Papel de arroz:</b> $pedido_bolo_papel_arroz</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>";
-        endif;
-
-        if (!empty($pedido_bolo_cores)):
-            
-                 echo "  <tr>
-			<td colspan='3'><b>Cores:</b> $pedido_bolo_cores</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>";
-        endif;
-
-        if (!empty($pedido_bolo_escrita)):
-            
-                 echo "  <tr>
-			<td colspan='3'><b>Escrita:</b> $pedido_bolo_escrita</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>";
-        endif;
-
-        if (!empty($pedido_bolo_observacoes)):
-            
-                 echo "  <tr>
-			<td colspan='3'><b>Observações:</b> $pedido_bolo_observacoes</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>";
-        endif;
-
-    endforeach;
-
-endif; //END BOLO
-
-if (!empty($pedido_array_torta)):
-    
-    echo "<tr class = 'sup ttu p--0'>
-<td colspan = '3' class='titulos'>
-<b>Tortas</b>
-</td>
-</tr>";
-
-    $array_torta = json_decode($pedido_array_torta, true);
-
-    foreach ($array_torta as $key => $torta):
-        extract($torta);
-        if (!empty($categoria_torta_id)):
-            $Read->ExeRead('categoria_tortas', "WHERE categoria_torta_id =:categoria_id", "categoria_id={$categoria_torta_id}");
-            extract($Read->getResult()[0]);
-            
-          echo "  <tr class='top'>
-			<td colspan='3'><b>$categoria_torta_nome</b></td>
-		</tr>";
-           
-        endif;
-
-        if (!empty($categoria_torta_preco_kg)):
-            echo "<tr>
-			<td>R$ ".($pedido_is_kit_festa == 1 ? $categoria_torta_kit_festa : $categoria_torta_preco_kg)."</td>
-			<td>$pedido_torta_peso kg</td>
-			<td>R$$pedido_torta_valor</td>
-		</tr>";          
-        endif;      
-
-    endforeach;
-
-endif; //END Torta
-
-if (!empty($pedido_array_salgado)):
-    
-    echo "<tr class = 'sup ttu p--0'>
-<td colspan = '3' class='titulos'>
-<b>salgados</b>
-</td>
-</tr>";
-
-    $array_salgado = json_decode($pedido_array_salgado, true);
-
-    foreach ($array_salgado as $key => $salgado):
-        extract($salgado);
-        if (!empty($salgado_id)):
-            $Read->ExeRead('salgados', "WHERE salgado_id =:salgado_id", "salgado_id={$salgado_id}");
-            extract($Read->getResult()[0]);
-            
-          echo "  <tr class='top'>
-			<td colspan='3'><b>$salgado_nome</b></td>
-		</tr>";
-           
-        endif;
-
-        if (!empty($salgado_preco)):
-            echo "<tr>
-			<td>R$".($pedido_is_kit_festa == 1 ? $salgado_preco_kit_festa : $salgado_preco)."</td>
-			<td>$pedido_salgado_qtd Qtd.</td>
-			<td>R$$pedido_salgado_valor</td>
-		</tr>";          
-        endif;      
-
-    endforeach;
-
-endif; //END salgado
-
-if (!empty($pedido_array_docinho)):
-    
-    echo "<tr class = 'sup ttu p--0'>
-<td colspan = '3' class='titulos'>
-<b>docinhos</b>
-</td>
-</tr>";
-
-    $array_docinho = json_decode($pedido_array_docinho, true);
-
-    foreach ($array_docinho as $key => $docinho):
-        extract($docinho);
-        if (!empty($docinho_id)):
-            $Read->ExeRead('docinhos', "WHERE docinho_id =:docinho_id", "docinho_id={$docinho_id}");
-            extract($Read->getResult()[0]);
-            
-          echo "  <tr class='top'>
-			<td colspan='3'><b>$docinho_nome</b></td>
-		</tr>";
-           
-        endif;
-
-        if (!empty($docinho_preco)):
-            echo "<tr>
-			<td>R$ ".($pedido_is_kit_festa == 1 ? $docinho_preco_kit_festa : $docinho_preco)."</td>
-			<td>$pedido_docinho_qtd Qtd.</td>
-			<td>R$$pedido_docinho_valor</td>
-		</tr>";          
-        endif;      
-
-    endforeach;
-
-endif; //END docinho
-
-if (!empty($pedido_array_refrigerante)):
-    
-    echo "<tr class = 'sup ttu p--0'>
-<td colspan = '3' class='titulos'>
-<b>refrigerantes</b>
-</td>
-</tr>";
-
-    $array_refrigerante = json_decode($pedido_array_refrigerante, true);
-
-    foreach ($array_refrigerante as $key => $refrigerante):
-        extract($refrigerante);
-        if (!empty($refrigerante_id)):
-            $Read->ExeRead('refrigerantes', "WHERE refrigerante_id =:refrigerante_id", "refrigerante_id={$refrigerante_id}");
-            extract($Read->getResult()[0]);
-            
-          echo "  <tr class='top'>
-			<td colspan='3'><b>$refrigerante_nome</b></td>
-		</tr>";
-           
-        endif;
-
-        if (!empty($refrigerante_preco)):
-            echo "<tr>
-			<td>R$".($pedido_is_kit_festa == 1 ? $refrigerante_preco_kit_festa : $refrigerante_preco )."</td>
-			<td>$pedido_refrigerante_qtd Qtd.</td>
-			<td>R$$pedido_refrigerante_valor</td>
-		</tr>";          
-        endif;      
-
-    endforeach;
-
-endif; //END refrigerante
-
-echo ("</tbody>
-<tfoot>
-<tr class = 'sup ttu p--0'>
-<td colspan = '3'>
-<b>Totais</b>
-</td>
-</tr>
-");
-if($pedido_is_kit_festa == 1):
-
-echo("<tr class = 'ttu'>
-<td colspan = '2'>Kit Festa</td>
-<td align = 'right'></td>
-</tr>");
-
-endif;
-
-echo("
-<tr class = 'ttu'>
-<td colspan = '2'>Total</td>
-<td align = 'right'>R$$pedido_total</td>
-</tr>
-
-<tr class = 'sup'>
-<td colspan = '3' align = 'center'>
-<b>Pedido:</b>
-</td>
-</tr>
-<tr class = 'sup'>
-<td colspan = '3' align = 'center'>
-".BASE."
-</td>
-</tr>
-</tfoot>
-</table>");
