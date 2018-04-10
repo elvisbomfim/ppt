@@ -54,7 +54,7 @@ endif;
         <link href="<?= BASE; ?>admin/css/colors/blue.css" id="theme" rel="stylesheet">
         <link href="<?= BASE; ?>admin/css/estilo-cupom.css" rel="stylesheet">
         <link href="<?= BASE; ?>admin/assets/plugins/DataTables/datatables.min.css" rel="stylesheet" type="text/css"/>
-                
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -88,32 +88,32 @@ endif;
                     <!-- ============================================================== -->
                     <!-- Bread crumb and right sidebar toggle -->
                     <!-- ============================================================== -->
-  
+
                     <!-- ============================================================== -->
                     <!-- End Bread crumb and right sidebar toggle -->
                     <!-- ============================================================== -->
                     <!-- ============================================================== -->
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
-                   
-                        <?php
-                        //QUERY STRING
-                        if (!empty($getexe)):
-                            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
-                        else:
-                            $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
-                        endif;
 
-                        if (file_exists($includepatch)):
-                            require_once($includepatch);
-                        else:
-                            echo "<div class=\"content notfound\">";
-                            //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
-                            echo "</div>";
-                        endif;
-                        ?>
+                    <?php
+                    //QUERY STRING
+                    if (!empty($getexe)):
+                        $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . strip_tags(trim($getexe) . '.php');
+                    else:
+                        $includepatch = __DIR__ . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'index.php';
+                    endif;
 
-                   
+                    if (file_exists($includepatch)):
+                        require_once($includepatch);
+                    else:
+                        echo "<div class=\"content notfound\">";
+                        //"<b>Erro ao incluir tela:</b> Erro ao incluir o controller /{$getexe}.php!", WS_ERROR);
+                        echo "</div>";
+                    endif;
+                    ?>
+
+
                 </div>
             </div>
         </div>
@@ -173,45 +173,46 @@ endif;
         <!-- Style switcher -->
         <!-- ============================================================== -->
         <script src="<?= BASE ?>admin/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
-        <script src="<?= BASE ?>admin/js/adicionar-input.js" type="text/javascript"></script>
-        <script src="<?= BASE ?>admin/js/motor.js?=v<?= time()?>"></script>
+        <script src="<?= BASE ?>admin/js/adicionar-input.js?=v<?= time() ?>" type="text/javascript"></script>
+        <script src="<?= BASE ?>admin/js/motor.js?=v<?= time() ?>"></script>
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
-        
+
         <script src="<?= BASE ?>admin/js/select2.min.js" type="text/javascript"></script>
-        
-        
-        
+
+
+
         <script>
             //datatables
-            $(document).ready( function () {
-    $('.tablePPT').DataTable({
-        responsive: true,
-       "language": {
-    "sEmptyTable": "Nenhum registro encontrado",
-    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-    "sInfoPostFix": "",
-    "sInfoThousands": ".",
-    "sLengthMenu": "_MENU_ resultados por página",
-    "sLoadingRecords": "Carregando...",
-    "sProcessing": "Processando...",
-    "sZeroRecords": "Nenhum registro encontrado",
-    "sSearch": "Pesquisar",
-    "oPaginate": {
-        "sNext": "Próximo",
-        "sPrevious": "Anterior",
-        "sFirst": "Primeiro",
-        "sLast": "Último"
-    },
-    "oAria": {
-        "sSortAscending": ": Ordenar colunas de forma ascendente",
-        "sSortDescending": ": Ordenar colunas de forma descendente"
-    }
-}
-    });
-} );
+            $(document).ready(function () {
+                $('.tablePPT').DataTable({
+                    "order": [[0, "desc"]],
+                    responsive: true,
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_ resultados por página",
+                        "sLoadingRecords": "Carregando...",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Ordenar colunas de forma ascendente",
+                            "sSortDescending": ": Ordenar colunas de forma descendente"
+                        }
+                    }
+                });
+            });
 
 
             //mascara
@@ -269,9 +270,9 @@ endif;
                         return message;
                     },
                     noResults: function () {
-                              
-                    return 'Nenhum resultado encontrado';
-                        
+
+                        return 'Nenhum resultado encontrado';
+
                     },
                     searching: function () {
                         return 'Buscando…';
@@ -313,6 +314,33 @@ endif;
             //              );
             //          });
         </script>
+        
+        <!-- Modal -->
+<div class="modal fade" id="cupomfiscalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form>
+                    <div class="class-cupom"></div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary" form="">Imprimir</button>
+            </div>
+        </div>
+    </div>
+</div>
     </body>
 
 </html>

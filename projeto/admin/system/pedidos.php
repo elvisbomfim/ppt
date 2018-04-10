@@ -1,5 +1,4 @@
 <div class="row page-titles">
-
     <div class="col-md-6 col-8 align-self-center">
         <h3 class="text-themecolor m-b-0 m-t-0">Pedidos</h3>
         <ol class="breadcrumb">
@@ -9,9 +8,7 @@
     </div>
     <div class="col-md-6 col-4 align-self-center">
         <button class="btn btn-success btn-add-novo-pedido pull-right get_action_name" data-action-name="create" data-toggle="modal" data-target="#pedidosModal"><i class="fa fa-plus"></i> Cadastrar novo</button>
-
     </div>
-
 </div>
 
 <div class="row">
@@ -27,6 +24,7 @@
                                 <th>Data Criação</th>
                                 <th>Data Retirada</th>
                                 <th>Total do Pedido</th>
+                                <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -55,9 +53,23 @@
                                 <tr id="<?= $pedido_id; ?>">
                                     <td>P<?= $pedido_id; ?></td>
                                     <td><?= $cliente_nome; ?></td>
-                                    <td><?= date('d/m/Y', strtotime($pedido_data_criacao)); ?></td>
-                                    <td><?= date('d/m/Y', strtotime($pedido_data_retirada)); ?></td>
+                                    <td><?= date('d/m/Y H:i', strtotime($pedido_data_criacao)); ?></td>
+                                    <td><?= date('d/m/Y H:i', strtotime($pedido_data_retirada)); ?></td>
                                     <td><?= $pedido_total ?></td>
+                                    <?php 
+                                        switch ($pedido_status):
+                                            case '0':
+                                                break;
+                                            case '1':
+                                                break;
+                                            case '2':
+                                                break;
+                                            case '3':
+                                                break;
+                                        endswitch;
+                                    ?>
+                                    
+                                    <td><?= $pedido_status ?></td>
                                     <td>
                                         <button class="btn btn-warning j_action get_action_name" title="Editar Pedido" data-action-name="update" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i></button> 
                                         <button class="btn btn-primary j_action" title="Duplicar Pedido" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-copy"></i> </button>
@@ -103,7 +115,7 @@
                                     <div class="form-group">
                                         <label>Nome do Cliente:  </label>
                                         <br>
-                                        <select id="cliente_nome_select" required="" name="cliente_id" class="cliente_nome_id form-control" style="width: 100%"></select>
+                                        <select id="cliente_nome_select" required="" name="cliente_id" class="cliente_nome_id form-control selects-pedidos" style="width: 100%"></select>
                                         <button type="button" class="btn btn-primary j_action" data-callback="clientes" data-callback_action="manager"><i class="fa fa-plus"></i> Cadastrar novo</button>
                                     </div>
                                 </div>
@@ -182,7 +194,7 @@
 
                                                                 $Read->ExeRead('categoria_bolos', " WHERE categoria_bolo_status = 1");
                                                                 ?>
-                                                                <select class="form-control categoria_bolo_id" name="bolos[0][categoria_bolo_id]">
+                                                                <select class="form-control categoria_bolo_id selects-pedidos" name="bolos[0][categoria_bolo_id]">
                                                                     <option selected="" disabled="" value="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -268,7 +280,7 @@
                                                         ?>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" class="pedido_bolo_recheio_especial1" name="bolos[0][recheio_especial][]" >
+                                                                <select class="form-control selects-pedidos pedido_bolo_recheio_especial1" name="bolos[0][recheio_especial][]" >
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -281,7 +293,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" class="pedido_bolo_recheio_especial2" name="bolos[0][recheio_especial][]" >
+                                                                <select class="form-control pedido_bolo_recheio_especial2 selects-pedidos" name="bolos[0][recheio_especial][]" >
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -294,7 +306,7 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <select class="form-control" class="pedido_bolo_recheio_especial3" name="bolos[0][recheio_especial][]">
+                                                                <select class="form-control pedido_bolo_recheio_especial3 selects-pedidos" name="bolos[0][recheio_especial][]">
                                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                                     <?php
                                                                     foreach ($Read->getResult() as $value):
@@ -364,7 +376,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Categoria:</label>
-                                                <select class="form-control" name="tortas[0][categoria_torta_id]">
+                                                <select class="form-control selects-pedidos" name="tortas[0][categoria_torta_id]">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -405,7 +417,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Salgado:</label>
-                                                <select name="salgados[0][salgado_id]" class="form-control">
+                                                <select name="salgados[0][salgado_id]" class="form-control selects-pedidos">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -446,7 +458,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Doces:</label>
-                                                <select name="doces[0][docinho_id]" class="form-control">
+                                                <select name="doces[0][docinho_id]" class="form-control selects-pedidos">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -487,7 +499,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Refrigerante:</label>
-                                                <select name="refrigerantes[0][refrigerante_id]" class="form-control">
+                                                <select name="refrigerantes[0][refrigerante_id]" class="form-control selects-pedidos">
                                                     <option selected="" value="" disabled="">Selecione a categoria</option>
                                                     <?php
                                                     foreach ($Read->getResult() as $value):
@@ -679,30 +691,5 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="cupomfiscalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
 
-            <div class="modal-body">
-
-                <form>
-                    <div class="class-cupom"></div>
-
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary" form="">Imprimir</button>
-            </div>
-        </div>
-    </div>
-</div>
 

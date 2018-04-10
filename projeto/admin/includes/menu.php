@@ -8,7 +8,7 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
                 <li>
-                    <a href="<?= BASE ?>admin/painel.php" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Painel</a>
+                    <a href="<?= BASE ?>admin/painel.php?exe=index&pedidos=bolo" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Painel</a>
                 </li>
                 <li>
                     <a href="<?= BASE ?>admin/painel.php?exe=pedidos" class="waves-effect"><i class="fa fa-chevron-circle-right m-r-10" aria-hidden="true"></i>Pedidos</a>

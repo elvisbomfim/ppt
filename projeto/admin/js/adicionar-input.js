@@ -2,8 +2,14 @@ $(function () {
 
 
     $('#pedidosModal').on('show.bs.modal', function () {
-        $(this).find('form')[0].reset();
+        $("#pedidos-form")[0].reset();
+        $(".selects-pedidos option:first").prop('selected',true);
+        //$('#pedidos-form option[selected="selected"]').each(function() {
+        //    $(this).removeAttr('selected');
+        //});
+        
         $('.cliente_nome_id').html("");
+         $('.nav-tabs a:first').tab('show');
         localStorage.setItem('abriu_bolo', "");
         localStorage.setItem('abriu_torta', "");
         localStorage.setItem('abriu_salgado', "");
@@ -51,9 +57,11 @@ $(function () {
 
 
     $('#pedidosModal').on('hidden.bs.modal', function () {
-        $(this).find('form')[0].reset();
+        $("#pedidos-form")[0].reset();
+      
         // $(".tab-pane").each(function () {
         $(this).find(".nova_lista").html("");
+         $('.nav-tabs a:first').tab('show');
         // $(this).find('.listas').hide();
         // });
         $('.cliente_nome_id').html("");
@@ -192,6 +200,7 @@ $(function () {
 
                        if (typeof ($(this).attr('type')) === 'undefined') {
                             $(this).prop('selectedIndex', 0);
+                             
                             // console.log("to no undefined");
                         } else if ($(this).attr('type') === 'number') {
                             // console.log("to no number");

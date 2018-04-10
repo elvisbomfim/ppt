@@ -18,3 +18,10 @@
 .select2-container {
     z-index: 99999 !important;
 }
+
+table .form-control {
+    padding: .0rem .3rem !important;
+}
+
+
+
