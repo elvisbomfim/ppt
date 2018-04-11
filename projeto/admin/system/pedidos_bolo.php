@@ -7,7 +7,7 @@ $Read = new Read;
         <div class="card">
             <div class="card-block">
         <div class="bgc-white bd bdrs-3 p-20 mB-20">
-            <table class="table tablePPT table-striped table-bordered" cellspacing="0" width="100%">
+            <table data-pedido-nome="bolo" data-callback_action="refresh" class="table tablePPT table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>N° Pedido do Bolo</th>
@@ -19,6 +19,8 @@ $Read = new Read;
                         </thead>
                         <tbody>
                             <?php
+                            $contador = 0;
+                            
                             $Read->FullRead("SELECT *, p.pedido_id as num_pedido FROM pedidos p "
                                     . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
                                     . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
@@ -35,7 +37,7 @@ $Read = new Read;
 
                                         $array_bolo = json_decode($pedido_array_bolo, true);
 
-                                        $i = 0;
+                                       $contador += count($array_bolo);
 
                                         $Read->ExeRead('status');
                                         $tabela_status = $Read->getResult();
@@ -77,4 +79,5 @@ $Read = new Read;
         </div>
     </div>
 </div>
+<input type="hidden" class="contador" value="<?=$contador?>">
 <!-- Row -->

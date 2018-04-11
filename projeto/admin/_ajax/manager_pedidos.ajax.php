@@ -21,7 +21,6 @@ $jSON["tabela"] = "pedidosTable";
 
 $jSON["idmodal"] = "pedidosModal";
 
-
 function verDetalhes($dados) {
     $Read = new Read();
     $array = explode(",", $dados);
@@ -249,7 +248,7 @@ function verDetalhes($dados) {
             endif;
 
             break;
-            
+
         case 'salgado':
 
             if (!empty($pedido_array_salgado)):
@@ -286,7 +285,7 @@ function verDetalhes($dados) {
             endif;
 
             break;
-            
+
         case 'doce':
 
             if (!empty($pedido_array_docinho)):
@@ -347,88 +346,88 @@ switch ($Action):
 
         $ID = $POST['id'];
         $Key = $POST['key'];
-           unset($POST['id'], $POST['key']);
+        unset($POST['id'], $POST['key']);
         $Read->ExeRead("pedidos_bolo", "WHERE pedido_bolo_id =:id", "id={$ID}");
-        
-        if($Read->getResult()):
+
+        if ($Read->getResult()):
             $array_bolo = json_decode($Read->getResult()[0]['pedido_array_bolo'], true);
-            
+
             $array_bolo[$Key]['bolo_status'] = $POST['value'];
-            
+
             $array_bolo = json_encode($array_bolo);
-            
+
             $Dados = [
                 'pedido_array_bolo' => $array_bolo
-            ];            
+            ];
             $Update->ExeUpdate("pedidos_bolo", $Dados, "WHERE pedido_bolo_id =:id", "id={$ID}");
         endif;
-        
+
         break;
-        
-        case 'update-torta':
+
+    case 'update-torta':
 
         $ID = $POST['id'];
         $Key = $POST['key'];
-           unset($POST['id'], $POST['key']);
+        unset($POST['id'], $POST['key']);
         $Read->ExeRead("pedidos_torta", "WHERE pedido_torta_id =:id", "id={$ID}");
-        
-        if($Read->getResult()):
+
+        if ($Read->getResult()):
             $array_torta = json_decode($Read->getResult()[0]['pedido_array_torta'], true);
-            
+
             $array_torta[$Key]['torta_status'] = $POST['value'];
-            
+
             $array_torta = json_encode($array_torta);
-            
+
             $Dados = [
                 'pedido_array_torta' => $array_torta
-            ];            
+            ];
             $Update->ExeUpdate("pedidos_torta", $Dados, "WHERE pedido_torta_id =:id", "id={$ID}");
         endif;
-        
+
         break;
-        
-        case 'update-salgado':
+
+    case 'update-salgado':
 
         $ID = $POST['id'];
         $Key = $POST['key'];
-           unset($POST['id'], $POST['key']);
+        unset($POST['id'], $POST['key']);
         $Read->ExeRead("pedidos_salgado", "WHERE pedido_salgado_id =:id", "id={$ID}");
-        
-        if($Read->getResult()):
+
+        if ($Read->getResult()):
             $array_salgado = json_decode($Read->getResult()[0]['pedido_array_salgado'], true);
-            
+
             $array_salgado[$Key]['salgado_status'] = $POST['value'];
-            
+
             $array_salgado = json_encode($array_salgado);
-            
+
             $Dados = [
                 'pedido_array_salgado' => $array_salgado
-            ];            
+            ];
             $Update->ExeUpdate("pedidos_salgado", $Dados, "WHERE pedido_salgado_id =:id", "id={$ID}");
         endif;
-        
+
         break;
-        
-        case 'update-docinho':
+
+    case 'update-docinho':
 
         $ID = $POST['id'];
         $Key = $POST['key'];
-           unset($POST['id'], $POST['key']);
+        unset($POST['id'], $POST['key']);
         $Read->ExeRead("pedidos_docinho", "WHERE pedido_docinho_id =:id", "id={$ID}");
-        
-        if($Read->getResult()):
+
+        if ($Read->getResult()):
             $array_docinho = json_decode($Read->getResult()[0]['pedido_array_docinho'], true);
-            
+
             $array_docinho[$Key]['docinho_status'] = $POST['value'];
-            
+
             $array_docinho = json_encode($array_docinho);
-            
+
             $Dados = [
                 'pedido_array_docinho' => $array_docinho
-            ];            
+            ];
             $Update->ExeUpdate("pedidos_docinho", $Dados, "WHERE pedido_docinho_id =:id", "id={$ID}");
         endif;
-        
+
         break;
 
     case 'detalhes':
@@ -436,6 +435,112 @@ switch ($Action):
         $jSON['resultcupom'] = verDetalhes($POST['dados']);
 
         $jSON['idmodalcupom'] = "cupomfiscalModal";
+
+        break;
+
+    case 'refresh':
+
+        $contar = 0;
+
+        switch ($POST['pedido_nome']):
+            case 'bolo' :
+                $Read->FullRead("SELECT *, p.pedido_id as num_pedido FROM pedidos p "
+                        . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                        . "LEFT JOIN pedidos_bolo pb ON pb.pedido_id = p.pedido_id "
+                        . "WHERE p.pedido_status != 6");
+                if (!empty($Read->getResult())):
+
+                    foreach ($Read->getResult() as $pedido):
+
+                        extract($pedido);
+
+                        if (!empty($pedido_array_bolo)):
+
+                            $total_bolo = number_format($pedido_bolo_valor_total, 2, ',', '.');
+
+                            $array_bolo = json_decode($pedido_array_bolo, true);
+
+                            $contar += count($array_bolo);
+
+                        endif;
+                    endforeach;
+                endif;
+                break;
+
+            case 'torta' :
+$Read->FullRead("SELECT *, p.pedido_id as num_pedido FROM pedidos p "
+                                    . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                                    . "LEFT JOIN pedidos_torta pb ON pb.pedido_id = p.pedido_id "
+                                    . "WHERE p.pedido_status != 6");
+                            if (!empty($Read->getResult())):
+                                foreach ($Read->getResult() as $pedido):
+                                    extract($pedido);
+
+                                    if (!empty($pedido_array_torta)):
+                                        $total_torta = number_format($pedido_torta_valor_total, 2, ',', '.');
+                                        $array_torta = json_decode($pedido_array_torta, true);
+                                         $contar += count($array_torta);
+                                    endif;
+                                endforeach;
+                            endif;
+                break;
+            case 'doce' :
+ $Read->FullRead("SELECT *, p.pedido_id as num_pedido FROM pedidos p "
+                                    . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                                    . "LEFT JOIN pedidos_docinho pb ON pb.pedido_id = p.pedido_id "
+                                    . "WHERE p.pedido_status != 6");
+                            if (!empty($Read->getResult())):
+
+                                foreach ($Read->getResult() as $pedido):
+
+                                    extract($pedido);
+
+                                    if (!empty($pedido_array_docinho)):
+
+                                        $total_docinho = number_format($pedido_docinho_valor_total, 2, ',', '.');
+
+                                        $array_docinho = json_decode($pedido_array_docinho, true);
+ $contar += count($array_docinho);
+                                       
+
+                                       
+                                    endif;
+                                endforeach;
+                            endif;
+                break;
+            case 'salgado' :
+                
+                $Read->FullRead("SELECT *, p.pedido_id as num_pedido FROM pedidos p "
+                                    . "INNER JOIN clientes c ON c.cliente_id = p.cliente_id "
+                                    . "LEFT JOIN pedidos_salgado pb ON pb.pedido_id = p.pedido_id "
+                                    . "WHERE p.pedido_status != 6");
+                            if (!empty($Read->getResult())):
+
+                                foreach ($Read->getResult() as $pedido):
+
+                                    extract($pedido);
+
+                                    if (!empty($pedido_array_salgado)):
+
+                                        $total_salgado = number_format($pedido_salgado_valor_total, 2, ',', '.');
+
+                                        $array_salgado = json_decode($pedido_array_salgado, true);
+
+                                        $contar += count($array_salgado);
+                                       
+                                    endif;
+                                endforeach;
+                            endif;
+
+                break;
+
+        endswitch;
+
+
+        if($contar != $POST['contador']):            
+            $jSON['redirect'] = BASE."admin/painel.php?exe=index&pedidos=".$POST['pedido_nome'];
+        endif;
+        
 
         break;
 

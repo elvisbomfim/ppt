@@ -177,6 +177,7 @@ endif;
         <script src="<?= BASE ?>admin/js/motor.js?=v<?= time() ?>"></script>
         <script src="<?= BASE ?>admin/js/maskinput.js" type="text/javascript"></script>
         <script src="<?= BASE ?>js/bootstrap-notify.min.js" type="text/javascript"></script>
+        <script src="<?= BASE ?>admin/js/refresh.js" type="text/javascript"></script>
 
         <script src="<?= BASE ?>admin/js/select2.min.js" type="text/javascript"></script>
 

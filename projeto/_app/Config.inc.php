@@ -1,10 +1,19 @@
 <?php
-
-// CONFIGRAÇÕES DO SITE ####################
+if($_SERVER['HTTP_HOST']=='localhost'):
+    // CONFIGRAÇÕES DO SITE LOCALHOST ####################
 define('HOST', 'localhost');
 define('USER', 'root');
 define('PASS', '');
 define('DBSA', 'principe_da_torta');
+    else:   
+// CONFIGRAÇÕES DO SITE ONLINE ####################
+define('HOST', 'localhost');
+define('USER', 'bravosit_pptadm');
+define('PASS', 'q#j)keFSVXVd');
+define('DBSA', 'bravosit_ppt');
+endif;
+
+
 
 // DEFINE SERVIDOR DE E-MAIL ################
 define('MAILUSER', 'email@dominio.com.br');

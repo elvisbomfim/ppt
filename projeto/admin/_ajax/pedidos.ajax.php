@@ -1283,7 +1283,7 @@ switch ($Action):
 
                 $pedido_salgado['pedido_salgado_status'] = 1;
 
-                $Update->ExeUpdate('pedidos_torta', $pedido_torta, "WHERE pedido_id =:pedido_id", "pedido_id={$ID}");
+                $Update->ExeUpdate('pedido_salgado', $pedido_salgado, "WHERE pedido_id =:pedido_id", "pedido_id={$ID}");
 
 
             endif;
