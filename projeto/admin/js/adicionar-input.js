@@ -15,6 +15,7 @@ $(function () {
         localStorage.setItem('abriu_salgado', "");
         localStorage.setItem('abriu_doce', "");
         localStorage.setItem('abriu_refrigerante', "");
+        localStorage.setItem('abriu_outros', "");
 
         if (!localStorage.getItem('bolo')) {
 
@@ -51,6 +52,11 @@ $(function () {
 
             AddInputs(torta, e_torta, abriu_torta);
             localStorage.setItem('torta', "existe");
+        }
+        
+        if (!localStorage.getItem('outros')) {
+            AddInputs(outros, e_outros, abriu_outros);
+            localStorage.setItem('outros', "existe");
         }
 
     });
@@ -104,18 +110,21 @@ $(function () {
     var salgado = "add_salgado";
     var torta = "add_torta";
     var bolo = "add_bolo";
+    var outros = "add_outros";
 
     var e_refri = "excluir-refrigerante";
     var e_doce = "excluir-docinho";
     var e_salgado = "excluir-salgado";
     var e_torta = "excluir-torta";
     var e_bolo = "excluir-bolo";
+    var e_outros = "excluir-outros";
 
     var abriu_bolo = "abriu_bolo";
     var abriu_torta = "abriu_torta";
     var abriu_salgado = "abriu_salgado";
     var abriu_refrigerante = "abriu_refrigerante";
     var abriu_doce = "abriu_doce";
+    var abriu_outros = "abriu_outros";
 
     localStorage.clear();
 

@@ -56,24 +56,24 @@
                                     <td><?= date('d/m/Y H:i', strtotime($pedido_data_criacao)); ?></td>
                                     <td><?= date('d/m/Y H:i', strtotime($pedido_data_retirada)); ?></td>
                                     <td><?= $pedido_total ?></td>
-                                    <?php 
-                                        switch ($pedido_status):
-                                            case '0':
-                                                break;
-                                            case '1':
-                                                break;
-                                            case '2':
-                                                break;
-                                            case '3':
-                                                break;
-                                        endswitch;
+                                    <?php
+                                    switch ($pedido_status):
+                                        case '0':
+                                            break;
+                                        case '1':
+                                            break;
+                                        case '2':
+                                            break;
+                                        case '3':
+                                            break;
+                                    endswitch;
                                     ?>
-                                    
+
                                     <td><?= $pedido_status ?></td>
                                     <td>
                                         <button class="btn btn-warning j_action get_action_name" title="Editar Pedido" data-action-name="update" data-callback="pedidos" data-callback_action="manager" data-id="<?= $pedido_id ?>"><i class="fa fa-edit"></i></button> 
                                         <button class="btn btn-primary j_action" title="Duplicar Pedido" data-callback="pedidos" data-callback_action="duplicar" data-id="<?= $pedido_id ?>"><i class="fa fa-copy"></i> </button>
-                                        <button class="btn btn-danger" title="Cancelar Pedido"  data-callback="pedidos" data-callback_action="cancelar" data-id="<?php // $categoria_bolo_id;                  ?>" data-name="<?php // $categoria_bolo_nome;                  ?>" data-toggle="modal" data-target="#confirmar-cancelar"><i class="fa fa-ban"></i></button> 
+                                        <button class="btn btn-danger" title="Cancelar Pedido"  data-callback="pedidos" data-callback_action="cancelar" data-id="<?php // $categoria_bolo_id;                    ?>" data-name="<?php // $categoria_bolo_nome;                    ?>" data-toggle="modal" data-target="#confirmar-cancelar"><i class="fa fa-ban"></i></button> 
                                     </td>
                                 </tr>
                                 <?php
@@ -154,6 +154,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="refrigerante-tab" data-toggle="tab" href="#refrigerante" role="tab" aria-controls="refrigerante" aria-selected="false">Refrigerante</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="outros-tab" data-toggle="tab" href="#outros" role="tab" aria-controls="outros" aria-selected="false">Outros</a>
+                                </li>
 
 
                             </ul>
@@ -232,51 +235,14 @@
                                                             </label>
                                                         </div>                                       
                                                     </div>
-                                                    <label>Recheios Comuns:</label>
-                                                    <?php
-                                                    $Read = new Read;
-
-                                                    $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 0");
-
-                                                    $array = array_chunk($Read->getResult(), ($Read->getRowCount() / 2));
-                                                    ?>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            foreach ($array[0] as $value):
-                                                                extract($value);
-                                                                ?>
-                                                                <div class="form-check">
-
-                                                                    <label class="form-check-label form-check-input" for="exampleCheck1"><input type="checkbox" name="bolos[0][recheio_comum][]" value="<?= $recheio_id ?>">
-                                                                        <?= $recheio_nome ?></label>
-                                                                </div>
 
 
-                                                                <?php
-                                                            endforeach;
-                                                            ?>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            foreach ($array[1] as $value):
-                                                                extract($value);
-                                                                ?>
-
-                                                                <div class="form-check">
-
-                                                                    <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="bolos[0][recheio_comum][]" value="<?= $recheio_id ?>">
-                                                                        <?= $recheio_nome; ?></label>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                        </div>
-                                                    </div>
-                                                    <label>Recheios Especiais:</label>
+                                                    <label>Recheios:</label>
                                                     <div class="row">
                                                         <?php
                                                         $Read = new Read;
 
-                                                        $Read->ExeRead('recheios', " WHERE recheio_status = 1 AND recheio_tipo = 1");
+                                                        $Read->ExeRead('recheios', " WHERE recheio_status = 1");
                                                         ?>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
@@ -529,6 +495,48 @@
 
                                 </div>
 
+                                <div class="tab-pane fade" id="outros" style="padding-top:20px; " role="tabpanel" aria-labelledby="outros-tab">
+                                    <button class="btn btn-primary pull-right add_field" id="add_outros"><i class="fa fa-plus"></i> Acrescentar</button>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                    <div class="nova_lista"></div>
+                                    <div class="row listas">
+
+
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Outros:</label>
+                                                <input name="outros[0][pedido_outros]" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Kg ou qtd?</label>
+                                                <select name="outros[0][pedido_outros_tipo]" class="form-control selects-pedidos">
+                                                    <option selected="" value='kg'>Kg.</option>
+                                                    <option value='qtd'>Qtd.</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label style="color:white;">.</label>
+                                                <input type="number" min="1" name="outros[0][pedido_outros_kg_qtd]" value="1" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Valor:</label>
+                                                <input type="text" name="outros[0][pedido_outros_valor_unidade]" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <button class='btn btn-sm btn-danger remover_campo excluir-outros'><i class='fa fa-close'></i> Remover</button>
+
+                                    </div>
+
+                                </div>
+
 
                             </div>
                         </div>
@@ -556,12 +564,21 @@
                                 <input type="text" name="pedido_refrigerante_valor_total" class="form-control" id="pedido_refrigerante_valor_total"  readonly="readonly">
                             </div>
 
-
+                            <div class="form-group">
+                                <label>Outros:</label>
+                                <input type="text" name="pedido_outros_valor_total" class="form-control pedido_outros" id="pedido_outros_valor_total"  readonly="readonly">
+                            </div>
 
                             <div class="form-group">
                                 <label>Total:</label>
                                 <input type="text" name="pedido_total" class="form-control pedido_total" id="pedido_total"  readonly="readonly">
                             </div>
+
+                            <div class="form-group">
+                                <label>Entrada:</label>
+                                <input type="text" name="pedido_entrada" class="form-control pedido_entrada" id="pedido_entrada"  readonly="readonly">
+                            </div>                            
+
                             <div class="form-check">
                                 <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" id="kit_festa" value="1">
                                     Kit festa</label>

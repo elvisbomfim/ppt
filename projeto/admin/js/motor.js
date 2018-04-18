@@ -51,13 +51,20 @@ $(function () {
 
 
                 if (json.total_geral_pedido) {
-                    $.each(json.categoria, function (index, value) {
+                    if (json.pedido_outros_valor_total) {
+                        $("#pedido_outros_valor_total").val(json.pedido_outros_valor_total);
+                    }
+                    $("#pedido_total").val(json.total_geral_pedido);
 
-                        $("input[name='" + value.name + "']").val(value.valor_item);
+                    $.each(json.categoria, function (index, value) {
+                        if (value.valor_item !== "") {
+                            $("input[name='" + value.name + "']").val(value.valor_item);
+                        }
+
                         $("#" + value.id_total_parcial).val(value.total_parcial);
 
                     });
-                    $("#pedido_total").val(json.total_geral_pedido);
+
                 }
 
 
@@ -316,29 +323,29 @@ $(function () {
         var Callback_action = $(this).attr('data-callback_action');
         $.post(BASE + '_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, id: Id, dados: dados}, function (json) {
 
-                if (json.idmodalcupom) {
+            if (json.idmodalcupom) {
 
-                    $('#' + json.idmodalcupom).modal('show');
-                    $('.class-cupom').html(json.resultcupom);
-                }
+                $('#' + json.idmodalcupom).modal('show');
+                $('.class-cupom').html(json.resultcupom);
+            }
 
             if (json.alerta) {
-                
-                  if (json.resultPedidoCreate) {
+
+                if (json.resultPedidoCreate) {
 //ADicionar linha duplicada na tabela
                     var t = $('.tablePPT').DataTable();
-                   
-                        t.row.add([
-                            json.resultPedidoCreate.pedido_id,
-                            json.resultPedidoCreate.cliente_nome,
-                            json.resultPedidoCreate.pedido_data_criacao,
-                            json.resultPedidoCreate.pedido_data_retirada,
-                            json.resultPedidoCreate.pedido_total,
-                            json.resultPedidoCreate.pedido_status,
-                            json.resultPedidoCreate.botoes
-                        ]).draw(false);
 
-                   // $('#' + json.tabela + ' tbody').prepend(json.resultPedidoCreate);
+                    t.row.add([
+                        json.resultPedidoCreate.pedido_id,
+                        json.resultPedidoCreate.cliente_nome,
+                        json.resultPedidoCreate.pedido_data_criacao,
+                        json.resultPedidoCreate.pedido_data_retirada,
+                        json.resultPedidoCreate.pedido_total,
+                        json.resultPedidoCreate.pedido_status,
+                        json.resultPedidoCreate.botoes
+                    ]).draw(false);
+
+                    // $('#' + json.tabela + ' tbody').prepend(json.resultPedidoCreate);
 
                 } else if (json.resultPedidoUpdate) {
                     $('#' + json.id).html(json.resultPedidoUpdate);
@@ -409,6 +416,7 @@ $(function () {
                     $("#pedido_salgado_valor_total").val(json.dadospedidos.pedido_salgado_valor_total);
                     $("#pedido_doce_valor_total").val(json.dadospedidos.pedido_docinho_valor_total);
                     $("#pedido_refrigerante_valor_total").val(json.dadospedidos.pedido_refrigerante_valor_total);
+                    $("#pedido_outros_valor_total").val(json.dadospedidos.pedido_outros_valor_total);
                     $("#pedido_total").val(json.dadospedidos.pedido_total);
                     if (json.dadospedidos.pedido_is_kit_festa === '1') {
                         $("#kit_festa").prop('checked', true);
@@ -771,7 +779,7 @@ $(function () {
         e.preventDefault();
         e.stopPropagation();
     });
-    
+
     $('html, body').on('change', '.j_select', function (e) {
         var Prevent = $(this);
         var value = $(this).val(); //pegar valor do select
@@ -779,7 +787,7 @@ $(function () {
         var key = $(this).attr('data-key');
         var Callback = $(this).attr('data-callback');
         var Callback_action = $(this).attr('data-callback_action');
-        $.post(BASE + '/_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, id:id,key:key, value: value}, function (json) {
+        $.post(BASE + '/_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, id: id, key: key, value: value}, function (json) {
 
 
             //REDIRECIONA
