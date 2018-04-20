@@ -506,7 +506,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label>Outros:</label>
-                                                <input name="outros[0][pedido_outros]" class="form-control">
+                                                <input type="text" name="outros[0][pedido_outros]" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-2">

@@ -452,6 +452,12 @@ $(function () {
                         AddInputs("add_torta", "excluir-torta");
                         localStorage.setItem('torta', "existe");
                     }
+                    
+                    if (!localStorage.getItem('outros')) {
+
+                        AddInputs("add_outros", "excluir-outros");
+                        localStorage.setItem('outros', "existe");
+                    }
 
                     //contador para a condição para o gatilho do bolo
                     if (json.dadospedidos.bolos) {
@@ -678,6 +684,54 @@ $(function () {
                             }
 
                             $.each(json.dadospedidos.refrigerantes[index], function (index_sub, value_sub) {
+
+
+
+
+                                var tipo = $("input[name='" + index_sub + "']").attr("type");
+
+                                console.log("tipo e " + $("input[name='" + index_sub + "']").attr("type"));
+                                if (tipo === "radio") {
+                                    if (value_sub === '0') {
+                                        $("[name='" + index_sub + "'][value='0']").attr('checked', true);
+
+                                    } else {
+
+                                        $("[name='" + index_sub + "'][value='1']").attr('checked', true);
+                                    }
+                                    $("." + index_sub).html("");
+                                    $("[name='" + index_sub + "']").html(value_sub);
+                                }
+
+                                if (tipo === "number" || tipo === "text") {
+
+                                    $("input[name='" + index_sub + "']").val(value_sub);
+
+//                  
+
+                                }
+
+                                if (typeof tipo === "undefined") {
+                                    $("." + index_sub).html("");
+                                    $("[name='" + index_sub + "']").html(value_sub);
+
+                                }
+
+                            });
+
+                        });
+                    }
+                    
+                    if (json.dadospedidos.outros) {
+                        count_outros = (json.dadospedidos.outros.length - 1);
+
+                        $.each(json.dadospedidos.outros, function (index, value) {
+
+                            if (count_outros > index) {
+                                $("#add_outros").trigger('click');
+                            }
+
+                            $.each(json.dadospedidos.outros[index], function (index_sub, value_sub) {
 
 
 

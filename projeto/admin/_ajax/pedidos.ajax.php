@@ -365,6 +365,7 @@ switch ($Action):
                 . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
                 . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
                 . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
+                . "LEFT JOIN pedidos_outros po ON po.pedido_id = p.pedido_id "
                 . "WHERE p.pedido_id =:id ", "id={$POST['id']}");
 
 
@@ -566,20 +567,25 @@ switch ($Action):
             $DADOS['pedido_docinho_valor_total'] = number_format($total_docinho, 2, ',', '.');
         endif;
 
-        if (!empty($pedido_array_outros)):
+
+
+        if (!empty($pedido_outros_array)):
+
+            //var_dump($pedido_outros_array);
 
             $total_outros = $pedido_outros_valor_total;
 
-            $array_outros = json_decode($pedido_array_outros, true);
+            $array_outros = json_decode($pedido_outros_array, true);
 
             $i = 0;
 
             foreach ($array_outros as $key => $value):
 
                 $DADOS['outros'][$key]["outros[{$key}][pedido_outros]"] = $value['pedido_outros'];
-                //$DADOS['outros'][$key]["outros[{$key}][pedido_outros_qtd]"] = $value['pedido_outros_qtd'];
-                $DADOS['outros'][$key]["outros[{$key}][pedido_outros_kg]"] = $value['pedido_outros_kg'];
-                $DADOS['outros'][$key]["outros[{$key}][pedido_outros_valor_unidade]"] = $value['pedido_outros_valor'];
+                $DADOS['outros'][$key]["outros[{$key}][pedido_outros_kg_qtd]"] = $value['pedido_outros_kg_qtd'];
+                $DADOS['outros'][$key]["outros[{$key}][pedido_outros_tipo]"] = "<option  value='kg' " . ($value['pedido_outros_tipo'] == 'kg' ? "selected=''" : "") . ">Kg.</option>
+                                                    <option value='qtd' " . ($value['pedido_outros_tipo'] == 'qtd' ? "selected=''" : "") . " >Qtd.</option>";
+                $DADOS['outros'][$key]["outros[{$key}][pedido_outros_valor_unidade]"] = $value['pedido_outros_valor_unidade'];
 
             endforeach;
             $DADOS['pedido_outros_valor_total'] = number_format($total_outros, 2, ',', '.');
@@ -830,36 +836,36 @@ switch ($Action):
 
         endif;
 
-       /* if (!empty($POST['outros'])):
+        /* if (!empty($POST['outros'])):
 
-            $total_geral_outros = 0;
+          $total_geral_outros = 0;
 
-            // var_dump($POST['outros']);
-            foreach ($POST['outros'] as $key => $outros):
-                extract($outros);
+          // var_dump($POST['outros']);
+          foreach ($POST['outros'] as $key => $outros):
+          extract($outros);
 
-                if (!empty($pedido_outros)):
-
-
-                    $total_geral_outros += ($pedido_outros_valor_unidade * $pedido_outros_kg_qtd);
-
-                    if (!empty($total_geral_outros)) :
-                        $total_geral_outros = str_replace(',', '.', str_replace('.', '', $total_geral_outros));
-                    endif;
-
-                endif;
-
-                // $calculo = number_format($calculo, 2, ',', '.');
-                // $total_outros = number_format($total_doce, 2, ',', '.');
+          if (!empty($pedido_outros)):
 
 
-            endforeach;
-            $total_geral_outros = number_format($total_geral_outros, 2, ',', '.');
-            $jSON['pedido_outros_valor_total'] = $total_geral_outros;
+          $total_geral_outros += ($pedido_outros_valor_unidade * $pedido_outros_kg_qtd);
+
+          if (!empty($total_geral_outros)) :
+          $total_geral_outros = str_replace(',', '.', str_replace('.', '', $total_geral_outros));
+          endif;
+
+          endif;
+
+          // $calculo = number_format($calculo, 2, ',', '.');
+          // $total_outros = number_format($total_doce, 2, ',', '.');
 
 
-        endif;*/
-        
+          endforeach;
+          $total_geral_outros = number_format($total_geral_outros, 2, ',', '.');
+          $jSON['pedido_outros_valor_total'] = $total_geral_outros;
+
+
+          endif; */
+
         if (!empty($POST['outros'])):
 
             $total_outros = 0.00;
@@ -1116,6 +1122,7 @@ switch ($Action):
 
             endforeach;
             if (!empty($array_refrigerante)):
+
                 $pedido_refrigerante['pedido_array_refrigerante'] = json_encode($array_refrigerante);
                 $_POST['pedido_refrigerante_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_refrigerante_valor_total']));
                 $pedido_refrigerante['pedido_refrigerante_valor_total'] = $_POST['pedido_refrigerante_valor_total'];
@@ -1124,6 +1131,44 @@ switch ($Action):
 
                 $Create = clone $Create;
                 $Create->ExeCreate('pedidos_refrigerante', $pedido_refrigerante);
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['outros'][0]['pedido_outros'])):
+            $pedido_outros_dados['pedido_id'] = $ultimo_pedido_id;
+            $array_outros = "";
+            foreach ($POST['outros'] as $key => $outros):
+                extract($outros);
+                if (!empty($pedido_outros_dados)):
+
+                    $array_outros[] = [
+                        "pedido_outros" => $pedido_outros,
+                        "pedido_outros_tipo" => $pedido_outros_tipo,
+                        "pedido_outros_kg_qtd" => $pedido_outros_kg_qtd,
+                        "pedido_outros_valor_unidade" => $pedido_outros_valor_unidade,
+                        "pedido_outros_status" => 2
+                    ];
+
+                endif;
+            endforeach;
+            if (!empty($array_outros)):
+
+
+                $pedido_outros_dados['pedido_outros_array'] = json_encode($array_outros);
+
+                //var_dump($pedido_outros_dados);
+
+
+                $_POST['pedido_outros_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_outros_valor_total']));
+                $pedido_outros_dados['pedido_outros_valor_total'] = $_POST['pedido_outros_valor_total'];
+
+                $pedido_outros_dados['pedido_outros_status'] = 2;
+
+                $Create = clone $Create;
+                $Create->ExeCreate('pedidos_outros', $pedido_outros_dados);
             endif;
 
 
@@ -1394,6 +1439,47 @@ switch ($Action):
                 else:
                     $pedido_refrigerante['pedido_id'] = $ID;
                     $Create->ExeCreate('pedidos_refrigerante', $pedido_refrigerante);
+                endif;
+
+
+            endif;
+
+
+
+        endif;
+
+        if (!empty($POST['outros'][0]['pedido_outros'])):
+
+            $array_outros = "";
+            $pedido_outros_dados = "";
+            foreach ($POST['outros'] as $key => $outros):
+                
+                extract($outros);
+                if (!empty($pedido_outros)):
+                    $array_outros[] = [
+                        "pedido_outros" => $pedido_outros,
+                        "pedido_outros_tipo" => $pedido_outros_tipo,
+                        "pedido_outros_kg_qtd" => $pedido_outros_kg_qtd,
+                        "pedido_outros_valor_unidade" => $pedido_outros_valor_unidade,
+                        "pedido_outros_status" => 2
+                    ];
+                endif;
+
+            endforeach;
+            if (!empty($array_outros)):
+                $pedido_outros_dados['pedido_outros_array'] = json_encode($array_outros);
+                $_POST['pedido_outros_valor_total'] = str_replace(',', '.', str_replace('.', '', $_POST['pedido_outros_valor_total']));
+                $pedido_outros_dados['pedido_outros_valor_total'] = $_POST['pedido_outros_valor_total'];
+
+                $pedido_outros_dados['pedido_outros_status'] = 1;
+
+                $Read->ExeRead('pedidos_outros', "WHERE pedido_id =:pedido_id", "pedido_id={$ID}");
+
+                if (!empty($Read->getResult())):
+                    $Update->ExeUpdate('pedidos_outros', $pedido_outros_dados, "WHERE pedido_id =:pedido_id", "pedido_id={$ID}");
+                else:
+                    $pedido_outros['pedido_id'] = $ID;
+                    $Create->ExeCreate('pedidos_outros', $pedido_outros_dados);
                 endif;
 
 
