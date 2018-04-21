@@ -185,10 +185,6 @@
                                                     <div class="row">
 
 
-
-
-
-
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Categoria:</label>
@@ -571,13 +567,19 @@
 
                             <div class="form-group">
                                 <label>Total:</label>
-                                <input type="text" name="pedido_total" class="form-control pedido_total" id="pedido_total"  readonly="readonly">
+                                <input type="text" name="pedido_total" class="form-control pedido_total" style="border: 2px solid green" id="pedido_total"  readonly="readonly">
                             </div>
 
                             <div class="form-group">
                                 <label>Entrada:</label>
-                                <input type="text" name="pedido_entrada" class="form-control pedido_entrada" id="pedido_entrada"  readonly="readonly">
+                                <input type="number" min="0" name="pedido_entrada" class="form-control pedido_entrada" id="pedido_entrada">
+                            </div>  
+                            
+                            <div class="form-group">
+                                <label>Faltam:</label>
+                                <input type="text" name="pedido_restante" class="form-control pedido_entrada" id="pedido_restante"  readonly="readonly">
                             </div>                            
+
 
                             <div class="form-check">
                                 <label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="kit_festa" id="kit_festa" value="1">

@@ -22,7 +22,7 @@ $(function () {
     });
 
     //AUTOSAVE ACTION
-    $('html').on('keyup change', 'form.auto_save', function (e) {
+    $('html').on('keyup change click', 'form.auto_save', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -64,6 +64,12 @@ $(function () {
                         $("#" + value.id_total_parcial).val(value.total_parcial);
 
                     });
+                    
+                    if(json.restante){
+                         $("#pedido_restante").val(json.restante);
+                    }else if(json.restante == ""){
+                         $("#pedido_restante").val("");
+                    }
 
                 }
 
@@ -169,11 +175,28 @@ $(function () {
                     }
 
                     if (json.resultPedidoCreate) {
-                        $('#' + json.tabela + ' tbody').prepend(json.resultPedidoCreate);
+//ADicionar linha duplicada na tabela
+                    var t = $('.tablePPT').DataTable();
 
-                    } else if (json.resultPedidoUpdate) {
-                        $('#' + json.id).html(json.resultPedidoUpdate);
-                    }
+                    t.row.add([
+                        json.resultPedidoCreate.pedido_id,
+                        json.resultPedidoCreate.cliente_nome,
+                        json.resultPedidoCreate.pedido_data_criacao,
+                        json.resultPedidoCreate.pedido_data_retirada,
+                        json.resultPedidoCreate.pedido_total,
+                        json.resultPedidoCreate.pedido_status,
+                        json.resultPedidoCreate.botoes
+                    ]).draw(false);
+                    
+                    t
+    .order( [ 1, 'desc' ])
+    .draw();
+
+                    // $('#' + json.tabela + ' tbody').prepend(json.resultPedidoCreate);
+
+                } else if (json.resultPedidoUpdate) {
+                    // ATUALIZAR PEDIDO                    
+                }
 
 
 
@@ -418,6 +441,9 @@ $(function () {
                     $("#pedido_refrigerante_valor_total").val(json.dadospedidos.pedido_refrigerante_valor_total);
                     $("#pedido_outros_valor_total").val(json.dadospedidos.pedido_outros_valor_total);
                     $("#pedido_total").val(json.dadospedidos.pedido_total);
+                    $("#pedido_entrada").val(json.dadospedidos.pedido_entrada);
+                    $("#pedido_restante").val(json.dadospedidos.pedido_restante);
+                    
                     if (json.dadospedidos.pedido_is_kit_festa === '1') {
                         $("#kit_festa").prop('checked', true);
                     }

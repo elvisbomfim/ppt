@@ -187,12 +187,6 @@ $(function () {
                         var numero = parseInt(numsStr);
 
 
-//                            console.log("o x é " + x + " O numero é " + numero);
-//                            if (x === numero) {
-//                                alert("sou igual");
-//                                x = numero + 1;
-//                                console.log("removi o numero " + numero);
-//                            }
 
 
 
@@ -237,25 +231,7 @@ $(function () {
 
 
 
-            //     if (!localStorage.getItem('contador_x_' + add)) {
-            //         localStorage.setItem('contador_x_' + add, x);
-            //      } else if (localStorage.getItem('contador_x_' + add)) {
-            //          localStorage.setItem('contador_x_' + add, x);
-            //      }
-
-//            if (localStorage.getItem('contador_x_' + add) > x) {
-//                x = localStorage.getItem('contador_x_' + add);
-//                localStorage.setItem('contador_x_' + add, x++);
-//            }
-
-
-            //  if (!localStorage.getItem('contador_vetor_' + add)) {
-            //      localStorage.setItem('contador_vetor_' + add, vetor);
-            //  } else if (localStorage.getItem('contador_vetor_' + add)) {
-            //     localStorage.setItem('contador_vetor_' + add, vetor);
-            //   }
-            // localStorage.setItem('contador_vetor_' + add, vetor);
-            //console.log(add + " agora é " + x);
+           
 
         });
         // Remover o div anterior
