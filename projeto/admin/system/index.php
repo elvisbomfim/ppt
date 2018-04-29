@@ -16,10 +16,10 @@ $GET = filter_input_array(INPUT_GET, FILTER_DEFAULT);
 ?>
 
         <nav class="nav nav-pills nav-fill">
-            <a class="nav-item nav-link  <?= $GET['pedidos'] == 'bolo' ? 'active' : '' ?>" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=bolo">Pedidos Bolo</a>
-            <a class="nav-item nav-link <?= $GET['pedidos'] == 'torta' ? 'active' : '' ?>" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=torta">Pedidos Torta</a>
-            <a class="nav-item nav-link <?= $GET['pedidos'] == 'salgado' ? 'active' : '' ?>" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=salgado">Pedidos Salgado</a>
-            <a class="nav-item nav-link <?= $GET['pedidos'] == 'doce' ? 'active' : '' ?>" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=doce">Pedidos Doce</a>
+            <a class="nav-item nav-link  <?= $GET['pedidos'] == 'bolo' ? 'active' : '' ?>" style="background: pink; color:black;" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=bolo">Pedidos Bolo</a>
+            <a class="nav-item nav-link <?= $GET['pedidos'] == 'torta' ? 'active' : '' ?>" style="background: blue; color:white;" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=torta">Pedidos Torta</a>
+            <a class="nav-item nav-link <?= $GET['pedidos'] == 'salgado' ? 'active' : '' ?>" style="background: yellow; color:black;" style="background: pink" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=salgado">Pedidos Salgado</a>
+            <a class="nav-item nav-link <?= $GET['pedidos'] == 'doce' ? 'active' : '' ?>" style="background: brown; color:white;" href="<?= BASE ?>admin/painel.php?exe=index&pedidos=doce">Pedidos Doce</a>
         </nav>
 
 

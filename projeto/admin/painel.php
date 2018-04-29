@@ -337,7 +337,9 @@ endif;
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary" form="">Imprimir</button>
+                <a class="btn btn-primary" id="imprimir_procucao" target="_blank">Imprimir Produção</a>
+                <a class="btn btn-primary" id="imprimir_cliente" target="_blank">Imprimir Cliente</a>
+                <a class="btn btn-primary" id="imprimir_vale" target="_blank">Imprimir Vale</a>
             </div>
         </div>
     </div>

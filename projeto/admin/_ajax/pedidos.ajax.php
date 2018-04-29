@@ -31,6 +31,7 @@ function CupomFiscal($param_id) {
             . "LEFT JOIN pedidos_refrigerante pr ON pr.pedido_id = p.pedido_id "
             . "LEFT JOIN pedidos_salgado ps ON ps.pedido_id = p.pedido_id "
             . "LEFT JOIN pedidos_torta pt ON pt.pedido_id = p.pedido_id "
+            . "LEFT JOIN pedidos_outros po ON po.pedido_id = p.pedido_id "
             . "WHERE p.pedido_id =:id ", "id={$param_id}");
 
     extract($Read->getResult()[0]);
@@ -311,6 +312,38 @@ function CupomFiscal($param_id) {
 
     endif; //END refrigerante
 
+    if (!empty($pedido_outros_array)):
+
+        $jSON['resultcupom'] .= "<tr class = 'sup ttu p--0'>
+                <td colspan = '3' class='titulos'>
+                <b>Outros O" . $pedido_outros_id . "</b>
+                </td>
+                </tr>";
+
+        $array_outros = json_decode($pedido_outros_array, true);
+
+        foreach ($array_outros as $key => $outros):
+            extract($outros);
+            if (!empty($pedido_outros)):
+
+                $jSON['resultcupom'] .= "  <tr class='top'>
+			<td colspan='3'><b>$pedido_outros</b></td>
+		</tr>";
+
+            endif;
+
+            if (!empty($pedido_outros_valor_unidade)):
+                $jSON['resultcupom'] .= "<tr>
+                        <td></td>
+			<td>$pedido_outros_kg_qtd Qtd.</td>
+			<td>R$".($pedido_outros_kg_qtd * $pedido_outros_valor_unidade)."</td>
+		</tr>";
+            endif;
+
+        endforeach;
+
+    endif; //END outros
+
     $jSON['resultcupom'] .= ("</tbody>
 <tfoot>
 <tr class = 'sup ttu p--0'>
@@ -332,6 +365,18 @@ function CupomFiscal($param_id) {
 <tr class = 'ttu'>
 <td colspan = '2'>Total</td>
 <td align = 'right'>R$" . number_format($pedido_total, 2, ',', '.') . "</td>
+</tr>
+
+
+<tr class = 'ttu'>
+<td colspan = '2'>Entrada</td>
+<td align = 'right'>R$" . number_format($pedido_entrada, 2, ',', '.') . "</td>
+</tr>
+
+
+<tr class = 'ttu'>
+<td colspan = '2'>Restante</td>
+<td align = 'right'>R$" . number_format($pedido_restante, 2, ',', '.') . "</td>
 </tr>
 
 <tr class = 'sup'>
@@ -385,12 +430,15 @@ switch ($Action):
         $datetimeretirada = new DateTime($date_retirada);
 
         $DADOS['pedido_total'] = number_format($pedido_total, 2, ',', '.');
-        
-        if(!empty($pedido_entrada)):
+
+        if (!empty($pedido_entrada)):
             $DADOS['pedido_entrada'] = number_format($pedido_entrada, 2, ',', '.');
             $DADOS['pedido_restante'] = number_format($pedido_restante, 2, ',', '.');
+            else:
+            $DADOS['pedido_entrada'] = "";
+            $DADOS['pedido_restante'] = "";
         endif;
-        
+
         $DADOS['pedido_is_kit_festa'] = $pedido_is_kit_festa;
 
         $DADOS['cliente_nome_id'] = "<option value=\"$cliente_id\" data-select2-id=\"" . time() . "\">{$cliente_nome}</option>";
@@ -923,10 +971,10 @@ switch ($Action):
         $pedidos['pedido_data_retirada'] = $POST['pedido_data_retirada'];
         $POST['pedido_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_total']));
         $pedidos['pedido_total'] = $POST['pedido_total'];
-        
+
         if (!empty($POST['pedido_entrada'])):
             $POST['pedido_restante'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_restante']));
-            $pedidos['pedido_entrada'] = $POST['pedido_entrada'];
+            $pedidos['pedido_entrada'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_entrada']));
             $pedidos['pedido_restante'] = $POST['pedido_restante'];
         endif;
 
@@ -1172,6 +1220,7 @@ switch ($Action):
         $jSON["alerta"] = ["icon" => "fa fa-check", "title" => "", "message" => "Pedido criado com sucesso", "URL" => "", "Target" => "_blank", "type" => "success"]; //type = warning danger success
 
         $jSON['resultcupom'] = CupomFiscal($ultimo_pedido_id);
+        $jSON['pedido_id'] = $ultimo_pedido_id;
 
         $jSON['idmodalcupom'] = "cupomfiscalModal";
 
@@ -1211,15 +1260,13 @@ switch ($Action):
         $pedidos['pedido_data_retirada'] = $POST['pedido_data_retirada'];
         $POST['pedido_total'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_total']));
         $pedidos['pedido_total'] = $POST['pedido_total'];
-        
-        if(!empty($POST['pedido_entrada'])):
-            $pedidos['pedido_entrada'] = $POST['pedido_entrada'];
+
+        if (!empty($POST['pedido_entrada'])):
+            $pedidos['pedido_entrada'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_entrada']));
             $pedidos['pedido_restante'] = str_replace(',', '.', str_replace('.', '', $POST['pedido_restante']));
-            else:
-            $pedidos['pedido_entrada'] = "";
-            $pedidos['pedido_restante'] = "";
+  
         endif;
-        
+
 //$pedidos['pedido_status'] = 1;
 
         if (!empty($POST['kit_festa'])):
@@ -1491,6 +1538,7 @@ switch ($Action):
 
 
         $jSON['resultcupom'] = CupomFiscal($ID);
+        $jSON['pedido_id'] = $ID;
 
         $jSON['idmodalcupom'] = "cupomfiscalModal";
 

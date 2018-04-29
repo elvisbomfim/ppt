@@ -541,38 +541,38 @@
                             <h2>Totais:</h2>
                             <div class="form-group">
                                 <label>Bolo:</label>
-                                <input type="text" name="pedido_bolo_valor_total" class="form-control pedido_bolo_valor_total" id="pedido_bolo_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_bolo_valor_total" style="border: 2px solid pink" class="form-control pedido_bolo_valor_total" id="pedido_bolo_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Torta:</label>
-                                <input type="text" name="pedido_torta_valor_total" class="form-control pedido_torta_valor_total" id="pedido_torta_valor_total"  readonly="readonly" >
+                                <input type="text" name="pedido_torta_valor_total" style="border: 2px solid blue" class="form-control pedido_torta_valor_total" id="pedido_torta_valor_total"  readonly="readonly" >
                             </div>
                             <div class="form-group">
                                 <label>Salgado:</label>
-                                <input type="text" name="pedido_salgado_valor_total" class="form-control pedido_salgado_valor_total" id="pedido_salgado_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_salgado_valor_total" style="border: 2px solid yellow" class="form-control pedido_salgado_valor_total" id="pedido_salgado_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Doce:</label>
-                                <input type="text" name="pedido_docinho_valor_total" class="form-control pedido_doce_valor_total" id="pedido_doce_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_docinho_valor_total" style="border: 2px solid brown" class="form-control pedido_doce_valor_total" id="pedido_doce_valor_total"  readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Refrigerante:</label>
-                                <input type="text" name="pedido_refrigerante_valor_total" class="form-control" id="pedido_refrigerante_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_refrigerante_valor_total" style="border: 2px solid black" class="form-control" id="pedido_refrigerante_valor_total"  readonly="readonly">
                             </div>
 
                             <div class="form-group">
                                 <label>Outros:</label>
-                                <input type="text" name="pedido_outros_valor_total" class="form-control pedido_outros" id="pedido_outros_valor_total"  readonly="readonly">
+                                <input type="text" name="pedido_outros_valor_total" style="border: 2px solid silver" class="form-control pedido_outros" id="pedido_outros_valor_total"  readonly="readonly">
                             </div>
 
                             <div class="form-group">
                                 <label>Total:</label>
-                                <input type="text" name="pedido_total" class="form-control pedido_total" style="border: 2px solid green" id="pedido_total"  readonly="readonly">
+                                <input type="text" name="pedido_total" style="border: 2px solid green" class="form-control pedido_total" style="border: 2px solid green" id="pedido_total"  readonly="readonly">
                             </div>
 
                             <div class="form-group">
                                 <label>Entrada:</label>
-                                <input type="number" min="0" name="pedido_entrada" class="form-control pedido_entrada" id="pedido_entrada">
+                                <input type="text" name="pedido_entrada" class="form-control pedido_entrada" id="pedido_entrada">
                             </div>  
                             
                             <div class="form-group">

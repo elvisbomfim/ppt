@@ -22,7 +22,7 @@ $(function () {
     });
 
     //AUTOSAVE ACTION
-    $('html').on('keyup change click', 'form.auto_save', function (e) {
+    $('html').on('keyup change', 'form.auto_save', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -30,9 +30,7 @@ $(function () {
         var callback = form.find('input[name="callback"]').val();
         var callback_action = form.find('input[name="callback_action"]').val();
 
-        if (typeof tinyMCE !== 'undefined') {
-            tinyMCE.triggerSave();
-        }
+  
 
         form.ajaxSubmit({
             url: BASE + '_ajax/' + callback + '.ajax.php',
@@ -56,6 +54,7 @@ $(function () {
                     }
                     $("#pedido_total").val(json.total_geral_pedido);
 
+
                     $.each(json.categoria, function (index, value) {
                         if (value.valor_item !== "") {
                             $("input[name='" + value.name + "']").val(value.valor_item);
@@ -73,42 +72,6 @@ $(function () {
 
                 }
 
-
-
-
-
-
-                if (json.name) {
-                    var input = form.find('.wc_name');
-                    if (!input.val() || input.val() != json.name) {
-                        input.val(json.name);
-                    }
-
-                    var inputfield = form.find('input[name*=_name]');
-                    if (inputfield) {
-                        inputfield.val(json.name);
-                    }
-                }
-
-                if (json.gallery) {
-                    form.find('.gallery').fadeTo('300', '0.5', function () {
-                        $(this).html($(this).html() + json.gallery).fadeTo('300', '1');
-                    });
-                }
-
-                if (json.view) {
-                    $('.wc_view').attr('href', json.view);
-                }
-
-                if (json.reorder) {
-                    $('.wc_drag_active').removeClass('btn_yellow');
-                    $('.wc_draganddrop').removeAttr('draggable');
-                }
-
-                //CLEAR INPUT FILE
-                if (!json.error) {
-                    form.find('input[type="file"]').val('');
-                }
             }
         });
     });
@@ -153,6 +116,11 @@ $(function () {
 
                     $('#' + json.idmodalcupom).modal('show');
                     $('.class-cupom').html(json.resultcupom);
+                    
+                $("#imprimir_procucao").attr("href", BASE +"system/imprimir_producao.php?id="+json.pedido_id);
+                $("#imprimir_cliente").attr("href", BASE +"system/imprimir_cliente.php?id="+json.pedido_id);
+                $("#imprimir_vale").attr("href", BASE +"system/imprimir_vale.php?id="+json.pedido_id);
+                    
                 }
 
                 //EXIBE CALLBACKS
@@ -350,6 +318,9 @@ $(function () {
 
                 $('#' + json.idmodalcupom).modal('show');
                 $('.class-cupom').html(json.resultcupom);
+                
+
+                
             }
 
             if (json.alerta) {
